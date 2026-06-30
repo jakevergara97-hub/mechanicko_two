@@ -7,9 +7,8 @@ export function CustomerLocation() {
     useEffect(() => {
         async function loadLocation() {
             const response = await getCustomerLocation();
-
-            setLocation(response);
             console.log(response);
+            setLocation(response);
         }
         loadLocation();
     }, []);
