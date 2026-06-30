@@ -1,4 +1,4 @@
-export async function getUserLocation() {
+export async function getCustomerLocation() {
     const lat = 13.759967;
     const lon = 121.072737;
 
