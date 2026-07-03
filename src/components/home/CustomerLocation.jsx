@@ -3,6 +3,7 @@ import { getCustomerLocation } from "../../services/customerLocation";
 
 export function CustomerLocation() {
     const [location, setLocation] = useState(null);
+    const [isLocationCliked, setIsLocationClicked] = useState(false);
 
     useEffect(() => {
         async function loadLocation() {
@@ -15,6 +16,10 @@ export function CustomerLocation() {
 
     if (!location) {
         return <p>Loading...</p>;
+    }
+
+    function showLocation() {
+        setIsLocationClicked(true);
     }
 
     const customerLocation = Object.hasOwn(location.address, 'city') ?
@@ -32,13 +37,19 @@ export function CustomerLocation() {
     return (
         <div>
             <h2>Location</h2>
-            <ul>
+            <button onClick={showLocation}>
+                Show Location
+            </button>
+
+            {isLocationCliked &&
+                <ul>
                 {Object.entries(customerLocation).map(([key, value], index) => (
                     <li key={index}>
                         {key[0].toUpperCase() + key.slice(1)}: {value}
                     </li>
                 ))}
             </ul>
+            }
 
         </div>
     );
