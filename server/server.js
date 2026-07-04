@@ -4,6 +4,8 @@ const app = express();
 const cors = require("cors");
 // const PORT = 3000;
 
+let mechanics = [];
+
 // Allows Express to read JSON from fetch requests
 app.use(express.json());
 app.use(cors()); // allow all origins (for development)
@@ -36,6 +38,16 @@ app.get("/api/reverse-geocode/:lat/:lon", async (req, res) => {
             error: error.message
         });
     }
+});
+
+// CREATE mechanic
+app.post("/mechanics", (req, res) => {
+    mechanics.push(req.body);
+
+    res.json({
+        success: true
+    });
+
 });
 
 app.listen(3000, () => {
