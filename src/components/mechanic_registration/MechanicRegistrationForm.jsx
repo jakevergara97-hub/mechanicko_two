@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { createMechanic } from "../../services/mechanicService";
 
 export function MechanicRegistrationForm() {
     const [firstName, setFirstName] = useState("");
@@ -8,14 +9,32 @@ export function MechanicRegistrationForm() {
     const firstNameRef = useRef("");
     const lastNameRef = useRef("");
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         if(firstNameRef.current.value === "" || lastNameRef.current.value === "") {
             return;
         }
-        document.activeElement.blur();
+
         console.log(firstNameRef.current.value);
         console.log(lastNameRef.current.value);
+
+        try {
+            const response = await createMechanic({
+                firstName: firstNameRef.current.value,
+                lastName: lastNameRef.current.value
+            });
+
+            console.log(response);
+            if(response.success) {
+                console.log("success");
+            }
+
+        } catch(error) {
+            alert(error);
+        }
+
+
+        document.activeElement.blur();
 
         firstNameRef.current.value = "";
         setTouchedFirstName(false);
