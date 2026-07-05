@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { createMechanic } from "../../services/mechanicService";
+import { LocationAddressSelection } from "./LocationAddressSelection";
 
 export function MechanicRegistrationForm() {
     const [firstName, setFirstName] = useState("");
@@ -74,8 +75,10 @@ export function MechanicRegistrationForm() {
                     (<p>Please enter your last name</p>)
                 }
 
+                <LocationAddressSelection />
                 <button type="Submit">Submit</button>
             </form>
         </div>
+
     );
 }
