@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 export function LocationAddressSelection() {
     const [locationHierarchy, setLocationHierarchy] = useState(null);
 
+    const regions = [];
+
     useEffect(() => {
         async function loadPSGC() {
             try{
@@ -22,6 +24,12 @@ export function LocationAddressSelection() {
         }
         loadPSGC();
     }, []);
+
+    for(const key in locationHierarchy) {
+        regions.push(key);
+    }
+
+    console.log(regions);
 
     return (
         <>
