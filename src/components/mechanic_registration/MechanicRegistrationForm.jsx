@@ -6,16 +6,20 @@ export function MechanicRegistrationForm() {
     const [lastName, setLastName] = useState("");
     const [touchedFirstName, setTouchedFirstName] = useState(false);
     const [touchedLastName, setTouchedLastName] = useState(false);
+
     const [selectedRegion, setSelectedRegion] = useState("");
+    const [selectedProvince, setSelectedProvince] = useState("");
 
     const selectedRegionRef = useRef("");
+    const selectedProvinceRef = useRef("");
     const firstNameRef = useRef("");
     const lastNameRef = useRef("");
 
-    const [locationHierarchy, setLocationHierarchy] = useState(null);
+    const [locationHierarchy, setLocationHierarchy] = useState({});
 
-    const regions = [];
-    const provinces = [];
+    const [isRegionSelected, setIsRegionSelected] = useState(false);
+
+    const [provinces, setProvinces] = useState(null);
 
     useEffect(() => {
         async function loadPSGC() {
@@ -26,7 +30,7 @@ export function MechanicRegistrationForm() {
                     throw new Error("Locations can't be loaded.");
                 }
                 const data = await response.json();
-                console.log(data);
+
                 setLocationHierarchy(data);
             }
             catch(error) {
@@ -37,11 +41,19 @@ export function MechanicRegistrationForm() {
         loadPSGC();
     }, []);
 
-    for(const key in locationHierarchy) {
-        regions.push(key);
+    function handleRegionSelection(e) {
+        const region = e.target.value;
+        setSelectedRegion(region);
+
+        setIsRegionSelected(true);
+
+        setProvinces(locationHierarchy[region]);
     }
 
-    console.log(regions);
+    const regions = Object.keys(locationHierarchy);
+
+    console.log(provinces);
+    console.log(typeof(provinces))
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -116,8 +128,8 @@ export function MechanicRegistrationForm() {
                     id="region-select"
                     value={selectedRegion}
                     ref={selectedRegionRef}
-                    onChange={(e) => setSelectedRegion(e.target.value)}>
-
+                    onChange={(e) => handleRegionSelection(e)}
+                >
                     {regions.length === 0 && <option value="" disabled>Regions loading...</option>}
 
                     <option value="" disabled>Select region</option>
@@ -126,8 +138,30 @@ export function MechanicRegistrationForm() {
                         <option key={region}>{region}</option>
                     )}
 
+
                 </select>
 
+                <br />
+
+                <select
+                    id="province-select"
+                    value={selectedProvince}
+                    ref={selectedProvinceRef}
+                    onChange={(e) => setSelectedProvince(e.target.value)}>
+
+                    {isRegionSelected ?
+                        Object.keys(provinces).map((key) => (
+                            <option key={key} value={key}>
+                                {key}
+                            </option>
+                        ))
+                        :
+                        <option value="" disabled>Select province</option>
+                    }
+
+                </select>
+
+                <br />
 
 
                 <button type="Submit">Submit</button>
