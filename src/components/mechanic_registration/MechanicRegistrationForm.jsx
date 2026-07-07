@@ -17,9 +17,7 @@ export function MechanicRegistrationForm() {
 
     const [locationHierarchy, setLocationHierarchy] = useState({});
 
-    const [isRegionSelected, setIsRegionSelected] = useState(false);
-
-    const [provinces, setProvinces] = useState(null);
+    const [provinces, setProvinces] = useState([]);
 
     useEffect(() => {
         async function loadPSGC() {
@@ -45,15 +43,14 @@ export function MechanicRegistrationForm() {
         const region = e.target.value;
         setSelectedRegion(region);
 
-        setIsRegionSelected(true);
-
-        setProvinces(locationHierarchy[region]);
+        setProvinces(
+            Object.keys(locationHierarchy[region]).filter(province => province !== "population")
+        );
     }
 
     const regions = Object.keys(locationHierarchy);
 
     console.log(provinces);
-    console.log(typeof(provinces))
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -149,14 +146,14 @@ export function MechanicRegistrationForm() {
                     ref={selectedProvinceRef}
                     onChange={(e) => setSelectedProvince(e.target.value)}>
 
-                    {isRegionSelected ?
-                        Object.keys(provinces).map((key) => (
-                            <option key={key} value={key}>
-                                {key}
+                    <option value="" disabled>Select province</option>
+
+                    {provinces.length !== 0 &&
+                        provinces.map((province) => (
+                            <option key={province} value={province}>
+                                {province}
                             </option>
                         ))
-                        :
-                        <option value="" disabled>Select province</option>
                     }
 
                 </select>
