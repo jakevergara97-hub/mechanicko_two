@@ -43,14 +43,14 @@ app.get("/api/reverse-geocode/:lat/:lon", async (req, res) => {
 // CREATE mechanic
 app.post("/mechanics", (req, res) => {
 
-    let {firstName, lastName, region} = req.body;
+    let {firstName, lastName,} = req.body;
     id++;
 
     const mechanic = {
         id,
         firstName,
         lastName,
-        region,
+        // region,
     }
 
     mechanics.push(mechanic);

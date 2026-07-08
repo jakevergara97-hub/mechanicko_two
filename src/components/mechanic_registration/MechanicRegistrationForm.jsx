@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { createMechanic } from "../../services/mechanicService";
 
 export function MechanicRegistrationForm() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
     const [touchedFirstName, setTouchedFirstName] = useState(false);
     const [touchedLastName, setTouchedLastName] = useState(false);
 
@@ -17,9 +15,6 @@ export function MechanicRegistrationForm() {
     const selectedCityRef = useRef("");
     const selectedBarangayRef = useRef("");
 
-    const firstNameRef = useRef("");
-    const lastNameRef = useRef("");
-
     const [locationHierarchy, setLocationHierarchy] = useState({});
 
     const [provinces, setProvinces] = useState([]);
@@ -27,18 +22,14 @@ export function MechanicRegistrationForm() {
     const [barangays, setBarangays] = useState([]);
 
     const initialFormState = {
-        firstName_: '',
-        lastName_: '',
+        firstName: '',
+        lastName: '',
     }
 
     const [formData, setFormData] = useState(initialFormState);
 
     const handleChange = (event) => {
         const {name, value} = event.target;
-        // setFormData((prevData) => ({
-        //     ...prevData,
-        //     [name]: value,
-        // }))
 
         setFormData((prevData) => {
             return {
@@ -46,11 +37,7 @@ export function MechanicRegistrationForm() {
                 [name]: value,
             }
         });
-
-        console.log("Handling Change function firing " + value)
     }
-
-    console.log(initialFormState.firstName_);
 
     useEffect(() => {
         async function loadPSGC() {
@@ -106,48 +93,43 @@ export function MechanicRegistrationForm() {
 
     const regions = Object.keys(locationHierarchy);
 
-    console.log(provinces);
-    console.log(locationHierarchy);
-    console.log(selectedRegion)
-    console.log(selectedProvince);
-    console.log(cities);
-    console.log(barangays);
+    // console.log(provinces);
+    // console.log(locationHierarchy);
+    // console.log(selectedRegion)
+    // console.log(selectedProvince);
+    // console.log(cities);
+    // console.log(barangays);
 
     async function handleSubmit(e) {
         e.preventDefault();
-        if(firstNameRef.current.value === "" || lastNameRef.current.value === "") {
+
+        const {firstName, lastName} = formData;
+
+        if(firstName === '' || lastName === '') {
             return;
         }
 
-        console.log(firstNameRef.current.value);
-        console.log(lastNameRef.current.value);
-
         try {
+
             const response = await createMechanic({
                 firstName,
                 lastName,
-                region: selectedRegionRef.current.value
             });
 
             console.log(response);
             if(response.success) {
                 console.log("success");
+                // Do the getting of the id here and the routing to the mechanic's profile page.
             }
 
         } catch(error) {
             alert(error);
         }
 
-
+        setFormData(initialFormState);
         document.activeElement.blur();
-
-        firstNameRef.current.value = "";
         setTouchedFirstName(false);
-        setFirstName("");
-
-        lastNameRef.current.value = "";
         setTouchedLastName(false);
-        setLastName("");
     }
 
 
@@ -157,16 +139,14 @@ export function MechanicRegistrationForm() {
             <form onSubmit={handleSubmit}>
                 <input
                     type="text"
-                    value={firstName}
-                    // value={formData.firstName_}
-                    // name="firstname_"
-                    ref={firstNameRef}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    // onChange={handleChange}
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
                     onBlur={() => setTouchedFirstName(true)}
-                    placeholder="First Name"
+                    placeholder="Enter firstname"
                 />
-                {touchedFirstName && firstName === "" &&
+
+                {touchedFirstName && formData.firstName === '' &&
                     (<p>Please enter your first name</p>)
                 }
 
@@ -174,15 +154,17 @@ export function MechanicRegistrationForm() {
 
                 <input
                     type="text"
-                    value={lastName}
-                    ref={lastNameRef}
-                    onChange={(e) => setLastName(e.target.value)}
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
                     onBlur={() => setTouchedLastName(true)}
-                    placeholder="Last Name"
+                    placeholder="Enter last name"
                 />
-                {touchedLastName && lastName === "" &&
+
+                {touchedLastName && formData.lastName === '' &&
                     (<p>Please enter your last name</p>)
                 }
+
                 <br />
 
                 <select
