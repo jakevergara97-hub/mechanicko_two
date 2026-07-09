@@ -4,6 +4,7 @@ import { createMechanic } from "../../services/mechanicService";
 export function MechanicRegistrationForm() {
     const [touchedFirstName, setTouchedFirstName] = useState(false);
     const [touchedLastName, setTouchedLastName] = useState(false);
+    const [touchedPhoneNumber, setTouchedPhoneNumber] = useState(false);
 
     const [selectedRegion, setSelectedRegion] = useState("");
     const [selectedProvince, setSelectedProvince] = useState("");
@@ -24,6 +25,7 @@ export function MechanicRegistrationForm() {
     const initialFormState = {
         firstName: '',
         lastName: '',
+        phoneNumber: '',
     }
 
     const [formData, setFormData] = useState(initialFormState);
@@ -103,9 +105,14 @@ export function MechanicRegistrationForm() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        const {firstName, lastName} = formData;
+        const { firstName,
+                lastName,
+                phoneNumber,
+            } = formData;
 
-        if(firstName === '' || lastName === '') {
+        if( firstName === '' ||
+            lastName === '' ||
+            phoneNumber === '') {
             return;
         }
 
@@ -114,6 +121,8 @@ export function MechanicRegistrationForm() {
             const response = await createMechanic({
                 firstName,
                 lastName,
+                phoneNumber,
+                province: selectedProvince,
             });
 
             console.log(response);
@@ -130,6 +139,7 @@ export function MechanicRegistrationForm() {
         document.activeElement.blur();
         setTouchedFirstName(false);
         setTouchedLastName(false);
+        setTouchedPhoneNumber(false);
     }
 
 
@@ -137,116 +147,137 @@ export function MechanicRegistrationForm() {
         <div>
             <p>This is the mechanic registration form</p>
             <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    onBlur={() => setTouchedFirstName(true)}
-                    placeholder="Enter firstname"
-                />
+                <fieldset>
+                    <legend>Personal Information</legend>
+                        <input
+                            type="text"
+                            name="firstName"
+                            value={formData.firstName}
+                            onChange={handleChange}
+                            onBlur={() => setTouchedFirstName(true)}
+                            placeholder="Enter firstname"
+                        />
 
-                {touchedFirstName && formData.firstName === '' &&
-                    (<p>Please enter your first name</p>)
-                }
+                        {touchedFirstName && formData.firstName === '' &&
+                            (<p>Please enter your first name</p>)
+                        }
 
-                <br />
+                        <br />
 
-                <input
-                    type="text"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    onBlur={() => setTouchedLastName(true)}
-                    placeholder="Enter last name"
-                />
+                        <input
+                            type="text"
+                            name="lastName"
+                            value={formData.lastName}
+                            onChange={handleChange}
+                            onBlur={() => setTouchedLastName(true)}
+                            placeholder="Enter last name"
+                        />
 
-                {touchedLastName && formData.lastName === '' &&
-                    (<p>Please enter your last name</p>)
-                }
+                        {touchedLastName && formData.lastName === '' &&
+                            (<p>Please enter your last name</p>)
+                        }
 
-                <br />
+                        <br />
 
-                <select
-                    id="region-select"
-                    value={selectedRegion}
-                    ref={selectedRegionRef}
-                    onChange={(e) => handleRegionSelection(e)}
-                >
-                    {regions.length === 0 && <option value="" disabled>Regions loading...</option>}
+                        <input
+                            type="text"
+                            name="phoneNumber"
+                            value={formData.phoneNumber}
+                            onChange={handleChange}
+                            onBlur={() => setTouchedPhoneNumber(true)}
+                            placeholder="Enter phone number"
+                        />
 
-                    <option value="" disabled>Select region</option>
+                        {touchedPhoneNumber && formData.phoneNumber === '' &&
+                            (<p>Please enter your phone number</p>)
+                        }
 
-                    {regions.map((region) =>
-                        <option key={region}>{region}</option>
-                    )}
-
-
-                </select>
-
-                <br />
-
-                <select
-                    id="province-select"
-                    value={selectedProvince}
-                    ref={selectedProvinceRef}
-                    onChange={(e) => handleProvinceSelection(e)}
-                >
-
-                    <option value="" disabled>Select province</option>
-
-                    {provinces.length !== 0 &&
-                        provinces.map((province) => (
-                            <option key={province} value={province}>
-                                {province}
-                            </option>
-                        ))
-                    }
-
-                </select>
+                </fieldset>
 
                 <br />
 
-                <select
-                    id="city-select"
-                    value={selectedCity}
-                    ref={selectedCityRef}
-                    onChange={(e) => handleCitySelection(e)}
-                >
+                <fieldset>
+                    <legend>Address</legend>
+                        <select
+                            id="region-select"
+                            value={selectedRegion}
+                            // ref={selectedRegionRef}
+                            onChange={(e) => handleRegionSelection(e)}
+                        >
+                            {regions.length === 0 && <option value="" disabled>Regions loading...</option>}
 
-                    <option value="" disabled>Select city/town</option>
+                            <option value="" disabled>Select region</option>
 
-                    {cities.length !== 0 &&
-                        cities.map((city) => (
-                            <option key={city} value={city}>
-                                {city}
-                            </option>
-                        ))
-                    }
+                            {regions.map((region) =>
+                                <option key={region}>{region}</option>
+                            )}
 
-                </select>
 
-                <br />
+                        </select>
 
-                <select
-                    id="barangay-select"
-                    value={selectedBarangay}
-                    ref={selectedBarangayRef}
-                    onChange={(e) => setSelectedBarangay(e.target.value)}
-                >
+                        <br />
 
-                    <option value="" disabled>Select barangay</option>
+                        <select
+                            id="province-select"
+                            value={selectedProvince}
+                            // ref={selectedProvinceRef}
+                            onChange={(e) => handleProvinceSelection(e)}
+                        >
 
-                    {barangays.length !== 0 &&
-                        barangays.map((barangay) => (
-                            <option key={barangay} value={barangay}>
-                                {barangay}
-                            </option>
-                        ))
-                    }
+                            <option value="" disabled>Select province</option>
 
-                </select>
+                            {provinces.length !== 0 &&
+                                provinces.map((province) => (
+                                    <option key={province} value={province}>
+                                        {province}
+                                    </option>
+                                ))
+                            }
 
+                        </select>
+
+                        <br />
+
+                        <select
+                            id="city-select"
+                            value={selectedCity}
+                            ref={selectedCityRef}
+                            onChange={(e) => handleCitySelection(e)}
+                        >
+
+                            <option value="" disabled>Select city/town</option>
+
+                            {cities.length !== 0 &&
+                                cities.map((city) => (
+                                    <option key={city} value={city}>
+                                        {city}
+                                    </option>
+                                ))
+                            }
+
+                        </select>
+
+                        <br />
+
+                        <select
+                            id="barangay-select"
+                            value={selectedBarangay}
+                            ref={selectedBarangayRef}
+                            onChange={(e) => setSelectedBarangay(e.target.value)}
+                        >
+
+                            <option value="" disabled>Select barangay</option>
+
+                            {barangays.length !== 0 &&
+                                barangays.map((barangay) => (
+                                    <option key={barangay} value={barangay}>
+                                        {barangay}
+                                    </option>
+                                ))
+                            }
+
+                        </select>
+                </fieldset>
                 <br />
 
 

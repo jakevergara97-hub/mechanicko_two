@@ -5,6 +5,7 @@ const cors = require("cors");
 // const PORT = 3000;
 
 let mechanics = [];
+let mechanicAddress = [];
 let id = 0;
 
 // Allows Express to read JSON from fetch requests
@@ -43,19 +44,31 @@ app.get("/api/reverse-geocode/:lat/:lon", async (req, res) => {
 // CREATE mechanic
 app.post("/mechanics", (req, res) => {
 
-    let {firstName, lastName,} = req.body;
+    let {firstName,
+        lastName,
+        phoneNumber,
+        province,
+        }
+    = req.body;
+
     id++;
 
     const mechanic = {
         id,
         firstName,
         lastName,
-        // region,
+        phoneNumber,
     }
 
     mechanics.push(mechanic);
 
+    mechanicAddress.push({
+        mechanicID: id,
+        province,
+    })
+
     console.log(mechanics);
+    console.log(mechanicAddress);
 
     res.json({
         id: mechanic.id,
