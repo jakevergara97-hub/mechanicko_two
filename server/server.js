@@ -48,6 +48,8 @@ app.post("/mechanics", (req, res) => {
         lastName,
         phoneNumber,
         province,
+        city,
+        barangay,
         }
     = req.body;
 
@@ -65,6 +67,8 @@ app.post("/mechanics", (req, res) => {
     mechanicAddress.push({
         mechanicID: id,
         province,
+        city,
+        barangay
     })
 
     console.log(mechanics);

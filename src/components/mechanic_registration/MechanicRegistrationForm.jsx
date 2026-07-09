@@ -9,12 +9,6 @@ export function MechanicRegistrationForm() {
     const [selectedRegion, setSelectedRegion] = useState("");
     const [selectedProvince, setSelectedProvince] = useState("");
     const [selectedCity, setSelectedCity] = useState("");
-    const [selectedBarangay, setSelectedBarangay] = useState("");
-
-    const selectedRegionRef = useRef("");
-    const selectedProvinceRef = useRef("");
-    const selectedCityRef = useRef("");
-    const selectedBarangayRef = useRef("");
 
     const [locationHierarchy, setLocationHierarchy] = useState({});
 
@@ -26,6 +20,11 @@ export function MechanicRegistrationForm() {
         firstName: '',
         lastName: '',
         phoneNumber: '',
+
+        region: '',
+        province: '',
+        city: '',
+        barangay: '',
     }
 
     const [formData, setFormData] = useState(initialFormState);
@@ -39,6 +38,7 @@ export function MechanicRegistrationForm() {
                 [name]: value,
             }
         });
+
     }
 
     useEffect(() => {
@@ -65,6 +65,13 @@ export function MechanicRegistrationForm() {
         const region = e.target.value;
         setSelectedRegion(region);
 
+        setFormData((prevData) => {
+            return {
+                ...prevData,
+                region,
+            }
+        });
+
         setProvinces(
             Object.keys(locationHierarchy[region]).filter(province => province !== "population")
         );
@@ -73,6 +80,13 @@ export function MechanicRegistrationForm() {
     function handleProvinceSelection(e) {
         const province = e.target.value;
         setSelectedProvince(province);
+
+        setFormData((prevData) => {
+            return {
+                ...prevData,
+                province,
+            }
+        });
 
         setCities(
             Object.keys(locationHierarchy[selectedRegion][province]).filter(city => city !== 'population')
@@ -84,6 +98,13 @@ export function MechanicRegistrationForm() {
         const city = e.target.value;
         setSelectedCity(city);
 
+        setFormData((prevData) => {
+            return {
+                ...prevData,
+                city,
+            }
+        });
+
         setBarangays(
             Object.keys(locationHierarchy[selectedRegion][selectedProvince][city])
                 .filter(barangay =>
@@ -93,14 +114,18 @@ export function MechanicRegistrationForm() {
         );
     }
 
-    const regions = Object.keys(locationHierarchy);
+    function handleBarangaySelection(e) {
+        const barangay = e.target.value;
 
-    // console.log(provinces);
-    // console.log(locationHierarchy);
-    // console.log(selectedRegion)
-    // console.log(selectedProvince);
-    // console.log(cities);
-    // console.log(barangays);
+        setFormData((prevData) => {
+            return {
+                ...prevData,
+                barangay,
+            }
+        });
+    }
+
+    const regions = Object.keys(locationHierarchy);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -108,12 +133,15 @@ export function MechanicRegistrationForm() {
         const { firstName,
                 lastName,
                 phoneNumber,
+                province,
+                city,
+                barangay,
             } = formData;
 
-        if( firstName === '' ||
-            lastName === '' ||
-            phoneNumber === '') {
-            return;
+        for(const value of Object.values(formData)) {
+            if(value === '') {
+                return;
+            }
         }
 
         try {
@@ -122,7 +150,9 @@ export function MechanicRegistrationForm() {
                 firstName,
                 lastName,
                 phoneNumber,
-                province: selectedProvince,
+                province,
+                city,
+                barangay,
             });
 
             console.log(response);
@@ -200,8 +230,8 @@ export function MechanicRegistrationForm() {
                     <legend>Address</legend>
                         <select
                             id="region-select"
-                            value={selectedRegion}
-                            // ref={selectedRegionRef}
+                            name="region"
+                            value={formData.region}
                             onChange={(e) => handleRegionSelection(e)}
                         >
                             {regions.length === 0 && <option value="" disabled>Regions loading...</option>}
@@ -219,8 +249,8 @@ export function MechanicRegistrationForm() {
 
                         <select
                             id="province-select"
-                            value={selectedProvince}
-                            // ref={selectedProvinceRef}
+                            name="province"
+                            value={formData.province}
                             onChange={(e) => handleProvinceSelection(e)}
                         >
 
@@ -240,8 +270,8 @@ export function MechanicRegistrationForm() {
 
                         <select
                             id="city-select"
-                            value={selectedCity}
-                            ref={selectedCityRef}
+                            name="city"
+                            value={formData.city}
                             onChange={(e) => handleCitySelection(e)}
                         >
 
@@ -261,9 +291,9 @@ export function MechanicRegistrationForm() {
 
                         <select
                             id="barangay-select"
-                            value={selectedBarangay}
-                            ref={selectedBarangayRef}
-                            onChange={(e) => setSelectedBarangay(e.target.value)}
+                            name="barangay"
+                            value={formData.barangay}
+                            onChange={(e) => handleBarangaySelection(e)}
                         >
 
                             <option value="" disabled>Select barangay</option>
