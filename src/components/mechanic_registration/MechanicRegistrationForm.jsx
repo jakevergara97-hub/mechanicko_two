@@ -38,7 +38,6 @@ export function MechanicRegistrationForm() {
                 [name]: value,
             }
         });
-
     }
 
     useEffect(() => {
@@ -54,7 +53,7 @@ export function MechanicRegistrationForm() {
                 setLocationHierarchy(data);
             }
             catch(error) {
-                console.log(error.message);
+                alert(error.message);
             }
 
         }
@@ -72,9 +71,18 @@ export function MechanicRegistrationForm() {
             }
         });
 
-        setProvinces(
-            Object.keys(locationHierarchy[region]).filter(province => province !== "population")
-        );
+        if(region === 'NATIONAL CAPITAL REGION (NCR)') {
+            setCities(
+                Object.keys(locationHierarchy[region])
+                    .filter(province => province !== "population")
+            );
+        } else {
+            setProvinces(
+                Object.keys(locationHierarchy[region])
+                    .filter(province => province !== "population")
+                );
+        }
+
     }
 
     function handleProvinceSelection(e) {
@@ -89,15 +97,19 @@ export function MechanicRegistrationForm() {
         });
 
         setCities(
-            Object.keys(locationHierarchy[selectedRegion][province]).filter(city => city !== 'population')
+            Object.keys(locationHierarchy[selectedRegion][province])
+                .filter(city =>
+                        city !== 'population'
+                        && city !== 'notes'
+                        && city !== 'class'
+                        && city !== 'cityClass')
         );
-
     }
 
     function handleCitySelection(e) {
         const city = e.target.value;
-        setSelectedCity(city);
 
+        setSelectedCity(city);
         setFormData((prevData) => {
             return {
                 ...prevData,
@@ -105,13 +117,23 @@ export function MechanicRegistrationForm() {
             }
         });
 
-        setBarangays(
+        if(selectedRegion === 'NATIONAL CAPITAL REGION (NCR)') {
+            setBarangays(
+                Object.keys(locationHierarchy[selectedRegion][city])
+                    .filter(barangay =>
+                            barangay !== "cityClass"
+                            && barangay !== "class"
+                            && barangay !== "population")
+            );
+        } else {
+            setBarangays(
             Object.keys(locationHierarchy[selectedRegion][selectedProvince][city])
                 .filter(barangay =>
                         barangay !== "cityClass"
                         && barangay !== "class"
                         && barangay !== "population")
-        );
+            );
+        }
     }
 
     function handleBarangaySelection(e) {
@@ -130,7 +152,7 @@ export function MechanicRegistrationForm() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        const { firstName,
+        let { firstName,
                 lastName,
                 phoneNumber,
                 province,
@@ -144,6 +166,8 @@ export function MechanicRegistrationForm() {
             }
         }
 
+        let slicedCity = city.includes('(Capital)') ? city.replace(' (Capital)', '') : city;
+
         try {
 
             const response = await createMechanic({
@@ -151,7 +175,7 @@ export function MechanicRegistrationForm() {
                 lastName,
                 phoneNumber,
                 province,
-                city,
+                city: slicedCity,
                 barangay,
             });
 
@@ -172,7 +196,6 @@ export function MechanicRegistrationForm() {
         setTouchedPhoneNumber(false);
     }
 
-
     return (
         <div>
             <p>This is the mechanic registration form</p>
@@ -189,7 +212,7 @@ export function MechanicRegistrationForm() {
                         />
 
                         {touchedFirstName && formData.firstName === '' &&
-                            (<p>Please enter your first name</p>)
+                            (<p style={{color:"red"}}>Please enter your first name</p>)
                         }
 
                         <br />
@@ -204,7 +227,7 @@ export function MechanicRegistrationForm() {
                         />
 
                         {touchedLastName && formData.lastName === '' &&
-                            (<p>Please enter your last name</p>)
+                            (<p style={{color:"red"}}>Please enter your last name</p>)
                         }
 
                         <br />
@@ -219,7 +242,7 @@ export function MechanicRegistrationForm() {
                         />
 
                         {touchedPhoneNumber && formData.phoneNumber === '' &&
-                            (<p>Please enter your phone number</p>)
+                            (<p style={{color:"red"}}>Please enter your phone number</p>)
                         }
 
                 </fieldset>
@@ -239,7 +262,7 @@ export function MechanicRegistrationForm() {
                             <option value="" disabled>Select region</option>
 
                             {regions.map((region) =>
-                                <option key={region}>{region}</option>
+                                <option key={region} value={region}>{region}</option>
                             )}
 
 
@@ -247,66 +270,111 @@ export function MechanicRegistrationForm() {
 
                         <br />
 
-                        <select
-                            id="province-select"
-                            name="province"
-                            value={formData.province}
-                            onChange={(e) => handleProvinceSelection(e)}
-                        >
+                        {/* 'NATIONAL CAPITAL REGION (NCR)' */}
 
-                            <option value="" disabled>Select province</option>
+                        {selectedRegion === 'NATIONAL CAPITAL REGION (NCR)' ?
+                            (
+                                <div>
+                                    <select
+                                        id="city-select"
+                                        name="city"
+                                        value={formData.city}
+                                        onChange={(e) => handleCitySelection(e)}
+                                    >
 
-                            {provinces.length !== 0 &&
-                                provinces.map((province) => (
-                                    <option key={province} value={province}>
-                                        {province}
-                                    </option>
-                                ))
-                            }
+                                        <option value="" disabled>Select city/town</option>
 
-                        </select>
+                                        {cities.length !== 0 &&
+                                            cities.map((city) => (
+                                                <option key={city} value={city}>
+                                                    {city}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                    <br />
+                                    <select
+                                        id="barangay-select"
+                                        name="barangay"
+                                        value={formData.barangay}
+                                        onChange={(e) => handleBarangaySelection(e)}
+                                    >
 
-                        <br />
+                                        <option value="" disabled>Select barangay</option>
 
-                        <select
-                            id="city-select"
-                            name="city"
-                            value={formData.city}
-                            onChange={(e) => handleCitySelection(e)}
-                        >
+                                        {barangays.length !== 0 &&
+                                            barangays.map((barangay) => (
+                                                <option key={barangay} value={barangay}>
+                                                    {barangay}
+                                                </option>
+                                            ))
+                                        }
 
-                            <option value="" disabled>Select city/town</option>
 
-                            {cities.length !== 0 &&
-                                cities.map((city) => (
-                                    <option key={city} value={city}>
-                                        {city}
-                                    </option>
-                                ))
-                            }
+                                    </select>
+                                </div>
+                            )
+                            :
+                            (
+                                <div>
+                                    <select
+                                        id="province-select"
+                                        name="province"
+                                        value={formData.province}
+                                        onChange={(e) => handleProvinceSelection(e)}
+                                    >
+                                        <option value="" disabled>Select province</option>
 
-                        </select>
+                                        {provinces.length !== 0 &&
+                                            provinces.map((province) => (
+                                                <option key={province} value={province}>
+                                                    {province}
+                                                </option>
+                                            ))
+                                        }
 
-                        <br />
+                                    </select>
+                                    <br />
+                                    <select
+                                        id="city-select"
+                                        name="city"
+                                        value={formData.city}
+                                        onChange={(e) => handleCitySelection(e)}
+                                    >
 
-                        <select
-                            id="barangay-select"
-                            name="barangay"
-                            value={formData.barangay}
-                            onChange={(e) => handleBarangaySelection(e)}
-                        >
+                                        <option value="" disabled>Select city/town</option>
 
-                            <option value="" disabled>Select barangay</option>
+                                        {cities.length !== 0 &&
+                                            cities.map((city) => (
+                                                <option key={city} value={city}>
+                                                    {city}
+                                                </option>
+                                            ))
+                                        }
+                                    </select>
+                                    <br />
+                                    <select
+                                        id="barangay-select"
+                                        name="barangay"
+                                        value={formData.barangay}
+                                        onChange={(e) => handleBarangaySelection(e)}
+                                    >
 
-                            {barangays.length !== 0 &&
-                                barangays.map((barangay) => (
-                                    <option key={barangay} value={barangay}>
-                                        {barangay}
-                                    </option>
-                                ))
-                            }
+                                        <option value="" disabled>Select barangay</option>
 
-                        </select>
+                                        {barangays.length !== 0 &&
+                                            barangays.map((barangay) => (
+                                                <option key={barangay} value={barangay}>
+                                                    {barangay}
+                                                </option>
+                                            ))
+                                        }
+
+
+                                    </select>
+                                </div>
+                            )
+                        }
                 </fieldset>
                 <br />
 
