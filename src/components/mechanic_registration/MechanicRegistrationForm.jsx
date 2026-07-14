@@ -165,7 +165,11 @@ export function MechanicRegistrationForm() {
                 barangay,
             } = formData;
 
-        for(const value of Object.values(formData)) {
+        for(const [key, value] of Object.entries(formData)) {
+            if(key === 'province') {
+                continue;
+            }
+
             if(value === '') {
                 return;
             }
@@ -174,7 +178,6 @@ export function MechanicRegistrationForm() {
         let slicedCity = city.includes('(Capital)') ? city.replace(' (Capital)', '') : city;
 
         try {
-
             const response = await createMechanic({
                 firstName,
                 lastName,
@@ -269,8 +272,6 @@ export function MechanicRegistrationForm() {
                             {regions.map((region) =>
                                 <option key={region} value={region}>{region}</option>
                             )}
-
-
                         </select>
 
                         <br />
