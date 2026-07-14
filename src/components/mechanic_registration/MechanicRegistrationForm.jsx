@@ -6,6 +6,8 @@ export function MechanicRegistrationForm() {
     const [touchedLastName, setTouchedLastName] = useState(false);
     const [touchedPhoneNumber, setTouchedPhoneNumber] = useState(false);
 
+    const [touched, setTouched] = useState({});
+
     const [selectedRegion, setSelectedRegion] = useState("");
     const [selectedProvince, setSelectedProvince] = useState("");
     const [selectedCity, setSelectedCity] = useState("");
@@ -198,6 +200,7 @@ export function MechanicRegistrationForm() {
         }
 
         setFormData(initialFormState);
+        setTouched({})
         document.activeElement.blur();
         setTouchedFirstName(false);
         setTouchedLastName(false);
@@ -264,6 +267,11 @@ export function MechanicRegistrationForm() {
                             name="region"
                             value={formData.region}
                             onChange={(e) => handleRegionSelection(e)}
+                            onBlur={(e) => setTouched(prev => ({
+                                    ...prev,
+                                    [e.target.name]: true,
+                                }))
+                            }
                         >
                             {regions.length === 0 && <option value="" disabled>Regions loading...</option>}
 
@@ -272,7 +280,13 @@ export function MechanicRegistrationForm() {
                             {regions.map((region) =>
                                 <option key={region} value={region}>{region}</option>
                             )}
+
+
                         </select>
+
+                        {touched.region && !formData.region
+                            && (<p style={{color:'red'}}>Region is required</p>)
+                        }
 
                         <br />
 
@@ -284,6 +298,11 @@ export function MechanicRegistrationForm() {
                                         name="city"
                                         value={formData.city}
                                         onChange={(e) => handleCitySelection(e)}
+                                        onBlur={(e) => setTouched(prev => ({
+                                                ...prev,
+                                                [e.target.name]: true,
+                                            }))
+                                        }
                                     >
 
                                         <option value="" disabled>Select city/town</option>
@@ -296,12 +315,23 @@ export function MechanicRegistrationForm() {
                                             ))
                                         }
                                     </select>
+
+                                    {touched.city && !formData.city &&
+                                        (<p style={{color:'red'}}>City/Town is required</p>)
+                                    }
+
+
                                     <br />
                                     <select
                                         id="barangay-select"
                                         name="barangay"
                                         value={formData.barangay}
                                         onChange={(e) => handleBarangaySelection(e)}
+                                        onBlur={(e) => setTouched(prev => ({
+                                                ...prev,
+                                                [e.target.name]: true,
+                                            }))
+                                        }
                                     >
 
                                         <option value="" disabled>Select barangay</option>
@@ -314,6 +344,11 @@ export function MechanicRegistrationForm() {
                                             ))
                                         }
                                     </select>
+
+                                    {touched.barangay && !formData.barangay &&
+                                        (<p style={{color:'red'}}>Barangay is required</p>)
+                                    }
+
                                 </div>
                             )
                             :
@@ -324,6 +359,11 @@ export function MechanicRegistrationForm() {
                                         name="province"
                                         value={formData.province}
                                         onChange={(e) => handleProvinceSelection(e)}
+                                        onBlur={(e) => setTouched(prev => ({
+                                                ...prev,
+                                                [e.target.name]: true,
+                                            }))
+                                        }
                                     >
                                         <option value="" disabled>Select province</option>
 
@@ -335,12 +375,22 @@ export function MechanicRegistrationForm() {
                                             ))
                                         }
                                     </select>
+
+                                    {touched.province && !formData.province &&
+                                        (<p style={{color:'red'}}>Province is required</p>)
+                                    }
+
                                     <br />
                                     <select
                                         id="city-select"
                                         name="city"
                                         value={formData.city}
                                         onChange={(e) => handleCitySelection(e)}
+                                        onBlur={(e) => setTouched(prev => ({
+                                                ...prev,
+                                                [e.target.name]: true,
+                                            }))
+                                        }
                                     >
 
                                         <option value="" disabled>Select city/town</option>
@@ -353,12 +403,22 @@ export function MechanicRegistrationForm() {
                                             ))
                                         }
                                     </select>
+
+                                    {touched.city && !formData.city &&
+                                        (<p style={{color:'red'}}>City/Town is required</p>)
+                                    }
+
                                     <br />
                                     <select
                                         id="barangay-select"
                                         name="barangay"
                                         value={formData.barangay}
                                         onChange={(e) => handleBarangaySelection(e)}
+                                        onBlur={(e) => setTouched(prev => ({
+                                                ...prev,
+                                                [e.target.name]: true,
+                                            }))
+                                        }
                                     >
 
                                         <option value="" disabled>Select barangay</option>
@@ -371,6 +431,10 @@ export function MechanicRegistrationForm() {
                                             ))
                                         }
                                     </select>
+
+                                    {touched.barangay && !formData.barangay &&
+                                        (<p style={{color:'red'}}>Barangay is required</p>)
+                                    }
                                 </div>
                             )
                         }
