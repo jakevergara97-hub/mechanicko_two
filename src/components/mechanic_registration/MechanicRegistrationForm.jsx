@@ -68,6 +68,9 @@ export function MechanicRegistrationForm() {
             return {
                 ...prevData,
                 region,
+                province: '',
+                city: '',
+                barangay: '',
             }
         });
 
@@ -82,7 +85,6 @@ export function MechanicRegistrationForm() {
                     .filter(province => province !== "population")
                 );
         }
-
     }
 
     function handleProvinceSelection(e) {
@@ -93,6 +95,8 @@ export function MechanicRegistrationForm() {
             return {
                 ...prevData,
                 province,
+                city: '',
+                barangay: '',
             }
         });
 
@@ -114,6 +118,7 @@ export function MechanicRegistrationForm() {
             return {
                 ...prevData,
                 city,
+                barangay: '',
             }
         });
 
@@ -270,8 +275,6 @@ export function MechanicRegistrationForm() {
 
                         <br />
 
-                        {/* 'NATIONAL CAPITAL REGION (NCR)' */}
-
                         {selectedRegion === 'NATIONAL CAPITAL REGION (NCR)' ?
                             (
                                 <div>
@@ -309,8 +312,6 @@ export function MechanicRegistrationForm() {
                                                 </option>
                                             ))
                                         }
-
-
                                     </select>
                                 </div>
                             )
@@ -332,7 +333,6 @@ export function MechanicRegistrationForm() {
                                                 </option>
                                             ))
                                         }
-
                                     </select>
                                     <br />
                                     <select
@@ -369,16 +369,12 @@ export function MechanicRegistrationForm() {
                                                 </option>
                                             ))
                                         }
-
-
                                     </select>
                                 </div>
                             )
                         }
                 </fieldset>
                 <br />
-
-
                 <button type="Submit">Submit</button>
             </form>
         </div>
