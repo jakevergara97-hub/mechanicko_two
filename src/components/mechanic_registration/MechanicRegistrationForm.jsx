@@ -2,26 +2,25 @@ import { useState, useEffect, useRef } from "react";
 import { createMechanic } from "../../services/mechanicService";
 
 export function MechanicRegistrationForm() {
-    const [touchedFirstName, setTouchedFirstName] = useState(false);
-    const [touchedLastName, setTouchedLastName] = useState(false);
-    const [touchedPhoneNumber, setTouchedPhoneNumber] = useState(false);
-
-    const [touched, setTouched] = useState({});
+    const [locationHierarchy, setLocationHierarchy] = useState({});
 
     const [selectedRegion, setSelectedRegion] = useState("");
     const [selectedProvince, setSelectedProvince] = useState("");
     const [selectedCity, setSelectedCity] = useState("");
 
-    const [locationHierarchy, setLocationHierarchy] = useState({});
+    const [touched, setTouched] = useState({});
 
     const [provinces, setProvinces] = useState([]);
     const [cities, setCities] = useState([]);
     const [barangays, setBarangays] = useState([]);
 
+    const [emailError, setEmailError] = useState('');
+
     const initialFormState = {
         firstName: '',
         lastName: '',
         phoneNumber: '',
+        email: '',
 
         region: '',
         province: '',
@@ -34,12 +33,37 @@ export function MechanicRegistrationForm() {
     const handleChange = (event) => {
         const {name, value} = event.target;
 
+        if(name === 'email') {
+            validateEmail(value);
+
+            if(!emailError) {
+                setFormData((prevData) => {
+                    return {
+                        ...prevData,
+                        [name]: value,
+                    }
+                });
+            }
+        }
+
         setFormData((prevData) => {
             return {
                 ...prevData,
                 [name]: value,
             }
         });
+    }
+
+    const validateEmail = (value) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if(!value) {
+            setEmailError('Email is empty');
+        } else if(!emailRegex.test(value)) {
+            setEmailError('Email address is not valid');
+        } else {
+            setEmailError('');
+        }
     }
 
     useEffect(() => {
@@ -51,7 +75,6 @@ export function MechanicRegistrationForm() {
                     throw new Error("Locations can't be loaded.");
                 }
                 const data = await response.json();
-                console.log(locationHierarchy);
                 setLocationHierarchy(data);
             }
             catch(error) {
@@ -146,12 +169,11 @@ export function MechanicRegistrationForm() {
     function handleBarangaySelection(e) {
         const barangay = e.target.value;
 
-        setFormData((prevData) => {
-            return {
+        setFormData((prevData) => ({
                 ...prevData,
                 barangay,
-            }
-        });
+            })
+        );
     }
 
     const regions = Object.keys(locationHierarchy);
@@ -162,6 +184,7 @@ export function MechanicRegistrationForm() {
         let { firstName,
                 lastName,
                 phoneNumber,
+                email,
                 province,
                 city,
                 barangay,
@@ -184,6 +207,7 @@ export function MechanicRegistrationForm() {
                 firstName,
                 lastName,
                 phoneNumber,
+                email,
                 province,
                 city: slicedCity,
                 barangay,
@@ -198,13 +222,10 @@ export function MechanicRegistrationForm() {
         } catch(error) {
             alert(error);
         }
-
+        console.log(formData);
         setFormData(initialFormState);
         setTouched({})
         document.activeElement.blur();
-        setTouchedFirstName(false);
-        setTouchedLastName(false);
-        setTouchedPhoneNumber(false);
     }
 
     return (
@@ -214,46 +235,85 @@ export function MechanicRegistrationForm() {
                 <fieldset>
                     <legend>Personal Information</legend>
                         <input
+                            id="mechanic-firstName"
                             type="text"
                             name="firstName"
                             value={formData.firstName}
                             onChange={handleChange}
-                            onBlur={() => setTouchedFirstName(true)}
+                            onBlur={(e) => setTouched(prev => ({
+                                    ...prev,
+                                    [e.target.name]: true,
+                                }))
+                            }
                             placeholder="Enter firstname"
                         />
 
-                        {touchedFirstName && formData.firstName === '' &&
-                            (<p style={{color:"red"}}>Please enter your first name</p>)
+                        {touched.firstName && !formData.firstName
+                            && (<p style={{color:"red"}}>Please enter your first name</p>)
                         }
 
                         <br />
 
                         <input
+                            id="mechanic-lastName"
                             type="text"
                             name="lastName"
                             value={formData.lastName}
                             onChange={handleChange}
-                            onBlur={() => setTouchedLastName(true)}
+                            onBlur={(e) => setTouched(prev => ({
+                                    ...prev,
+                                    [e.target.name]: true,
+                                }))
+                            }
                             placeholder="Enter last name"
                         />
 
-                        {touchedLastName && formData.lastName === '' &&
-                            (<p style={{color:"red"}}>Please enter your last name</p>)
+                        {touched.lastName && !formData.lastName
+                            && (<p style={{color:"red"}}>Please enter your last name</p>)
                         }
 
                         <br />
 
                         <input
+                            id="mechanic-phoneNumber"
                             type="text"
                             name="phoneNumber"
                             value={formData.phoneNumber}
                             onChange={handleChange}
-                            onBlur={() => setTouchedPhoneNumber(true)}
+                            onBlur={(e) => setTouched(prev => ({
+                                    ...prev,
+                                    [e.target.name]: true,
+                                }))
+                            }
                             placeholder="Enter phone number"
                         />
 
-                        {touchedPhoneNumber && formData.phoneNumber === '' &&
-                            (<p style={{color:"red"}}>Please enter your phone number</p>)
+                        {touched.phoneNumber && !formData.phoneNumber
+                            && (<p style={{color:"red"}}>Please enter your phone number</p>)
+                        }
+
+                        <br />
+
+                        <input
+                            id="mechanic-email"
+                            // type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            onBlur={(e) => setTouched(prev => ({
+                                    ...prev,
+                                    [e.target.name]: true,
+                                }))
+                            }
+                            placeholder="Enter email address"
+                        />
+
+                        {emailError
+                            && (<p style={{color:"red"}}>{emailError}</p>)
+                        }
+
+                        {touched.email && !formData.email
+                            && (<p style={{color:"red"}}>Please enter email address</p>)
                         }
 
                 </fieldset>
@@ -273,7 +333,9 @@ export function MechanicRegistrationForm() {
                                 }))
                             }
                         >
-                            {regions.length === 0 && <option value="" disabled>Regions loading...</option>}
+                            {regions.length === 0
+                                && <option value="" disabled>Regions loading...</option>
+                            }
 
                             <option value="" disabled>Select region</option>
 

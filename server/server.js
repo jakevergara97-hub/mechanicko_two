@@ -47,6 +47,7 @@ app.post("/mechanics", (req, res) => {
     let {firstName,
         lastName,
         phoneNumber,
+        email,
         province,
         city,
         barangay,
@@ -60,6 +61,7 @@ app.post("/mechanics", (req, res) => {
         firstName,
         lastName,
         phoneNumber,
+        email,
     }
 
     mechanics.push(mechanic);
