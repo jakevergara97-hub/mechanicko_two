@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { createMechanic } from "../../services/mechanicService";
+import { PersonalInformation } from "./mechanic_registration_components/PersonalInformation";
+import { AddressInformation } from "./mechanic_registration_components/AddressInformation";
 
 export function MechanicRegistrationForm() {
     const [locationHierarchy, setLocationHierarchy] = useState({});
@@ -33,7 +35,7 @@ export function MechanicRegistrationForm() {
     const handleChange = (event) => {
         const {name, value} = event.target;
 
-        if(name === 'email') {
+        if(name === 'email' && touched.email) {
             validateEmail(value);
 
             if(!emailError) {
@@ -60,7 +62,7 @@ export function MechanicRegistrationForm() {
         if(!value) {
             setEmailError('Email is empty');
         } else if(!emailRegex.test(value)) {
-            setEmailError('Email address is not valid');
+            setEmailError('Please enter a valid email address');
         } else {
             setEmailError('');
         }
@@ -222,7 +224,6 @@ export function MechanicRegistrationForm() {
         } catch(error) {
             alert(error);
         }
-        console.log(formData);
         setFormData(initialFormState);
         setTouched({})
         document.activeElement.blur();
@@ -234,272 +235,39 @@ export function MechanicRegistrationForm() {
             <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend>Personal Information</legend>
-                        <input
-                            id="mechanic-firstName"
-                            type="text"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleChange}
-                            onBlur={(e) => setTouched(prev => ({
-                                    ...prev,
-                                    [e.target.name]: true,
-                                }))
-                            }
-                            placeholder="Enter firstname"
-                        />
-
-                        {touched.firstName && !formData.firstName
-                            && (<p style={{color:"red"}}>Please enter your first name</p>)
-                        }
-
-                        <br />
-
-                        <input
-                            id="mechanic-lastName"
-                            type="text"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleChange}
-                            onBlur={(e) => setTouched(prev => ({
-                                    ...prev,
-                                    [e.target.name]: true,
-                                }))
-                            }
-                            placeholder="Enter last name"
-                        />
-
-                        {touched.lastName && !formData.lastName
-                            && (<p style={{color:"red"}}>Please enter your last name</p>)
-                        }
-
-                        <br />
-
-                        <input
-                            id="mechanic-phoneNumber"
-                            type="text"
-                            name="phoneNumber"
-                            value={formData.phoneNumber}
-                            onChange={handleChange}
-                            onBlur={(e) => setTouched(prev => ({
-                                    ...prev,
-                                    [e.target.name]: true,
-                                }))
-                            }
-                            placeholder="Enter phone number"
-                        />
-
-                        {touched.phoneNumber && !formData.phoneNumber
-                            && (<p style={{color:"red"}}>Please enter your phone number</p>)
-                        }
-
-                        <br />
-
-                        <input
-                            id="mechanic-email"
-                            // type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            onBlur={(e) => setTouched(prev => ({
-                                    ...prev,
-                                    [e.target.name]: true,
-                                }))
-                            }
-                            placeholder="Enter email address"
-                        />
-
-                        {emailError
-                            && (<p style={{color:"red"}}>{emailError}</p>)
-                        }
-
-                        {touched.email && !formData.email
-                            && (<p style={{color:"red"}}>Please enter email address</p>)
-                        }
-
+                    <PersonalInformation
+                        handleChange={handleChange}
+                        formData={formData}
+                        setFormData={setFormData}
+                        touched={touched}
+                        setTouched={setTouched}
+                        emailError={emailError}
+                    />
                 </fieldset>
 
                 <br />
 
                 <fieldset>
                     <legend>Address</legend>
-                        <select
-                            id="region-select"
-                            name="region"
-                            value={formData.region}
-                            onChange={(e) => handleRegionSelection(e)}
-                            onBlur={(e) => setTouched(prev => ({
-                                    ...prev,
-                                    [e.target.name]: true,
-                                }))
-                            }
-                        >
-                            {regions.length === 0
-                                && <option value="" disabled>Regions loading...</option>
-                            }
+                    <AddressInformation
+                            regions={regions}
+                            provinces={provinces}
+                            cities={cities}
+                            barangays={barangays}
 
-                            <option value="" disabled>Select region</option>
+                            formData={formData}
+                            setFormData={setFormData}
+                            touched={touched}
+                            setTouched={setTouched}
 
-                            {regions.map((region) =>
-                                <option key={region} value={region}>{region}</option>
-                            )}
+                            handleRegionSelection={handleRegionSelection}
+                            handleProvinceSelection={handleProvinceSelection}
+                            handleCitySelection={handleCitySelection}
+                            handleBarangaySelection={handleBarangaySelection}
 
+                            selectedRegion={selectedRegion}
 
-                        </select>
-
-                        {touched.region && !formData.region
-                            && (<p style={{color:'red'}}>Region is required</p>)
-                        }
-
-                        <br />
-
-                        {selectedRegion === 'NATIONAL CAPITAL REGION (NCR)' ?
-                            (
-                                <div>
-                                    <select
-                                        id="city-select"
-                                        name="city"
-                                        value={formData.city}
-                                        onChange={(e) => handleCitySelection(e)}
-                                        onBlur={(e) => setTouched(prev => ({
-                                                ...prev,
-                                                [e.target.name]: true,
-                                            }))
-                                        }
-                                    >
-
-                                        <option value="" disabled>Select city/town</option>
-
-                                        {cities.length !== 0 &&
-                                            cities.map((city) => (
-                                                <option key={city} value={city}>
-                                                    {city}
-                                                </option>
-                                            ))
-                                        }
-                                    </select>
-
-                                    {touched.city && !formData.city &&
-                                        (<p style={{color:'red'}}>City/Town is required</p>)
-                                    }
-
-
-                                    <br />
-                                    <select
-                                        id="barangay-select"
-                                        name="barangay"
-                                        value={formData.barangay}
-                                        onChange={(e) => handleBarangaySelection(e)}
-                                        onBlur={(e) => setTouched(prev => ({
-                                                ...prev,
-                                                [e.target.name]: true,
-                                            }))
-                                        }
-                                    >
-
-                                        <option value="" disabled>Select barangay</option>
-
-                                        {barangays.length !== 0 &&
-                                            barangays.map((barangay) => (
-                                                <option key={barangay} value={barangay}>
-                                                    {barangay}
-                                                </option>
-                                            ))
-                                        }
-                                    </select>
-
-                                    {touched.barangay && !formData.barangay &&
-                                        (<p style={{color:'red'}}>Barangay is required</p>)
-                                    }
-
-                                </div>
-                            )
-                            :
-                            (
-                                <div>
-                                    <select
-                                        id="province-select"
-                                        name="province"
-                                        value={formData.province}
-                                        onChange={(e) => handleProvinceSelection(e)}
-                                        onBlur={(e) => setTouched(prev => ({
-                                                ...prev,
-                                                [e.target.name]: true,
-                                            }))
-                                        }
-                                    >
-                                        <option value="" disabled>Select province</option>
-
-                                        {provinces.length !== 0 &&
-                                            provinces.map((province) => (
-                                                <option key={province} value={province}>
-                                                    {province}
-                                                </option>
-                                            ))
-                                        }
-                                    </select>
-
-                                    {touched.province && !formData.province &&
-                                        (<p style={{color:'red'}}>Province is required</p>)
-                                    }
-
-                                    <br />
-                                    <select
-                                        id="city-select"
-                                        name="city"
-                                        value={formData.city}
-                                        onChange={(e) => handleCitySelection(e)}
-                                        onBlur={(e) => setTouched(prev => ({
-                                                ...prev,
-                                                [e.target.name]: true,
-                                            }))
-                                        }
-                                    >
-
-                                        <option value="" disabled>Select city/town</option>
-
-                                        {cities.length !== 0 &&
-                                            cities.map((city) => (
-                                                <option key={city} value={city}>
-                                                    {city}
-                                                </option>
-                                            ))
-                                        }
-                                    </select>
-
-                                    {touched.city && !formData.city &&
-                                        (<p style={{color:'red'}}>City/Town is required</p>)
-                                    }
-
-                                    <br />
-                                    <select
-                                        id="barangay-select"
-                                        name="barangay"
-                                        value={formData.barangay}
-                                        onChange={(e) => handleBarangaySelection(e)}
-                                        onBlur={(e) => setTouched(prev => ({
-                                                ...prev,
-                                                [e.target.name]: true,
-                                            }))
-                                        }
-                                    >
-
-                                        <option value="" disabled>Select barangay</option>
-
-                                        {barangays.length !== 0 &&
-                                            barangays.map((barangay) => (
-                                                <option key={barangay} value={barangay}>
-                                                    {barangay}
-                                                </option>
-                                            ))
-                                        }
-                                    </select>
-
-                                    {touched.barangay && !formData.barangay &&
-                                        (<p style={{color:'red'}}>Barangay is required</p>)
-                                    }
-                                </div>
-                            )
-                        }
+                        />
                 </fieldset>
                 <br />
                 <button type="Submit">Submit</button>
