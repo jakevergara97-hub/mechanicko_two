@@ -2,19 +2,18 @@ const express = require("express");
 
 const app = express();
 const cors = require("cors");
-// const PORT = 3000;
-
-// let mechanics = [];
-// let mechanicAddress = [];
-// let id = 0;
+const PORT = 3000;
 
 // Allows Express to read JSON from fetch requests
 app.use(express.json());
 app.use(cors()); // allow all origins (for development)
 
-const createMechanicRoutes = require("./routes/createMechanicRoute");
+const createMechanicRoute = require("./routes/createMechanicRoute");
 
-app.use("/v1/mechanic", createMechanicRoutes);
+app.use("/v1/mechanic", createMechanicRoute);
+
+/////////
+
 
 app.get("/api/reverse-geocode/:lat/:lon", async (req, res) => {
     console.log("Route hit!");
@@ -45,50 +44,6 @@ app.get("/api/reverse-geocode/:lat/:lon", async (req, res) => {
     }
 });
 
-// CREATE mechanic
-// app.post("/mechanics", (req, res) => {
-
-//     let {firstName,
-//         lastName,
-//         phoneNumber,
-//         email,
-//         province,
-//         city,
-//         barangay,
-//         }
-//     = req.body;
-
-//     id++;
-
-//     const mechanic = {
-//         id,
-//         firstName,
-//         lastName,
-//         phoneNumber,
-//         email,
-//     }
-
-//     mechanics.push(mechanic);
-
-//     mechanicAddress.push({
-//         mechanicID: id,
-//         province,
-//         city,
-//         barangay
-//     })
-
-//     console.log(mechanics);
-//     console.log(mechanicAddress);
-
-//     res.json({
-//         id: mechanic.id,
-//         success: true
-//     });
-
-// });
-
-// console.log(mechanics);
-
-app.listen(3000, () => {
+app.listen(PORT, () => {
     console.log("Server running...");
 });

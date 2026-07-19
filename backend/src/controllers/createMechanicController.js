@@ -1,19 +1,15 @@
 const createMechanicService = require("../services/createMechanicService");
 
 const createMechanic = async(req, res) => {
-    // let {firstName,
-    //     lastName,
-    //     phoneNumber,
-    //     email,
-    //     province,
-    //     city,
-    //     barangay,
-    //     }
-    // = req.body;
-    console.log('Backend createMechanic hits')
-    const data = await createMechanicService.createMechanic(req.body);
+    try {
+        const data = await createMechanicService.createMechanic(req.body);
 
-    res.json(data);
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({
+            message: error.message,
+        });
+    }
 }
 
 module.exports = {
