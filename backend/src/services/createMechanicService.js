@@ -30,9 +30,10 @@ const createMechanic = async (mechanicData) => {
         firstName: mechanicData.firstName,
         success: true,
     }
+    console.log(mechanics);
 }
 
-console.log(mechanics);
+
 
 module.exports = {
     createMechanic
