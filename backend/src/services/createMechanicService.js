@@ -33,8 +33,16 @@ const createMechanic = async (mechanicData) => {
     console.log(mechanics);
 }
 
+const getMechanic = async (locationData) => {
+    const { province, city, barangay} = locationData;
+
+    const selectedMechanics = mechanics.filter(mechanic => mechanic.province === province);
+    console.log(selectedMechanics);
+    return selectedMechanics;
+}
 
 
 module.exports = {
-    createMechanic
+    createMechanic,
+    getMechanic
 };

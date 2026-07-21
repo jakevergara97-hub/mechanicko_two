@@ -9,8 +9,10 @@ app.use(express.json());
 app.use(cors()); // allow all origins (for development)
 
 const createMechanicRoute = require("./routes/createMechanicRoute");
+const getMechanicRoute = require("./routes/getMechanicRoute");
 
 app.use("/v1/mechanic", createMechanicRoute);
+app.use("/v1/mechanic", getMechanicRoute);
 
 /////////
 

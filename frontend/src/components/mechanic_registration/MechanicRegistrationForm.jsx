@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { createMechanic } from "../../services/mechanicService";
-import { PersonalInformation } from "./mechanic_registration_components/PersonalInformation";
-import { AddressInformation } from "./mechanic_registration_components/AddressInformation";
+import { createMechanic } from "../../services/createMechanicService";
+import { PersonalInformation } from "./PersonalInformation";
+import { AddressInformation } from "./AddressInformation";
 
 export function MechanicRegistrationForm() {
     const [locationHierarchy, setLocationHierarchy] = useState({});

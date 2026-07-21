@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+import { CustomerLocationContext } from "../../context/CustomerLocationContext";
 
 export function AddressPicker() {
     const [locationHierarchy, setLocationHierarchy] = useState({});
@@ -15,6 +16,8 @@ export function AddressPicker() {
     const [province, setProvince] = useState("");
     const [city, setCity] = useState("");
     const [barangay, setBarangay] = useState("");
+
+    const { location, setLocation } = useContext(CustomerLocationContext);
 
     const initialFormState = {
         region: '',
@@ -71,6 +74,16 @@ export function AddressPicker() {
             }
         });
 
+        setLocation((prevData) => {
+            return {
+                ...prevData,
+                region,
+                province: '',
+                city: '',
+                barangay: '',
+            }
+        });
+
         if(region === 'NATIONAL CAPITAL REGION (NCR)') {
             setCities(
                 Object.keys(locationHierarchy[region])
@@ -97,6 +110,15 @@ export function AddressPicker() {
             }
         });
 
+        setLocation((prevData) => {
+            return {
+                ...prevData,
+                province,
+                city: '',
+                barangay: '',
+            }
+        });
+
         setCities(
             Object.keys(locationHierarchy[selectedRegion][province])
                 .filter(city =>
@@ -112,6 +134,14 @@ export function AddressPicker() {
 
         setSelectedCity(city);
         setFormData((prevData) => {
+            return {
+                ...prevData,
+                city,
+                barangay: '',
+            }
+        });
+
+        setLocation((prevData) => {
             return {
                 ...prevData,
                 city,
@@ -146,6 +176,13 @@ export function AddressPicker() {
                 barangay,
             })
         );
+
+        setLocation((prevData) => {
+            return {
+                ...prevData,
+                barangay,
+            }
+        });
     }
 
     return (
