@@ -15,14 +15,13 @@ export const FindMechanicButton =  () => {
         }
 
         const data = await getMechanic({
-            province,
+            // province,
             city,
             barangay,
         });
 
         console.log(data);
         setMechanics(data);
-
     }
 
     return (

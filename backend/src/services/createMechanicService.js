@@ -24,19 +24,25 @@ const createMechanic = async (mechanicData) => {
         city,
         barangay,
     });
+    console.log(mechanics);
 
     return {
         id,
         firstName: mechanicData.firstName,
+        province: mechanicData.province,
+        city: mechanicData.city,
+        barangay: mechanicData.barangay,
         success: true,
     }
-    console.log(mechanics);
+
 }
 
 const getMechanic = async (locationData) => {
     const { province, city, barangay} = locationData;
 
-    const selectedMechanics = mechanics.filter(mechanic => mechanic.province === province);
+    console.log("Get Mechanic on Server Hit!");
+
+    const selectedMechanics = mechanics.filter(mechanic => mechanic.city === city);
     console.log(selectedMechanics);
     return selectedMechanics;
 }

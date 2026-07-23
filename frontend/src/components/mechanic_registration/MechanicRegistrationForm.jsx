@@ -214,7 +214,7 @@ export function MechanicRegistrationForm() {
                 city: slicedCity,
                 barangay,
             });
-
+            // console.log(formData);
             console.log(response);
             if(response.success) {
                 console.log("success");
