@@ -1,12 +1,12 @@
-export function MechanicCardBarangay({mechanics}) {
+export function MechanicCardOtherBarangay({mechanics}) {
 
     return (
         <div>
             {mechanics.length === 0 ?
-                <h2>There are no available mechanics in your barangay</h2>
+                <h2>There are no available mechanics in other barangays</h2>
             :
             <div>
-                <h2>Available mechanics in your barangay</h2>
+                <h2>Available mechanics in other barangays</h2>
                 {mechanics.map((mechanic) => {
                     const firstName = mechanic.firstName[0].toUpperCase() + mechanic.firstName.slice(1);
                     const lastName = mechanic.lastName[0].toUpperCase() + mechanic.lastName.slice(1);
