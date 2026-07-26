@@ -1,9 +1,8 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-// import controller and its function here
-const {getMechanic} = require("../controllers/getMechanicController");
+import { getMechanic } from "../controllers/getMechanicController.js";
 
 router.get("/:city/:barangay", getMechanic);
 
-module.exports = router;
+export default router;

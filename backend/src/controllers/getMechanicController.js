@@ -1,11 +1,10 @@
-// import service here
-const createMechanicService = require("../services/createMechanicService");
+import { getMechanic as getMechanicService } from "../services/createMechanicService.js";
 
-const getMechanic = async (req, res) => {
+export const getMechanic = async (req, res) => {
     console.log("Controller hit!", req.params);
 
     try {
-        const data = await createMechanicService.getMechanic(req.params);
+        const data = await getMechanicService(req.params);
 
         return res.json(data);
     } catch(error) {
@@ -13,8 +12,4 @@ const getMechanic = async (req, res) => {
             message: error.message,
         });
     }
-}
-
-module.exports = {
-    getMechanic
 }

@@ -1,7 +1,7 @@
 let id = 0;
 const mechanics = [];
 
-const createMechanic = async (mechanicData) => {
+export const createMechanic = async (mechanicData) => {
     let {firstName,
         lastName,
         phoneNumber,
@@ -37,7 +37,7 @@ const createMechanic = async (mechanicData) => {
 
 }
 
-const getMechanic = async (locationData) => {
+export const getMechanic = async (locationData) => {
     const { province, city, barangay} = locationData;
 
     console.log("Get Mechanic on Server Hit!");
@@ -47,8 +47,3 @@ const getMechanic = async (locationData) => {
     return selectedMechanics;
 }
 
-
-module.exports = {
-    createMechanic,
-    getMechanic
-};

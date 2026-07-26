@@ -1,8 +1,8 @@
-const createMechanicService = require("../services/createMechanicService");
+import { createMechanic as createMechanicService } from "../services/createMechanicService.js";
 
-const createMechanic = async(req, res) => {
+export const createMechanic = async (req, res) => {
     try {
-        const data = await createMechanicService.createMechanic(req.body);
+        const data = await createMechanicService(req.body);
 
         res.json(data);
     } catch (error) {
@@ -11,7 +11,3 @@ const createMechanic = async(req, res) => {
         });
     }
 }
-
-module.exports = {
-    createMechanic
-};

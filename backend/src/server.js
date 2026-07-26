@@ -1,15 +1,15 @@
-const express = require("express");
+import express from "express";
+import cors from "cors";
 
 const app = express();
-const cors = require("cors");
 const PORT = 3000;
 
 // Allows Express to read JSON from fetch requests
 app.use(express.json());
 app.use(cors()); // allow all origins (for development)
 
-const createMechanicRoute = require("./routes/createMechanicRoute");
-const getMechanicRoute = require("./routes/getMechanicRoute");
+import getMechanicRoute from "./routes/getMechanicRoute.js";
+import createMechanicRoute from "./routes/createMechanicRoute.js";
 
 app.use("/v1/mechanic", createMechanicRoute);
 app.use("/v1/mechanic", getMechanicRoute);
