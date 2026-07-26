@@ -7,5 +7,4 @@ import { createMechanic } from "../controllers/createMechanicController.js";
 router.post("/", createMechanic);
 router.get("/:city/:barangay", getMechanic);
 
-
 export default router;

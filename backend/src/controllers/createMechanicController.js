@@ -7,7 +7,7 @@ export const createMechanic = async (req, res) => {
         res.json(data);
     } catch (error) {
         res.status(500).json({
-            message: error.message,
+            error: error.message,
         });
     }
 }
