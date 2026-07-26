@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors";
+import "dotenv/config";
+import pool  from "./db/db.js";
 
 const app = express();
 const PORT = 3000;
@@ -13,37 +15,46 @@ import mechanicRoutes from "./routes/mechanicRoutes.js"
 app.use("/api/v1/mechanics", mechanicRoutes);
 app.use("/api/v1/mechanics", mechanicRoutes);
 
+try {
+    const result = await pool.query("SELECT NOW()");
+    console.log("✅ Database connected!");
+    console.log(result.rows[0]);
+} catch (err) {
+    console.error("❌ Database connection failed.");
+    console.error(err.message);
+}
+
 /////////
 
 
-app.get("/api/reverse-geocode/:lat/:lon", async (req, res) => {
-    console.log("Route hit!");
-    const { lat, lon } = req.params;
+// app.get("/api/reverse-geocode/:lat/:lon", async (req, res) => {
+//     console.log("Route hit!");
+//     const { lat, lon } = req.params;
 
-    try {
-        const response = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
-        {
-            headers: {
-                "User-Agent": "MechanicKo/1.0"
-                }
-            }
-        );
+//     try {
+//         const response = await fetch(
+//             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
+//         {
+//             headers: {
+//                 "User-Agent": "MechanicKo/1.0"
+//                 }
+//             }
+//         );
 
-        if(!response.ok) {
-            throw new Error(`Failed to get the address.`);
-        }
+//         if(!response.ok) {
+//             throw new Error(`Failed to get the address.`);
+//         }
 
-        console.log(response.status);
-        const data = await response.json();
-        res.json(data);
-    }
-    catch(error) {
-        res.status(500).json({
-            error: error.message
-        });
-    }
-});
+//         console.log(response.status);
+//         const data = await response.json();
+//         res.json(data);
+//     }
+//     catch(error) {
+//         res.status(500).json({
+//             error: error.message
+//         });
+//     }
+// });
 
 app.listen(PORT, () => {
     console.log("Server running...");
