@@ -1,8 +1,6 @@
 import { getMechanic as getMechanicService } from "../services/createMechanicService.js";
 
 export const getMechanic = async (req, res) => {
-    console.log("Controller hit!", req.params);
-
     try {
         const data = await getMechanicService(req.params);
 

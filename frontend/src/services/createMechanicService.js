@@ -1,6 +1,6 @@
 export async function createMechanic(mechanic) {
     try {
-        const response = await fetch("http://localhost:3000/v1/mechanic/create", {
+        const response = await fetch("http://localhost:3000/api/v1/mechanics/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

@@ -4,7 +4,7 @@ export async function getMechanic(location) {
     console.log(`Fetching... ${slicedCity}, ${barangay}`);
 
     try{
-        const response = await fetch(`http://localhost:3000/v1/mechanic/${slicedCity}/${barangay}`);
+        const response = await fetch(`http://localhost:3000/api/v1/mechanics/${slicedCity}/${barangay}`);
 
         if(!response.ok) {
             throw new Error(response.status);

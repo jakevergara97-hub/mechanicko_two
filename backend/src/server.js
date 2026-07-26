@@ -8,11 +8,10 @@ const PORT = 3000;
 app.use(express.json());
 app.use(cors()); // allow all origins (for development)
 
-import getMechanicRoute from "./routes/getMechanicRoute.js";
-import createMechanicRoute from "./routes/createMechanicRoute.js";
+import mechanicRoutes from "./routes/mechanicRoutes.js"
 
-app.use("/v1/mechanic", createMechanicRoute);
-app.use("/v1/mechanic", getMechanicRoute);
+app.use("/api/v1/mechanics", mechanicRoutes);
+app.use("/api/v1/mechanics", mechanicRoutes);
 
 /////////
 
