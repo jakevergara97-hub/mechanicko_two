@@ -13,16 +13,7 @@ app.use(cors()); // allow all origins (for development)
 import mechanicRoutes from "./routes/mechanicRoutes.js"
 
 app.use("/api/v1/mechanics", mechanicRoutes);
-app.use("/api/v1/mechanics", mechanicRoutes);
-
-try {
-    const result = await pool.query("SELECT NOW()");
-    console.log("✅ Database connected!");
-    console.log(result.rows[0]);
-} catch (err) {
-    console.error("❌ Database connection failed.");
-    console.error(err.message);
-}
+// app.use("/api/v1/mechanics", mechanicRoutes);
 
 /////////
 

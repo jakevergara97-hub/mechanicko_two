@@ -5,35 +5,47 @@ export const createMechanic = async (mechanicData) => {
         lastName,
         phoneNumber,
         email,
+        region,
         province,
         city,
         barangay,
         }
     = mechanicData;
 
-    if (!firstName ||
-        !lastName ||
-        !phoneNumber ||
-        !email ||
-        !province ||
-        !city ||
-        !barangay
-    ) {
-        throw new Error("Missing required fields");
-    }
-
     try {
-        const result = await pool.query(
+        for(const [key, value] of Object.entries(mechanicData)) {
+            if(key === 'province') {
+                continue;
+            }
+
+            if(value === '') {
+                throw new Error("Missing required fields");
+            }
+        }
+
+        const mechanicResult = await pool.query(
             `INSERT INTO mechanics (first_name, last_name, phone_number, email)
             VALUES ($1, $2, $3, $4)
-            RETURNING *
-            `, [firstName, lastName, phoneNumber, email]
+            RETURNING *`,
+            [firstName, lastName, phoneNumber, email]
         );
+
+        const mechanic = mechanicResult.rows[0];
+
+        const addressResult = await pool.query(
+            `INSERT INTO mechanics_address (mechanic_id, province, city, barangay, region)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING region, province, city, barangay`,
+            [mechanic.mechanic_id, province, city, barangay, region]
+        );
+
+        const mechanicAddress = addressResult.rows[0];
 
         return {
             success: true,
             message: "Mechanic added successfully",
-            mechanic: result.rows[0]
+            mechanic,
+            mechanicAddress
         }
 
     }catch(error) {
@@ -41,44 +53,7 @@ export const createMechanic = async (mechanicData) => {
     }
 }
 
-// let id = 0;
-// const mechanics = [];
-
-// export const createMechanic = async (mechanicData) => {
-//     let {firstName,
-//         lastName,
-//         phoneNumber,
-//         email,
-//         province,
-//         city,
-//         barangay,
-//         }
-//     = mechanicData;
-
-//     id++;
-
-//     mechanics.push({
-//         mechanicID: id,
-//         firstName,
-//         lastName,
-//         phoneNumber,
-//         email,
-//         province,
-//         city,
-//         barangay,
-//     });
-//     console.log(mechanics);
-
-//     return {
-//         id,
-//         firstName: mechanicData.firstName,
-//         province: mechanicData.province,
-//         city: mechanicData.city,
-//         barangay: mechanicData.barangay,
-//         success: true,
-//     }
-
-// }
+////
 
 export const getMechanic = async (locationData) => {
     const { province, city, barangay} = locationData;
