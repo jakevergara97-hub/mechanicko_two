@@ -55,13 +55,13 @@ export const createMechanic = async (mechanicData) => {
 
 ////
 
-export const getMechanic = async (locationData) => {
-    const { province, city, barangay} = locationData;
+// export const getMechanic = async (locationData) => {
+//     const { province, city, barangay} = locationData;
 
-    console.log("Get Mechanic on Server Hit!");
+//     console.log("Get Mechanic on Server Hit!");
 
-    const selectedMechanics = mechanics.filter(mechanic => mechanic.city === city);
-    console.log(selectedMechanics);
-    return selectedMechanics;
-}
+//     const selectedMechanics = mechanics.filter(mechanic => mechanic.city === city);
+//     console.log(selectedMechanics);
+//     return selectedMechanics;
+// }
 
