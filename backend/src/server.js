@@ -13,7 +13,6 @@ app.use(cors()); // allow all origins (for development)
 import mechanicRoutes from "./routes/mechanicRoutes.js"
 
 app.use("/api/v1/mechanics", mechanicRoutes);
-app.use("/api/v1/mechanics/:city/:barangay", mechanicRoutes);
 
 /////////
 

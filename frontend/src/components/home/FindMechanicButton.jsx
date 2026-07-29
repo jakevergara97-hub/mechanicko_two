@@ -15,8 +15,8 @@ export const FindMechanicButton =  () => {
         }
 
         const data = await getMechanic({
-            region,
-            province,
+            // region,
+            // province,
             city,
             barangay,
         });

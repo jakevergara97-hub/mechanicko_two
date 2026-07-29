@@ -8,14 +8,14 @@ export function MechanicCardBarangay({mechanics}) {
             <div>
                 <h2>Available mechanics in your barangay</h2>
                 {mechanics.map((mechanic) => {
-                    const firstName = mechanic.firstName[0].toUpperCase() + mechanic.firstName.slice(1);
-                    const lastName = mechanic.lastName[0].toUpperCase() + mechanic.lastName.slice(1);
+                    const firstName = mechanic.first_name[0].toUpperCase() + mechanic.first_name.slice(1);
+                    const lastName = mechanic.last_name[0].toUpperCase() + mechanic.last_name.slice(1);
                     const fullName = firstName + " " + lastName;
 
                 return (
-                    <div key={mechanic.mechanicID}>
+                    <div key={mechanic.mechanic_id}>
                         <h3>{fullName}</h3>
-                        <p>Phone number: {mechanic.phoneNumber}</p>
+                        <p>Phone number: {mechanic.phone_number}</p>
                         <p>Email: {mechanic.email}</p>
                         <p>City: {mechanic.city}</p>
                         <p>Barangay: {mechanic.barangay}</p>

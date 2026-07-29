@@ -19,7 +19,10 @@ export const createMechanic = async (mechanicData) => {
             }
 
             if(value === '') {
-                throw new Error("Missing required fields");
+                throw {
+                    status: 400,
+                    message: "Missing required field/s"
+                }
             }
         }
 
@@ -33,7 +36,7 @@ export const createMechanic = async (mechanicData) => {
         const mechanic = mechanicResult.rows[0];
 
         const addressResult = await pool.query(
-            `INSERT INTO mechanics_address (mechanic_id, province, city, barangay, region)
+            `INSERT INTO mechanics_addresses (mechanic_id, province, city, barangay, region)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING region, province, city, barangay`,
             [mechanic.mechanic_id, province, city, barangay, region]

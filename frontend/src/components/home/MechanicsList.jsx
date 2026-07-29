@@ -8,17 +8,15 @@ export const MechanicList = () => {
     const { mechanics, setMechanics } = useContext(MechanicsInfoContext);
     const { location, setLocation } = useContext(CustomerLocationContext);
 
-    // const mechanicsInTheBarangay = mechanics.filter(mechanic => mechanic.barangay === location.barangay);
+    const mechanicsInTheBarangay = !mechanics.mechanics ? [] : mechanics.mechanics.filter(mechanic => mechanic.barangay === location.barangay);
 
-    // const mechanicsInOtherBarangay = mechanics.filter(mechanic => mechanic.barangay !== location.barangay);
+    const mechanicsInOtherBarangay = !mechanics.mechanics ? [] : mechanics.mechanics.filter(mechanic => mechanic.barangay !== location.barangay);
 
-    // console.log(mechanics);
     return (
         <div>
-            {/* <MechanicCardBarangay mechanics={mechanicsInTheBarangay} />
+            <MechanicCardBarangay mechanics={mechanicsInTheBarangay} />
             <br />
-            <MechanicCardOtherBarangay mechanics={mechanicsInOtherBarangay} /> */}
-
+            <MechanicCardOtherBarangay mechanics={mechanicsInOtherBarangay} />
         </div>
     );
 }
