@@ -3,8 +3,16 @@ import pool from '../db/db.js';
 export const getMechanic = async (location) => {
     // const { region, province, city, barangay } = location;
     const { city, barangay } = location;
-
+    console.log(location);
+    console.log("get mechanic service reached.")
     try{
+        if(!location) {
+            throw {
+                status: 400,
+                message: "Location required"
+            }
+        }
+
         for(const loc of Object.values(location)) {
             if(!loc) {
                 throw {
@@ -32,16 +40,20 @@ export const getMechanic = async (location) => {
             [city]
         );
 
-        if(result.rows.length === 0) {
-            throw {
-                status: 404,
-                message: "Mechanic not found"
-            }
-        }
+        // console.log(city);
 
         const mechanics = result.rows;
 
-        console.log(mechanics);
+        if(mechanics.length === 0) {
+            throw {
+                status: 404,
+                message: "No mechanics were found for your selected location."
+            }
+        }
+
+        // const mechanics = result.rows;
+
+        // console.log(mechanics);
 
         return {
             success: true,

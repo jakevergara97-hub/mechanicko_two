@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { CustomerLocationContext } from "../../context/CustomerLocationContext";
+import { MechanicsInfoContext } from "../../context/MechanicsInfoContext";
 
 export function AddressPicker() {
     const [locationHierarchy, setLocationHierarchy] = useState({});
@@ -18,6 +19,8 @@ export function AddressPicker() {
     const [barangay, setBarangay] = useState("");
 
     const { location, setLocation } = useContext(CustomerLocationContext);
+
+    const { mechanics, setMechanics, error, setError } = useContext(MechanicsInfoContext);
 
     const initialFormState = {
         region: '',
@@ -84,6 +87,8 @@ export function AddressPicker() {
             }
         });
 
+        setError(false);
+
         if(region === 'NATIONAL CAPITAL REGION (NCR)') {
             setCities(
                 Object.keys(locationHierarchy[region])
@@ -119,6 +124,8 @@ export function AddressPicker() {
             }
         });
 
+        setError(false);
+
         setCities(
             Object.keys(locationHierarchy[selectedRegion][province])
                 .filter(city =>
@@ -148,6 +155,8 @@ export function AddressPicker() {
                 barangay: '',
             }
         });
+
+        setError(false);
 
         if(selectedRegion === 'NATIONAL CAPITAL REGION (NCR)') {
             setBarangays(
@@ -183,6 +192,8 @@ export function AddressPicker() {
                 barangay,
             }
         });
+
+        setError(false);
     }
 
     return (

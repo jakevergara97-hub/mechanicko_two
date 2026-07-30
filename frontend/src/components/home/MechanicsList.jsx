@@ -5,18 +5,42 @@ import { MechanicCardBarangay } from "./MechanicCardBarangay";
 import { MechanicCardOtherBarangay } from "./MechanicCardOtherBarangay";
 
 export const MechanicList = () => {
-    const { mechanics, setMechanics } = useContext(MechanicsInfoContext);
+    const { mechanics, setMechanics, error, setError } = useContext(MechanicsInfoContext);
     const { location, setLocation } = useContext(CustomerLocationContext);
 
-    const mechanicsInTheBarangay = !mechanics.mechanics ? [] : mechanics.mechanics.filter(mechanic => mechanic.barangay === location.barangay);
+    const city = location.city.includes("(Capital)")
+        ? location.city.replace(" (Capital)", "")
+        : location.city;
 
-    const mechanicsInOtherBarangay = !mechanics.mechanics ? [] : mechanics.mechanics.filter(mechanic => mechanic.barangay !== location.barangay);
+    const mechanicsInTheBarangay = !mechanics.mechanics ?
+                                    []
+                                    :
+                                    mechanics.mechanics
+                                    .filter(mechanic =>
+                                        mechanic.barangay === location.barangay &&
+                                        mechanic.city === city);
+
+    const mechanicsInOtherBarangay = !mechanics.mechanics ?
+                                    []
+                                    :
+                                    mechanics.mechanics
+                                    .filter(mechanic =>
+                                        mechanic.barangay !== location.barangay &&
+                                        mechanic.city === city);
 
     return (
         <div>
-            <MechanicCardBarangay mechanics={mechanicsInTheBarangay} />
+            {error && <p>{error}</p>}
+
+            {mechanicsInTheBarangay.length !== 0
+                && <MechanicCardBarangay mechanics={mechanicsInTheBarangay} />
+            }
+
             <br />
-            <MechanicCardOtherBarangay mechanics={mechanicsInOtherBarangay} />
+
+            {mechanicsInOtherBarangay.length !== 0
+                && <MechanicCardOtherBarangay mechanics={mechanicsInOtherBarangay} />
+            }
         </div>
     );
 }

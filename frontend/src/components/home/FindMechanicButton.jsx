@@ -5,24 +5,34 @@ import { MechanicsInfoContext } from "../../context/MechanicsInfoContext";
 
 export const FindMechanicButton =  () => {
     const { location, setLocation } = useContext(CustomerLocationContext);
-    const { mechanics, setMechanics } = useContext(MechanicsInfoContext);
+    const { mechanics, setMechanics, error, setError } = useContext(MechanicsInfoContext);
 
     const {region, province, city, barangay} = location;
 
     const handleClick = async () => {
-        if(!location) {
+        if( !region ||
+            !city ||
+            !barangay
+        ) {
+            alert("Please complete the location")
             return;
         }
 
-        const data = await getMechanic({
+
+        try{
+            const data = await getMechanic({
             // region,
             // province,
             city,
             barangay,
-        });
+            });
 
-        console.log(data);
-        setMechanics(data);
+            console.log(data);
+            setMechanics(data);
+
+        }catch (error) {
+            setError(error.message);
+        }
     }
 
     return (
