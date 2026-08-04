@@ -114,7 +114,7 @@ export function PersonalInformation({
                 placeholder="Enter your password"
             />
 
-            {touched.password && !formData.password
+            {touched.password && formData.password === ""
                 && (<p style={{color:"red"}}>Please enter your password</p>)
             }
 
@@ -125,7 +125,6 @@ export function PersonalInformation({
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                // autoComplete="new-password"
                 onBlur={(e) => setTouched({
                         ...touched,
                         confirmPassword: true
@@ -134,7 +133,7 @@ export function PersonalInformation({
                 placeholder="Confirm your password"
             />
 
-            {touched.confirmPassword && !formData.confirmPassword
+            {touched.confirmPassword && formData.confirmPassword === ""
                 && (<p style={{color:"red"}}>Please confirm your password</p>)
             }
 
