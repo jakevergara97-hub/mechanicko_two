@@ -212,11 +212,17 @@ export function MechanicRegistrationForm() {
                 lastName,
                 phoneNumber,
                 email,
+                password,
+                confirmPassword,
                 region,
                 province,
                 city,
                 barangay,
             } = formData;
+
+        if(confirmPasswordError) {
+            return;
+        }
 
         for(const [key, value] of Object.entries(formData)) {
             if(key === 'province') {
@@ -236,6 +242,7 @@ export function MechanicRegistrationForm() {
                 lastName,
                 phoneNumber,
                 email,
+                password,
                 region,
                 province,
                 city: slicedCity,

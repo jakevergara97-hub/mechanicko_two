@@ -77,7 +77,6 @@ export function PersonalInformation({
                 id="mechanic-email"
                 type="email"
                 name="email"
-                // autoComplete="username"
                 value={formData.email}
                 onChange={handleChange}
 
@@ -104,7 +103,6 @@ export function PersonalInformation({
                 id="mechanic-password"
                 type="password"
                 name="password"
-                // autoComplete="new-password"
                 value={formData.password}
                 onChange={handleChange}
 
