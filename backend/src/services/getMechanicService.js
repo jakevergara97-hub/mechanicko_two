@@ -40,8 +40,6 @@ export const getMechanic = async (location) => {
             [city]
         );
 
-        // console.log(city);
-
         const mechanics = result.rows;
 
         if(mechanics.length === 0) {

@@ -4,7 +4,8 @@ export function PersonalInformation({
                                     setFormData,
                                     touched,
                                     setTouched,
-                                    emailError
+                                    emailError,
+                                    confirmPasswordError
                                     }) {
 
     return (
@@ -76,6 +77,7 @@ export function PersonalInformation({
                 id="mechanic-email"
                 type="email"
                 name="email"
+                // autoComplete="username"
                 value={formData.email}
                 onChange={handleChange}
 
@@ -85,13 +87,61 @@ export function PersonalInformation({
                     })}
 
                 placeholder="Enter email address"
+                required
             />
+
+            {touched.email && !formData.email
+                && (<p style={{color:"red"}}>Please enter your email addess</p>)
+            }
+
             {emailError
                 && (<p style={{color:"red"}}>{emailError}</p>)
             }
 
-            {touched.email && !formData.email
-                && (<p style={{color:"red"}}>Please enter your email addess</p>)
+            <br />
+
+            <input
+                id="mechanic-password"
+                type="password"
+                name="password"
+                // autoComplete="new-password"
+                value={formData.password}
+                onChange={handleChange}
+
+                onBlur={(e) => setTouched({
+                        ...touched,
+                        password: true,
+                    })}
+
+                placeholder="Enter your password"
+            />
+
+            {touched.password && !formData.password
+                && (<p style={{color:"red"}}>Please enter your password</p>)
+            }
+
+            <br />
+            <input
+                id="mechanic-confirm-password"
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                // autoComplete="new-password"
+                onBlur={(e) => setTouched({
+                        ...touched,
+                        confirmPassword: true
+                    })}
+
+                placeholder="Confirm your password"
+            />
+
+            {touched.confirmPassword && !formData.confirmPassword
+                && (<p style={{color:"red"}}>Please confirm your password</p>)
+            }
+
+            {confirmPasswordError
+                && (<p style={{color:"red"}}>{confirmPasswordError}</p>)
             }
 
         </div>

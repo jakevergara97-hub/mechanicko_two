@@ -17,12 +17,15 @@ export function MechanicRegistrationForm() {
     const [barangays, setBarangays] = useState([]);
 
     const [emailError, setEmailError] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
     const initialFormState = {
         firstName: '',
         lastName: '',
         phoneNumber: '',
         email: '',
+        password: '',
+        confirmPassword: '',
 
         region: '',
         province: '',
@@ -48,6 +51,20 @@ export function MechanicRegistrationForm() {
             }
         }
 
+        if(name === 'confirmPassword' && touched.confirmPassword) {
+            validateConfirmPassword(value);
+
+            if(!confirmPasswordError) {
+                setFormData((prevData) => {
+                    return {
+                        ...prevData,
+                        [name]: value,
+                    }
+                });
+            }
+
+        }
+
         setFormData((prevData) => {
             return {
                 ...prevData,
@@ -65,6 +82,14 @@ export function MechanicRegistrationForm() {
             setEmailError('Please enter a valid email address');
         } else {
             setEmailError('');
+        }
+    }
+
+    const validateConfirmPassword = (value) => {
+        if(value !== formData.password) {
+            setConfirmPasswordError('Passwords are not the same')
+        } else {
+            setConfirmPasswordError('');
         }
     }
 
@@ -234,7 +259,7 @@ export function MechanicRegistrationForm() {
     return (
         <div>
             <p>This is the mechanic registration form</p>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete="off">
                 <fieldset>
                     <legend>Personal Information</legend>
                     <PersonalInformation
@@ -244,6 +269,7 @@ export function MechanicRegistrationForm() {
                         touched={touched}
                         setTouched={setTouched}
                         emailError={emailError}
+                        confirmPasswordError={confirmPasswordError}
                     />
                 </fieldset>
 
