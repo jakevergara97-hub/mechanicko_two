@@ -8,16 +8,17 @@ export async function createMechanic(mechanic) {
             body: JSON.stringify(mechanic),
         });
 
-        if(!response.ok) {
-            throw new Error (`Request failed: ${response.status}`);
-        }
-
         const data = await response.json();
+
+        if(!response.ok) {
+            throw new Error (data.error);
+        }
         console.log(data);
-        console.log(response.status);
+
         return data;
     }
     catch(error) {
-        console.log(error.message)
+        console.error(error.message);
+        throw error;
     }
 }

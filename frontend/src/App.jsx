@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { MechanicRegistrationPage } from "./pages/MechanicRegistrationPage";
+import { MechanicDashboard } from "./pages/MechanicDashboard";
 import { CustomerLocationProvider } from "./context/CustomerLocationContext";
 // import { MechanicsInfoContext } from "./context/MechanicsInfoContext";
 import { MechanicsInfoProvider } from "./context/MechanicsInfoContext";
@@ -20,6 +21,11 @@ function App() {
                 <Route
                     path="/mechanicsignup"
                     element={<MechanicRegistrationPage />}
+                />
+
+                <Route
+                    path="/mechanicdashboard"
+                    element={<MechanicDashboard />}
                 />
             </Routes>
         </>

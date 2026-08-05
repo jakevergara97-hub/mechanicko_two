@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { createMechanic } from "../../services/createMechanicService";
 import { PersonalInformation } from "./PersonalInformation";
 import { AddressInformation } from "./AddressInformation";
 
 export function MechanicRegistrationForm() {
+    const navigate = useNavigate();
     const [locationHierarchy, setLocationHierarchy] = useState({});
 
     const [selectedRegion, setSelectedRegion] = useState("");
@@ -248,15 +250,17 @@ export function MechanicRegistrationForm() {
                 city: slicedCity,
                 barangay,
             });
-            // console.log(formData);
+
             console.log(response);
+
             if(response.success) {
                 console.log("success");
+                navigate("/mechanicdashboard")
                 // Do the getting of the id here and the routing to the mechanic's profile page.
             }
 
         } catch(error) {
-            alert(error);
+            alert(error.message);
         }
         setFormData(initialFormState);
         setTouched({})

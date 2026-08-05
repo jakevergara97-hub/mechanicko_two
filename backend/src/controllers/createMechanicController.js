@@ -5,9 +5,9 @@ export const createMechanic = async (req, res) => {
         console.log("CREATE MECHANIC CONTROLLER HIT");
         const data = await createMechanicService(req.body);
 
-        res.json(data);
+        return res.json(data);
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             error: error.message,
         });
     }
