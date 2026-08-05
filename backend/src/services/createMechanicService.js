@@ -1,6 +1,7 @@
 import pool from '../db/db.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import "dotenv/config";
 
 export const createMechanic = async (mechanicData) => {
     let {firstName,
@@ -71,13 +72,25 @@ export const createMechanic = async (mechanicData) => {
 
         const mechanicAddress = addressResult.rows[0];
 
+        const token = jwt.sign(
+            {
+                userId:mechanic.id,
+                email:mechanic.email
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn:"7d"
+            }
+        );
+
         return {
             success: true,
             message: "Mechanic added successfully",
             mechanicID: mechanic.id,
             mechanicEmail: mechanic.email,
             mechanicProfile,
-            mechanicAddress
+            mechanicAddress,
+            token
         }
 
     }catch(error) {
