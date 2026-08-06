@@ -83,13 +83,17 @@ export const createMechanic = async (mechanicData) => {
             }
         );
 
+        const mechanicInfo = {
+            id: mechanic.id,
+            email: mechanic.email,
+            profile: mechanicProfile,
+            address: mechanicAddress
+        };
+
         return {
             success: true,
             message: "Mechanic added successfully",
-            mechanicID: mechanic.id,
-            mechanicEmail: mechanic.email,
-            mechanicProfile,
-            mechanicAddress,
+            mechanicInfo,
             token
         }
 

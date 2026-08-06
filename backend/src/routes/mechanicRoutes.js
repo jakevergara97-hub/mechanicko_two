@@ -3,8 +3,14 @@ const router = express.Router();
 
 import { getMechanic } from "../controllers/getMechanicController.js";
 import { createMechanic } from "../controllers/createMechanicController.js";
+import { authenticate } from "../middlewares/authMiddleware.js";
+import { me } from "../controllers/authController.js";
 
 router.post("/", createMechanic);
 router.get("/:city/:barangay", getMechanic);
+router.get("/me",
+    authenticate,
+    me
+);
 
 export default router;
