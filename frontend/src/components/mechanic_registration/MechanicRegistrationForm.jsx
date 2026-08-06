@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { createMechanic } from "../../services/createMechanicService";
 import { PersonalInformation } from "./PersonalInformation";
 import { AddressInformation } from "./AddressInformation";
+import { MechanicProfileContext } from "../../context/MechanicProfileContext";
 
 export function MechanicRegistrationForm() {
     const navigate = useNavigate();
@@ -20,6 +21,8 @@ export function MechanicRegistrationForm() {
 
     const [emailError, setEmailError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+    const {mechanicProfile, setMechanicProfile} = useContext(MechanicProfileContext);
 
     const initialFormState = {
         firstName: '',
@@ -239,7 +242,7 @@ export function MechanicRegistrationForm() {
         let slicedCity = city.includes('(Capital)') ? city.replace(' (Capital)', '') : city;
 
         try {
-            const response = await createMechanic({
+            const data = await createMechanic({
                 firstName,
                 lastName,
                 phoneNumber,
@@ -251,10 +254,11 @@ export function MechanicRegistrationForm() {
                 barangay,
             });
 
-            console.log(response);
+            console.log(data);
 
-            if(response.success) {
+            if(data.success) {
                 console.log("success");
+                setMechanicProfile(data);
                 navigate("/mechanicdashboard")
                 // Do the getting of the id here and the routing to the mechanic's profile page.
             }
