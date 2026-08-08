@@ -1,10 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { MechanicProfileContext } from "../context/MechanicProfileContext";
 import { AuthContext } from "../context/AuthContext";
 
 export function MechanicDashboard() {
-    // const {mechanicProfile, setMechanicProfile} = useContext(MechanicProfileContext);
     const {mechanic, loading} = useContext(AuthContext);
     console.log(mechanic);
 

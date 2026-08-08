@@ -1,6 +1,6 @@
 export async function createMechanic(mechanic) {
     try {
-        const response = await fetch("http://localhost:3000/api/v1/mechanics/", {
+        const responseWithToken = await fetch("http://localhost:3000/api/v1/mechanics/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -8,9 +8,9 @@ export async function createMechanic(mechanic) {
             body: JSON.stringify(mechanic),
         });
 
-        const data = await response.json();
+        const data = await responseWithToken.json();
 
-        if(!response.ok) {
+        if(!responseWithToken.ok) {
             throw new Error (data.error);
         }
         console.log(data);

@@ -1,5 +1,4 @@
 export function MechanicCardBarangay({mechanics}) {
-
     return (
         <div>
             {mechanics.length === 0 ?

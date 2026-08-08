@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { createMechanic } from "../../services/createMechanicService";
 import { PersonalInformation } from "./PersonalInformation";
 import { AddressInformation } from "./AddressInformation";
-import { MechanicProfileContext } from "../../context/MechanicProfileContext";
 import { AuthContext } from "../../context/AuthContext";
 
 export function MechanicRegistrationForm() {
@@ -23,7 +22,6 @@ export function MechanicRegistrationForm() {
     const [emailError, setEmailError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
-    const {mechanicProfile, setMechanicProfile} = useContext(MechanicProfileContext);
     const {mechanic, setMechanic} = useContext(AuthContext);
 
     const initialFormState = {
@@ -260,7 +258,6 @@ export function MechanicRegistrationForm() {
 
             if(data.success) {
                 console.log("success");
-                // setMechanicProfile(data);
                 setMechanic(data);
                 navigate("/mechanicdashboard")
                 // Do the getting of the id here and the routing to the mechanic's profile page.
