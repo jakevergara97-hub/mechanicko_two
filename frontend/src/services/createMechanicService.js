@@ -1,9 +1,4 @@
-// import { useContext } from "react";
-// import { MechanicProfileContext } from "../context/MechanicProfileContext";
-
 export async function createMechanic(mechanic) {
-    // const { mechanicProfile, setMechanicProfile } = useContext(MechanicProfileContext);
-
     try {
         const response = await fetch("http://localhost:3000/api/v1/mechanics/", {
             method: "POST",
@@ -25,9 +20,15 @@ export async function createMechanic(mechanic) {
             data.token
         );
 
-        // setMechanicProfile(data);
+        const profile = await fetch("http://localhost:3000/api/v1/mechanics/me", {
+                    headers: {
+                        Authorization: `Bearer ${data.token}`
+                    }
+                });
 
-        return data;
+        const dataProfile = await profile.json();
+        console.log(dataProfile);
+        return dataProfile;
     }
     catch(error) {
         console.error(error.message);

@@ -1,15 +1,39 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { MechanicProfileContext } from "../context/MechanicProfileContext";
+import { AuthContext } from "../context/AuthContext";
 
 export function MechanicDashboard() {
-    const {mechanicProfile, setMechanicProfile} = useContext(MechanicProfileContext);
+    // const {mechanicProfile, setMechanicProfile} = useContext(MechanicProfileContext);
+    const {mechanic, loading} = useContext(AuthContext);
+    console.log(mechanic);
 
-    console.log(mechanicProfile);
+    if(mechanic.length === 0) {
+        return <p>Loading...</p>
+    }
+
+    const firstName = mechanic.mechanicInfo.first_name[0].toUpperCase()
+                        + mechanic.mechanicInfo.first_name.slice(1);
+    const lastName = mechanic.mechanicInfo.last_name[0].toUpperCase()
+                        + mechanic.mechanicInfo.last_name.slice(1);
+    const fullName = firstName + " " + lastName;
 
     return (
         <>
             <p>This is the mechanic dashboard page.</p>
+            {!loading &&
+                <div key={mechanic.mechanicInfo.id}>
+                    <h3>Welcome {fullName}!</h3>
+                    <p>Phone number: {mechanic.mechanicInfo.phone_number}</p>
+                    <p>Email: {mechanic.mechanicInfo.email}</p>
+                    <p>Province: {mechanic.mechanicInfo.province}</p>
+                    <p>City: {mechanic.mechanicInfo.city}</p>
+                    <p>Barangay: {mechanic.mechanicInfo.barangay}</p>
+                </div>
+            }
+            <br />
+            <br />
+            <br />
             <Link to="/">
                 Home
             </Link>

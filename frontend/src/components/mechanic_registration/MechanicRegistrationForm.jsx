@@ -4,6 +4,7 @@ import { createMechanic } from "../../services/createMechanicService";
 import { PersonalInformation } from "./PersonalInformation";
 import { AddressInformation } from "./AddressInformation";
 import { MechanicProfileContext } from "../../context/MechanicProfileContext";
+import { AuthContext } from "../../context/AuthContext";
 
 export function MechanicRegistrationForm() {
     const navigate = useNavigate();
@@ -23,6 +24,7 @@ export function MechanicRegistrationForm() {
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
     const {mechanicProfile, setMechanicProfile} = useContext(MechanicProfileContext);
+    const {mechanic, setMechanic} = useContext(AuthContext);
 
     const initialFormState = {
         firstName: '',
@@ -254,11 +256,12 @@ export function MechanicRegistrationForm() {
                 barangay,
             });
 
-            console.log(data);
+            // console.log(data);
 
             if(data.success) {
                 console.log("success");
-                setMechanicProfile(data);
+                // setMechanicProfile(data);
+                setMechanic(data);
                 navigate("/mechanicdashboard")
                 // Do the getting of the id here and the routing to the mechanic's profile page.
             }

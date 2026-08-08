@@ -93,7 +93,7 @@ export const createMechanic = async (mechanicData) => {
         return {
             success: true,
             message: "Mechanic added successfully",
-            mechanicInfo,
+            // mechanicInfo,
             token
         }
 

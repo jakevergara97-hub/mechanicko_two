@@ -4,26 +4,39 @@ export const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
     const [mechanic, setMechanic] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const getCurrentUser = async () => {
+        const loadProfile = async () => {
             const token = localStorage.getItem("token");
             console.log(token);
             if(!token) {
                 console.log("No token")
                 return;
             }
-            const response = await fetch("http://localhost:3000/api/v1/mechanics/me", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
 
-            const data = await response.json();
-            console.log(data);
-            setMechanic(data);
+            try{
+                const response = await fetch("http://localhost:3000/api/v1/mechanics/me", {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                if(!response.ok) {
+                    throw new Error("Network response is not okay")
+                }
+                const data = await response.json();
+                console.log(data);
+                setMechanic(data);
+
+            } catch(error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
         };
-        getCurrentUser();
+        loadProfile();
 
     }, []);
 
@@ -31,7 +44,8 @@ export function AuthContextProvider({ children }) {
         <AuthContext.Provider
             value={{
                 mechanic,
-                setMechanic
+                setMechanic,
+                loading
             }}
         >
             {children}

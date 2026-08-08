@@ -11,6 +11,7 @@ export const getCurrentMechanic = async (mechanicId) => {
 
         const result = await pool.query(
             `SELECT
+                mau.id,
                 mau.email,
                 mp.first_name,
                 mp.last_name,
@@ -28,11 +29,23 @@ export const getCurrentMechanic = async (mechanicId) => {
             [mechanicId]
         );
 
-        const mechanics = result.rows[0];
+        const mechanic = result.rows[0];
+
+        const mechanicInfo = {
+            id: mechanic.id,
+            first_name: mechanic.first_name,
+            last_name: mechanic.last_name,
+            email: mechanic.email,
+            phone_number: mechanic.phone_number,
+            region: mechanic.region,
+            province: mechanic.province,
+            city: mechanic.city,
+            barangay: mechanic.barangay
+        }
 
         return {
             success: true,
-            mechanics
+            mechanicInfo
         }
 
     }catch(error) {
