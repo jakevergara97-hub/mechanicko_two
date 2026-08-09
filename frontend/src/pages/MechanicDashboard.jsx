@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { Logout } from "../components/common/Logout";
 
 export function MechanicDashboard() {
     const {mechanic, loading} = useContext(AuthContext);
@@ -38,6 +39,7 @@ export function MechanicDashboard() {
             <Link to="/mechanicsignup">
                 Register as a mechanic!
             </Link>
+            <Logout />
         </>
 
     );

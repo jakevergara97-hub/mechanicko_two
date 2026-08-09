@@ -79,21 +79,13 @@ export const createMechanic = async (mechanicData) => {
             },
             process.env.JWT_SECRET,
             {
-                expiresIn:"7d"
+                expiresIn:"1h"
             }
         );
-
-        const mechanicInfo = {
-            id: mechanic.id,
-            email: mechanic.email,
-            profile: mechanicProfile,
-            address: mechanicAddress
-        };
 
         return {
             success: true,
             message: "Mechanic added successfully",
-            // mechanicInfo,
             token
         }
 

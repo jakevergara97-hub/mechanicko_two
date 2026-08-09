@@ -1,8 +1,10 @@
 import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
+import { useNavigate } from "react-router-dom";
 
 export function AuthContextProvider({ children }) {
+    const navigate = useNavigate();
     const [mechanic, setMechanic] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -13,6 +15,7 @@ export function AuthContextProvider({ children }) {
             console.log(token);
             if(!token) {
                 console.log("No token")
+                navigate("/");
                 return;
             }
 
