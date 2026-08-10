@@ -7,8 +7,12 @@ export function MechanicDashboard() {
     const {mechanic, loading} = useContext(AuthContext);
     console.log(mechanic);
 
-    if(mechanic.length === 0) {
+    if(loading) {
         return <p>Loading...</p>
+    }
+
+     if (!mechanic?.mechanicInfo) {
+        return <p>Mechanic information unavailable.</p>;
     }
 
     const firstName = mechanic.mechanicInfo.first_name[0].toUpperCase()

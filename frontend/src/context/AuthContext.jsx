@@ -5,16 +5,17 @@ import { useNavigate } from "react-router-dom";
 
 export function AuthContextProvider({ children }) {
     const navigate = useNavigate();
-    const [mechanic, setMechanic] = useState([]);
+    const [mechanic, setMechanic] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const loadProfile = async () => {
             const token = localStorage.getItem("token");
-            console.log(token);
+
             if(!token) {
-                console.log("No token")
+                console.log("No token");
+                setLoading(false);
                 navigate("/");
                 return;
             }
@@ -30,7 +31,6 @@ export function AuthContextProvider({ children }) {
                     throw new Error("Network response is not okay")
                 }
                 const data = await response.json();
-                console.log(data);
                 setMechanic(data);
 
             } catch(error) {

@@ -56,21 +56,15 @@ export const createMechanic = async (mechanicData) => {
 
         const profileResult = await pool.query(
             `INSERT INTO mechanics_profiles(mechanic_id, first_name, last_name, phone_number)
-            VALUES ($1, $2, $3, $4)
-            RETURNING first_name, last_name, phone_number
-            `, [mechanic.id, firstName, lastName, phoneNumber]
+            VALUES ($1, $2, $3, $4)`,
+            [mechanic.id, firstName, lastName, phoneNumber]
         );
-
-        const mechanicProfile = profileResult.rows[0];
 
         const addressResult = await pool.query(
             `INSERT INTO mechanics_addresses(mechanic_id, region, province, city, barangay)
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING region, province, city, barangay`,
+            VALUES ($1, $2, $3, $4, $5)`,
             [mechanic.id, region, province, city, barangay]
         );
-
-        const mechanicAddress = addressResult.rows[0];
 
         const token = jwt.sign(
             {

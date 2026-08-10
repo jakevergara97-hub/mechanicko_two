@@ -260,7 +260,6 @@ export function MechanicRegistrationForm() {
                 console.log("success");
                 setMechanic(data);
                 navigate("/mechanicdashboard")
-                // Do the getting of the id here and the routing to the mechanic's profile page.
             }
 
         } catch(error) {
