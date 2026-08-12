@@ -16,7 +16,7 @@ export function AuthContextProvider({ children }) {
             if(!token) {
                 console.log("No token");
                 setLoading(false);
-                navigate("/");
+                // navigate("/");
                 return;
             }
 

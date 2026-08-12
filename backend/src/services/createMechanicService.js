@@ -17,13 +17,13 @@ export const createMechanic = async (mechanicData) => {
     = mechanicData;
 
     try {
-        const existingUser = await pool.query(`
+        const existingMechanic = await pool.query(`
                 SELECT *
                 FROM mechanics_auth
                 WHERE email = $1
             `,[email]);
 
-        if(existingUser.rows.length > 0) {
+        if(existingMechanic.rows.length > 0) {
             throw {
                 status: 409,
                 message: "Mechanic already registered"
