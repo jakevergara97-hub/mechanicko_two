@@ -21,7 +21,6 @@ export function MechanicLogin() {
         });
     }
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = formData;
@@ -32,7 +31,7 @@ export function MechanicLogin() {
 
             console.log(data); // This should print the token
         }catch(error) {
-            console.log(error);
+            console.error(error.message);
         }
     }
 

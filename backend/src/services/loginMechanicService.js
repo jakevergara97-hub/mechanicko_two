@@ -21,7 +21,7 @@ export const loginMechanic = async (credentials) => {
         const mechanic = existingMechanic.rows[0];
         console.log(mechanic);
 
-        if(mechanic.length === 0) {
+        if(!mechanic) {
             throw {
                 status: 404,
                 message: "Mechanic not found"
@@ -34,7 +34,7 @@ export const loginMechanic = async (credentials) => {
         if(!isMatch) {
             throw {
                 status: 401,
-                message: "Wrong email or password"
+                message: "Wrong password"
             }
         }
 
@@ -50,6 +50,7 @@ export const loginMechanic = async (credentials) => {
                 );
 
         return {
+            success: true,
             token
         }
 

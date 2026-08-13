@@ -16,6 +16,10 @@ export async function loginMechanic(credentials) {
             throw new Error(data.error)
         }
 
+        localStorage.setItem("token", data.token);
+
+        // Insert here the API call for /me
+
         return data;
     } catch(error) {
         throw error;
