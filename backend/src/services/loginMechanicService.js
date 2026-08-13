@@ -5,7 +5,7 @@ import "dotenv/config";
 
 export const loginMechanic = async (credentials) => {
     const { email, password } = credentials;
-    console.log(email);
+
     try{
         const existingMechanic = await pool.query(`
             SELECT
@@ -19,7 +19,6 @@ export const loginMechanic = async (credentials) => {
         `,[email]);
 
         const mechanic = existingMechanic.rows[0];
-        console.log(mechanic);
 
         if(!mechanic) {
             throw {
@@ -29,7 +28,6 @@ export const loginMechanic = async (credentials) => {
         }
 
         const isMatch = await bcrypt.compare(password, mechanic.password_hash);
-        console.log(isMatch);
 
         if(!isMatch) {
             throw {

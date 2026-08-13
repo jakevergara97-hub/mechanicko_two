@@ -13,14 +13,26 @@ export async function loginMechanic(credentials) {
         const data = await response.json();
 
         if(!response.ok) {
-            throw new Error(data.error)
+            throw new Error(data.error);
         }
 
         localStorage.setItem("token", data.token);
 
-        // Insert here the API call for /me
+        const profile = await fetch("http://localhost:3000/api/v1/mechanics/me", {
+            headers: {
+                Authorization: `Bearer ${data.token}`
+            }
+        });
 
-        return data;
+        const dataProfile = await profile.json();
+
+        if(!profile.ok) {
+            throw new Error(dataProfile.error);
+        }
+
+        console.log(dataProfile);
+
+        return dataProfile;
     } catch(error) {
         throw error;
     }

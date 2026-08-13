@@ -1,7 +1,11 @@
 import { useState, useContext } from "react";
 import { loginMechanic } from "../services/loginMechanicService";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export function MechanicLogin() {
+    const { mechanic, setMechanic } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const initialFormState = {
         email: '',
@@ -30,6 +34,10 @@ export function MechanicLogin() {
             const data = await loginMechanic({email, password});
 
             console.log(data); // This should print the token
+            if(data.success) {
+                setMechanic(data);
+                navigate("/mechanicdashboard");
+            }
         }catch(error) {
             console.error(error.message);
         }

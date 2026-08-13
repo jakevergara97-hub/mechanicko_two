@@ -40,9 +40,6 @@ export function MechanicDashboard() {
             <Link to="/">
                 Home
             </Link>
-            <Link to="/mechanicsignup">
-                Register as a mechanic!
-            </Link>
             <Logout />
         </>
 

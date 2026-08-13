@@ -16,8 +16,6 @@ router.get("/me",
 console.log("ROUTE HIT")
 router.post("/login",
     loginMechanic
-    // authenticate,
-    // me
 );
 
 export default router;

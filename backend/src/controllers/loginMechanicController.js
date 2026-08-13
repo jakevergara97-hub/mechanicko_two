@@ -2,9 +2,9 @@ import { loginMechanic as loginMechanicService } from "../services/loginMechanic
 
 export const loginMechanic = async (req, res) => {
     try{
-        console.log("LOGIN MECHANIC CONTROLLER HIT")
+        console.log("LOGIN MECHANIC CONTROLLER HIT");
         const data = await loginMechanicService(req.body);
-        console.log(data);
+
         return res.status(200).json(data);
 
     }catch(error){

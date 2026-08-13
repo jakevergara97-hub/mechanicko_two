@@ -4,6 +4,7 @@ import { CustomerLocation } from "../components/home/CustomerLocation";
 import { AddressPicker } from "../components/common/AddressPicker";
 import { FindMechanicButton } from "../components/home/FindMechanicButton";
 import { MechanicList } from "../components/home/MechanicsList";
+import { MechanicLogin } from "./MechanicLogin";
 
 export function Home() {
     return (
@@ -16,6 +17,9 @@ export function Home() {
             <br />
             <Link to="/mechanicsignup">
                 Register as a mechanic!
+            </Link>
+            <Link to="/mechaniclogin">
+                Mechanic Login
             </Link>
         </>
     );
