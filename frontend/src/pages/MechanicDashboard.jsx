@@ -12,7 +12,7 @@ export function MechanicDashboard() {
     }
 
      if (!mechanic?.mechanicInfo) {
-        return <p>Mechanic information unavailable.</p>;
+        return <p>Mechanic information unavailable.<br /><Link to={"/"}>Home</Link></p>;
     }
 
     const firstName = mechanic.mechanicInfo.first_name[0].toUpperCase()

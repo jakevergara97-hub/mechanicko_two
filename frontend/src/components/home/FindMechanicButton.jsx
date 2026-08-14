@@ -5,7 +5,7 @@ import { MechanicsInfoContext } from "../../context/MechanicsInfoContext";
 
 export const FindMechanicButton =  () => {
     const { location, setLocation } = useContext(CustomerLocationContext);
-    const { mechanics, setMechanics, error, setError } = useContext(MechanicsInfoContext);
+    const { mechanics, setMechanics, error, setError, isClicked, setIsClicked } = useContext(MechanicsInfoContext);
 
     const {region, province, city, barangay} = location;
 
@@ -18,7 +18,6 @@ export const FindMechanicButton =  () => {
             return;
         }
 
-
         try{
             const data = await getMechanic({
             // region,
@@ -29,6 +28,7 @@ export const FindMechanicButton =  () => {
 
             console.log(data);
             setMechanics(data);
+            setIsClicked(true);
 
         }catch (error) {
             setError(error.message);
@@ -40,6 +40,8 @@ export const FindMechanicButton =  () => {
             <button onClick={handleClick}>
                 Find Mechanic
             </button>
+            <br />
+            <br />
         </div>
     );
 }

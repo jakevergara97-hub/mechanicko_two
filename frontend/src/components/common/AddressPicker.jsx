@@ -20,7 +20,7 @@ export function AddressPicker() {
 
     const { location, setLocation } = useContext(CustomerLocationContext);
 
-    const { mechanics, setMechanics, error, setError } = useContext(MechanicsInfoContext);
+    const { mechanics, setMechanics, error, setError, setIsClicked } = useContext(MechanicsInfoContext);
 
     const initialFormState = {
         region: '',
@@ -88,6 +88,7 @@ export function AddressPicker() {
         });
 
         setError(false);
+        setIsClicked(false);
 
         if(region === 'NATIONAL CAPITAL REGION (NCR)') {
             setCities(
@@ -125,6 +126,7 @@ export function AddressPicker() {
         });
 
         setError(false);
+        setIsClicked(false);
 
         setCities(
             Object.keys(locationHierarchy[selectedRegion][province])
@@ -157,6 +159,7 @@ export function AddressPicker() {
         });
 
         setError(false);
+        setIsClicked(false);
 
         if(selectedRegion === 'NATIONAL CAPITAL REGION (NCR)') {
             setBarangays(
@@ -194,11 +197,12 @@ export function AddressPicker() {
         });
 
         setError(false);
+        setIsClicked(false);
     }
 
     return (
         <div>
-            <h1>Address Picker</h1>
+            <h1>Find Mechanics Based on Preferred Location</h1>
             <select
                 id="region-select"
                 name="region"

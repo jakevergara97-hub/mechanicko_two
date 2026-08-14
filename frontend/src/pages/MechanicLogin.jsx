@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { loginMechanic } from "../services/loginMechanicService";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function MechanicLogin() {
     const { mechanic, setMechanic } = useContext(AuthContext);
@@ -68,6 +68,9 @@ export function MechanicLogin() {
             <br />
             <button>Login</button>
             </form>
+            <Link to={"/"}>
+                Home
+            </Link>
         </div>
     );
 }

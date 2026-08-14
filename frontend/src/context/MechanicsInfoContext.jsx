@@ -1,10 +1,11 @@
-import { createContext, useState } from "react";
+import { createContext, use, useState } from "react";
 
 export const MechanicsInfoContext = createContext();
 
 export function MechanicsInfoProvider({ children }) {
     const [mechanics, setMechanics] = useState([]);
     const [error, setError] = useState("");
+    const [isClicked, setIsClicked] = useState(false);
 
     return (
         <MechanicsInfoContext.Provider
@@ -12,7 +13,9 @@ export function MechanicsInfoProvider({ children }) {
                 mechanics,
                 setMechanics,
                 error,
-                setError
+                setError,
+                isClicked,
+                setIsClicked
             }}
         >
             {children}

@@ -5,7 +5,7 @@ import { MechanicCardBarangay } from "./MechanicCardBarangay";
 import { MechanicCardOtherBarangay } from "./MechanicCardOtherBarangay";
 
 export const MechanicList = () => {
-    const { mechanics, setMechanics, error, setError } = useContext(MechanicsInfoContext);
+    const { mechanics, setMechanics, error, setError, isClicked } = useContext(MechanicsInfoContext);
     const { location, setLocation } = useContext(CustomerLocationContext);
 
     const city = location.city.includes("(Capital)")
@@ -32,15 +32,30 @@ export const MechanicList = () => {
         <div>
             {error && <p>{error}</p>}
 
-            {mechanicsInTheBarangay.length !== 0
-                && <MechanicCardBarangay mechanics={mechanicsInTheBarangay} />
+            {isClicked && mechanicsInTheBarangay.length === 0 &&
+                <h2>No available mechanics in your barangay</h2>
             }
 
-            <br />
-
-            {mechanicsInOtherBarangay.length !== 0
-                && <MechanicCardOtherBarangay mechanics={mechanicsInOtherBarangay} />
+            {isClicked && mechanicsInTheBarangay.length !== 0 &&
+                <div>
+                    <h2>Available mechanics in your barangay</h2>
+                    <MechanicCardBarangay mechanics={mechanicsInTheBarangay} />
+                </div>
             }
+
+            <br /><br />
+
+            {isClicked && mechanicsInOtherBarangay.length === 0 &&
+                <h2>No available mechanics in other barangays</h2>
+            }
+
+            {isClicked && mechanicsInOtherBarangay.length !== 0 &&
+                <div>
+                    <h2>Available mechanics in other barangays</h2>
+                    <MechanicCardOtherBarangay mechanics={mechanicsInOtherBarangay} />
+                </div>
+            }
+
         </div>
     );
 }

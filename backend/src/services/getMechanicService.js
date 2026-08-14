@@ -1,7 +1,6 @@
 import pool from '../db/db.js';
 
 export const getMechanic = async (location) => {
-    // const { region, province, city, barangay } = location;
     const { city, barangay } = location;
     console.log(location);
     console.log("get mechanic service reached.")
@@ -22,36 +21,30 @@ export const getMechanic = async (location) => {
             }
         }
 
-        const result = await pool.query(
-            `SELECT
-                m.first_name,
-                m.last_name,
-                m.email,
-                m.phone_number,
-                m.mechanic_id,
-                ma.region,
-                ma.province,
-                ma.city,
-                ma.barangay
-            FROM mechanics m
-            LEFT JOIN mechanics_addresses ma
-                ON m.mechanic_id = ma.mechanic_id
-            WHERE city = $1`,
-            [city]
-        );
+        const query = `
+                SELECT
+                    *
+                FROM mechanics_auth mau
+                JOIN mechanics_addresses ma
+                ON mau.id = ma.mechanic_id
+                JOIN mechanics_profiles mp
+                ON mau.id = mp.mechanic_id
+                WHERE ma.city = $1
+                ORDER BY ma.barangay ASC
+            `;
+
+        const values = [city]
+
+        const result = await pool.query(query, values);
 
         const mechanics = result.rows;
 
         if(mechanics.length === 0) {
             throw {
                 status: 404,
-                message: "No mechanics were found for your selected location."
+                message: "No mechanics were found in your selected location."
             }
         }
-
-        // const mechanics = result.rows;
-
-        // console.log(mechanics);
 
         return {
             success: true,
