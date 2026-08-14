@@ -13,7 +13,6 @@ router.get("/me",
     authenticate,
     me
 );
-console.log("ROUTE HIT")
 router.post("/login",
     loginMechanic
 );

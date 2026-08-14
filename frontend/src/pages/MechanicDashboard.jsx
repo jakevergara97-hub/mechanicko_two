@@ -29,7 +29,7 @@ export function MechanicDashboard() {
                     <h3>Welcome {fullName}!</h3>
                     <p>Phone number: {mechanic.mechanicInfo.phone_number}</p>
                     <p>Email: {mechanic.mechanicInfo.email}</p>
-                    <p>Province: {mechanic.mechanicInfo.province}</p>
+                    {mechanic.mechanicInfo.province &&  <p>Province: {mechanic.mechanicInfo.province}</p>}
                     <p>City: {mechanic.mechanicInfo.city}</p>
                     <p>Barangay: {mechanic.mechanicInfo.barangay}</p>
                 </div>
