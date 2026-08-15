@@ -1,6 +1,4 @@
 export async function loginMechanic(credentials) {
-    console.log("LOGIN MECHANIC FRONTEND SERVICE HIT")
-    console.log(credentials)
     try{
         const response = await fetch("http://localhost:3000/api/v1/mechanics/login", {
             method: "POST",
@@ -29,8 +27,6 @@ export async function loginMechanic(credentials) {
         if(!profile.ok) {
             throw new Error(dataProfile.error);
         }
-
-        console.log(dataProfile);
 
         return dataProfile;
     } catch(error) {

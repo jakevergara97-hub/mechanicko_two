@@ -3,7 +3,6 @@ import pool from '../db/db.js';
 export const getMechanic = async (location) => {
     const { city, barangay } = location;
     console.log(location);
-    console.log("get mechanic service reached.")
     try{
         if(!location) {
             throw {

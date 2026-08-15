@@ -28,12 +28,10 @@ export function MechanicLogin() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = formData;
-        console.log(email);
-        console.log(password);
+
         try{
             const data = await loginMechanic({email, password});
 
-            console.log(data); // This should print the token
             if(data.success) {
                 setMechanic(data);
                 navigate("/mechanicdashboard");

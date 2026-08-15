@@ -10,6 +10,7 @@ export function Logout() {
         localStorage.removeItem("token");
         setMechanic([]);
         navigate("/");
+        window.location.href = "/";
     }
 
     return (
