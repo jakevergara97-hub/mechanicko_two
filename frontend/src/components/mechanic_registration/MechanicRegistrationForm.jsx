@@ -41,7 +41,7 @@ export function MechanicRegistrationForm() {
     const [formData, setFormData] = useState(initialFormState);
 
     const handleChange = (event) => {
-        const {name, value} = event.target;
+        let {name, value} = event.target;
 
         if(name === 'email' && touched.email) {
             validateEmail(value);
@@ -50,7 +50,7 @@ export function MechanicRegistrationForm() {
                 setFormData((prevData) => {
                     return {
                         ...prevData,
-                        [name]: value,
+                        [name]: value
                     }
                 });
             }
@@ -243,10 +243,10 @@ export function MechanicRegistrationForm() {
 
         try {
             const data = await createMechanic({
-                firstName,
-                lastName,
-                phoneNumber,
-                email,
+                firstName: firstName.trim(),
+                lastName: lastName.trim(),
+                phoneNumber: phoneNumber.trim(),
+                email: email.trim(),
                 password,
                 region,
                 province,
