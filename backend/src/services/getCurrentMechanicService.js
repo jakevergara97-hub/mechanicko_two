@@ -5,10 +5,12 @@ export const getCurrentMechanic = async (mechanicId) => {
         if(!mechanicId) {
             throw {
                 status: 400,
-                message: "Mechanic not found"
+                message: "Mechanic does not exist"
             }
         }
-
+        // FUTURE CHANGE:
+        // Create a query to fetch the mechanic ID from the database
+        // then use it to fetch the mechanics data from the DB
         const result = await pool.query(
             `SELECT
                 mau.id,

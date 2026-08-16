@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 export function MechanicLogin() {
     const { mechanic, setMechanic } = useContext(AuthContext);
     const navigate = useNavigate();
+    const [error, setError] = useState("");
 
     const initialFormState = {
         email: '',
@@ -37,7 +38,7 @@ export function MechanicLogin() {
                 navigate("/mechanicdashboard");
             }
         }catch(error) {
-            console.error(error.message);
+            setError(error.message);
         }
     }
 
@@ -64,6 +65,7 @@ export function MechanicLogin() {
                     placeholder="Enter password"
                 />
             <br />
+            {error && <p>{error}</p>}
             <button>Login</button>
             </form>
             <Link to={"/"}>

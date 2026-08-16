@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { CustomerLocation } from "../components/home/CustomerLocation";
 import { AddressPicker } from "../components/common/AddressPicker";
 import { FindMechanicButton } from "../components/home/FindMechanicButton";
 import { MechanicList } from "../components/home/MechanicsList";
@@ -11,7 +10,6 @@ export function Home() {
 
     return (
         <>
-            {/* <CustomerLocation /> */}
             <AddressPicker />
             <FindMechanicButton />
             <MechanicList />

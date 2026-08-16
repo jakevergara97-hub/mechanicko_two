@@ -23,7 +23,7 @@ export const loginMechanic = async (credentials) => {
         if(!mechanic) {
             throw {
                 status: 404,
-                message: "Mechanic not found"
+                message: "Mechanic does not exist"
             }
         }
 
