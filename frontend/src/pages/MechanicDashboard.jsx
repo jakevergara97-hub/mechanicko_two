@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { Logout } from "../components/common/MechanicLogout";
 import { MechanicName } from "../components/mechanic_dashboard/MechanicName";
+import { MechanicPhoneNumber } from "../components/mechanic_dashboard/MechanicPhoneNumber";
 
 export function MechanicDashboard() {
     const {mechanic, loading} = useContext(AuthContext);
@@ -21,8 +22,7 @@ export function MechanicDashboard() {
             {!loading &&
                 <div key={mechanic.mechanicInfo.id}>
                     <MechanicName mechanic={mechanic} />
-
-                    <p>Phone number: {mechanic.mechanicInfo.phone_number}</p>
+                    <MechanicPhoneNumber mechanic={mechanic} />
 
                     <p>Email: {mechanic.mechanicInfo.email}</p>
 
