@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { editMechanicName } from "../../services/editMechanicNameService";
+import { updateMechanic } from "../../services/updateMechanicService";
 
 export function MechanicName({mechanic}) {
     const [formData, setFormData] = useState({
@@ -40,7 +40,7 @@ export function MechanicName({mechanic}) {
         const {firstName, lastName} = formData;
         const id = mechanic.mechanicInfo.id;
         try{
-            const data = await editMechanicName({id, firstName, lastName});
+            const data = await updateMechanic(id, {firstName, lastName});
 
             if(data.success) {
                 console.log(data);

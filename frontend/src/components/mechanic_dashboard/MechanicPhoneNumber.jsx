@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { editMechanicNumber } from "../../services/editMechanicNumberService";
+import { updateMechanic } from "../../services/updateMechanicService";
 
 export function MechanicPhoneNumber({mechanic}){
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -20,7 +20,7 @@ export function MechanicPhoneNumber({mechanic}){
         const id = mechanic.mechanicInfo.id;
 
         try {
-            const data = await editMechanicNumber({id, phoneNumber});
+            const data = await updateMechanic(id, {phoneNumber});
 
             if(data.success) {
                 mechanic.mechanicInfo.phone_number = data.data.phone_number;
