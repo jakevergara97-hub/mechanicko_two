@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { Logout } from "../components/common/MechanicLogout";
 import { MechanicName } from "../components/mechanic_dashboard/MechanicName";
 import { MechanicPhoneNumber } from "../components/mechanic_dashboard/MechanicPhoneNumber";
+import { MechanicEmail } from "../components/mechanic_dashboard/MechanicEmail";
 
 export function MechanicDashboard() {
     const {mechanic, loading} = useContext(AuthContext);
@@ -23,8 +24,9 @@ export function MechanicDashboard() {
                 <div key={mechanic.mechanicInfo.id}>
                     <MechanicName mechanic={mechanic} />
                     <MechanicPhoneNumber mechanic={mechanic} />
+                    <MechanicEmail mechanic={mechanic} />
 
-                    <p>Email: {mechanic.mechanicInfo.email}</p>
+                    {/* <p>Email: {mechanic.mechanicInfo.email}</p> */}
 
                     {mechanic.mechanicInfo.province &&  <p>Province: {mechanic.mechanicInfo.province}</p>}
 

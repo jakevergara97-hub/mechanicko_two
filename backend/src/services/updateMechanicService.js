@@ -4,7 +4,8 @@ export const updateMechanic = async (id, updates) => {
     const {
             firstName,
             lastName,
-            phoneNumber }
+            phoneNumber,
+            email }
             = updates;
 
     try{
@@ -12,6 +13,7 @@ export const updateMechanic = async (id, updates) => {
             "first_name": firstName,
             "last_name": lastName,
             "phone_number": phoneNumber,
+            "email": email,
         }
 
         const fields = [];
@@ -39,7 +41,7 @@ export const updateMechanic = async (id, updates) => {
             .map((field, index) => `${field} = $${index + 1}`)
             .join(", ");
 
-        const mustReturn = fields
+        const returnValues = fields
             .map((field) => `${field}`)
             .join(", ");
 
@@ -47,10 +49,19 @@ export const updateMechanic = async (id, updates) => {
             UPDATE mechanics_profiles mp
             SET ${setClause}
             WHERE mp.mechanic_id = $${values.length}
-            RETURNING ${mustReturn}
-        `;
+            RETURNING ${returnValues}
+            `;
 
-        const result = await pool.query(query, values);
+        const queryForEmail = `
+            UPDATE mechanics_auth mau
+            SET ${setClause}
+            WHERE mau.id = $${values.length}
+            RETURNING ${returnValues}
+            `;
+
+        const finalQuery = fields.includes('email') ? queryForEmail : query;
+
+        const result = await pool.query(finalQuery, values);
 
         const data = result.rows[0];
 
