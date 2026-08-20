@@ -3,6 +3,7 @@ import { updateMechanic } from "../../services/updateMechanicService";
 
 export function MechanicEmail({mechanic}) {
     const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
@@ -13,6 +14,9 @@ export function MechanicEmail({mechanic}) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        validateEmail(value);
+
         setEmail(value);
     }
 
@@ -20,6 +24,10 @@ export function MechanicEmail({mechanic}) {
         const id = mechanic.mechanicInfo.id;
 
         try{
+            if(emailError.length > 0) {
+                return;
+            }
+
             const data = await updateMechanic(id, {email});
 
             if(data.success) {
@@ -29,6 +37,19 @@ export function MechanicEmail({mechanic}) {
 
         }catch(error) {
             alert(error);
+        }
+
+    }
+
+    const validateEmail = (value) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if(!value) {
+            setEmailError('Email is empty');
+        } else if(!emailRegex.test(value)) {
+            setEmailError('Please enter a valid email address');
+        } else {
+            setEmailError('');
         }
     }
 
@@ -59,6 +80,8 @@ export function MechanicEmail({mechanic}) {
                         <button onClick={() => setIsEditing(!isEditing)}>Edit</button>
                     </>
                 }
+
+                {emailError && <p>{emailError}</p>}
             </div>
         </>
     )
