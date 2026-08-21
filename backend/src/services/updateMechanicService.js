@@ -63,9 +63,9 @@ export const updateMechanic = async (id, updates) => {
 
         const result = await pool.query(finalQuery, values);
 
-        const data = result.rows[0];
+        const mechanic = result.rows[0];
 
-        if(data.length === 0) {
+        if(mechanic.length === 0) {
             throw {
                 status: 404,
                 message: "Mechanic not found"
@@ -74,7 +74,7 @@ export const updateMechanic = async (id, updates) => {
 
         return {
             success: true,
-            data
+            mechanic
         }
 
     } catch(error) {

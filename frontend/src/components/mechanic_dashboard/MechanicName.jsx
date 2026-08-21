@@ -37,15 +37,20 @@ export function MechanicName({mechanic}) {
     }
 
     const handleNameSave = async () => {
-        const {firstName, lastName} = formData;
+        let {firstName, lastName} = formData;
+
         const id = mechanic.mechanicInfo.id;
         try{
-            const data = await updateMechanic(id, {firstName, lastName});
+            const data = await updateMechanic(id, {firstName: firstName.trim(), lastName: lastName.trim()});
 
             if(data.success) {
                 console.log(data);
-                mechanic.mechanicInfo.first_name = formData.firstName;
-                mechanic.mechanicInfo.last_name = formData.lastName;
+                mechanic.mechanicInfo.first_name = data.mechanic.first_name;
+                mechanic.mechanicInfo.last_name = data.mechanic.last_name;
+                setFormData({
+                    firstName: data.mechanic.first_name,
+                    lastName: data.mechanic.last_name
+                });
                 setIsEditing(false);
             }
 

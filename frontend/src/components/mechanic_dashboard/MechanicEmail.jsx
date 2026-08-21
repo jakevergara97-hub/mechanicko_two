@@ -28,10 +28,11 @@ export function MechanicEmail({mechanic}) {
                 return;
             }
 
-            const data = await updateMechanic(id, {email});
+            const data = await updateMechanic(id, {email: email.trim()});
 
             if(data.success) {
-                mechanic.mechanicInfo.email = data.data.email;
+                mechanic.mechanicInfo.email = data.mechanic.email;
+                setEmail(data.mechanic.email);
                 setIsEditing(false);
             }
 

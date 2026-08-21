@@ -20,10 +20,11 @@ export function MechanicPhoneNumber({mechanic}){
         const id = mechanic.mechanicInfo.id;
 
         try {
-            const data = await updateMechanic(id, {phoneNumber});
+            const data = await updateMechanic(id, {phoneNumber: phoneNumber.trim()});
 
             if(data.success) {
-                mechanic.mechanicInfo.phone_number = data.data.phone_number;
+                mechanic.mechanicInfo.phone_number = data.mechanic.phone_number;
+                setPhoneNumber(data.mechanic.phone_number);
                 setIsEditing(false);
             }
 
