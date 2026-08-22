@@ -21,4 +21,6 @@ router.post("/login",
 
 router.patch("/:id", updateMechanic);
 
+//router.patch("/:id/address", updateMechanicAddress);
+
 export default router;

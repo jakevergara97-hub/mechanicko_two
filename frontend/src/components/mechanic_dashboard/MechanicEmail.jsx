@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { updateMechanic } from "../../services/updateMechanicService";
 
 export function MechanicEmail({mechanic}) {
@@ -85,5 +85,5 @@ export function MechanicEmail({mechanic}) {
                 {emailError && <p>{emailError}</p>}
             </div>
         </>
-    )
+    );
 }

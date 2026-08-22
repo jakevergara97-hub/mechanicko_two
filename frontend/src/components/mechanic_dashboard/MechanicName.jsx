@@ -97,5 +97,5 @@ export function MechanicName({mechanic}) {
                 }
             </div>
         </>
-    )
+    );
 }

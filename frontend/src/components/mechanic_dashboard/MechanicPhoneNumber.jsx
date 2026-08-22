@@ -62,5 +62,5 @@ export function MechanicPhoneNumber({mechanic}){
                 }
             </div>
         </>
-    )
+    );
 }
