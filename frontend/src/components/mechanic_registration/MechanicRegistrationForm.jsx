@@ -239,7 +239,7 @@ export function MechanicRegistrationForm() {
             }
         }
 
-        let slicedCity = city.includes('(Capital)') ? city.replace(' (Capital)', '') : city;
+        // let slicedCity = city.includes('(Capital)') ? city.replace(' (Capital)', '') : city;
 
         try {
             const data = await createMechanic({
@@ -250,7 +250,8 @@ export function MechanicRegistrationForm() {
                 password,
                 region,
                 province,
-                city: slicedCity,
+                // city: slicedCity,
+                city,
                 barangay,
             });
 

@@ -7,6 +7,7 @@ import { authenticate } from "../middlewares/authMiddleware.js";
 import { me } from "../controllers/authController.js";
 import { loginMechanic } from "../controllers/loginMechanicController.js";
 import { updateMechanic } from "../controllers/updateMechanicController.js";
+import { updateMechanicAddress } from "../controllers/updateMechanicAddressController.js";
 
 
 router.post("/", createMechanic);
@@ -21,6 +22,6 @@ router.post("/login",
 
 router.patch("/:id", updateMechanic);
 
-//router.patch("/:id/address", updateMechanicAddress);
+router.patch("/:id/address", updateMechanicAddress);
 
 export default router;

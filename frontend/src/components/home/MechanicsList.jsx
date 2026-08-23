@@ -8,9 +8,9 @@ export const MechanicList = () => {
     const { mechanics, setMechanics, error, setError, isClicked } = useContext(MechanicsInfoContext);
     const { location, setLocation } = useContext(CustomerLocationContext);
 
-    const city = location.city.includes("(Capital)")
-        ? location.city.replace(" (Capital)", "")
-        : location.city;
+    // const city = location.city.includes("(Capital)")
+    //     ? location.city.replace(" (Capital)", "")
+    //     : location.city;
 
     const mechanicsInTheBarangay = !mechanics.mechanics ?
                                     []
@@ -18,7 +18,9 @@ export const MechanicList = () => {
                                     mechanics.mechanics
                                     .filter(mechanic =>
                                         mechanic.barangay === location.barangay &&
-                                        mechanic.city === city);
+                                        location.city
+                                        // mechanic.city === city
+                                        );
 
     const mechanicsInOtherBarangay = !mechanics.mechanics ?
                                     []
@@ -26,7 +28,9 @@ export const MechanicList = () => {
                                     mechanics.mechanics
                                     .filter(mechanic =>
                                         mechanic.barangay !== location.barangay &&
-                                        mechanic.city === city);
+                                        location.city
+                                        // mechanic.city === city
+                                        );
 
     return (
         <div>

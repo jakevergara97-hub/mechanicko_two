@@ -1,9 +1,9 @@
 export async function updateMechanicAddress(id, updates) {
     try{
-        const response = await(`http://localhost:3000/api/v1/mechanics/${id}/address`, {
+        const response = await fetch(`http://localhost:3000/api/v1/mechanics/${id}/address`, {
             method: "PATCH",
             headers: {
-                "Content-type": "application/json"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(updates)
         });

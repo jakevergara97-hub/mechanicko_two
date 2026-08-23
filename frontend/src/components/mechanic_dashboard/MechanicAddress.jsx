@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { updateMechanicAddress } from "../../services/updateMechanicAddressService";
 
 export function MechanicAddress({mechanic}) {
     const [locationHierarchy, setLocationHierarchy] = useState({});
@@ -19,6 +20,7 @@ export function MechanicAddress({mechanic}) {
                     throw new Error("Locations can't be loaded.");
                 }
                 const data = await response.json();
+
                 setLocationHierarchy(data);
             }
             catch(error) {
@@ -28,8 +30,6 @@ export function MechanicAddress({mechanic}) {
         }
         loadPSGC();
     }, []);
-
-    const regions = Object.keys(locationHierarchy);
 
     useEffect(() => {
         if(mechanic?.mechanicInfo) {
@@ -88,19 +88,41 @@ export function MechanicAddress({mechanic}) {
     }
 
     const handleAddressSave = async () => {
-        const { region, province, city, barangay } = formData;
+        let { region, province, city, barangay } = formData;
         const id = mechanic.mechanicInfo.id;
 
         try{
             const data = await updateMechanicAddress(id, {region, province, city, barangay});
+            console.log(data);
 
             if(data.success) {
                 console.log('success');
+                mechanic.mechanicInfo.region = data.mechanic.region;
+                mechanic.mechanicInfo.province = data.mechanic?.province;
+                mechanic.mechanicInfo.city = data.mechanic.city;
+                mechanic.mechanicInfo.barangay = data.mechanic.barangay;
+
+                setFormData({
+                    region: data.mechanic.region,
+                    province: data.mechanic?.province,
+                    city: data.mechanic.city,
+                    barangay: data.mechanic.barangay
+                });
+
+                setIsEditing(false);
             }
 
         } catch(error) {
             alert(error);
         }
+    }
+
+    const handleCancel = () => {
+        formData.region = mechanic.mechanicInfo.region;
+        formData.province = mechanic.mechanicInfo?.province;
+        formData.city = mechanic.mechanicInfo.city;
+        formData.barangay = mechanic.mechanicInfo.barangay;
+        setIsEditing(false);
     }
 
     return (
@@ -116,9 +138,10 @@ export function MechanicAddress({mechanic}) {
                         >
                             <option value="" disabled>Select region</option>
 
-                            {regions.map((region) =>
-                            <option key={region} value={region}>{region}</option>
+                            {Object.keys(locationHierarchy).map((region) =>
+                                <option key={region} value={region}>{region}</option>
                             )}
+
                         </select>
 
                         {formData.region === 'NATIONAL CAPITAL REGION (NCR)' ?
@@ -136,7 +159,7 @@ export function MechanicAddress({mechanic}) {
                                             <>
                                                 {Object.keys(locationHierarchy[formData.region])
                                                     .filter((city) => city !== 'population'
-                                                                        && city !== 'notes')
+                                                                    && city !== 'notes')
                                                     .map((city) =>
                                                         <option key={city} value={city}>
                                                             {city}
@@ -176,7 +199,7 @@ export function MechanicAddress({mechanic}) {
                                     </select>
                                 </>
                             )
-                                :
+                            :
                             (
                                 <>
                                     <select
@@ -232,9 +255,9 @@ export function MechanicAddress({mechanic}) {
                                             :
                                             <>
                                                 {Object.keys(locationHierarchy
-                                                    [formData.region]
-                                                    [formData.province]
-                                                    [formData.city])
+                                                            [formData.region]
+                                                            [formData.province]
+                                                            [formData.city])
                                                         .filter((barangay) => barangay !== 'population'
                                                                 && barangay !== 'class'
                                                                 && barangay !== 'cityClass')
@@ -252,7 +275,9 @@ export function MechanicAddress({mechanic}) {
                         }
 
                         <button onClick={handleAddressSave}>Save</button>
-                        {/* <button onClick={handleCancel}>Cancel</button> */}
+                        <button onClick={handleCancel}>Cancel</button>
+
+
                     </>
                     :
                     <>

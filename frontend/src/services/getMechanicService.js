@@ -1,15 +1,17 @@
 export async function getMechanic(location) {
     const { city, barangay } = location;
 
-    const slicedCity = city.includes("(Capital)")
-        ? city.replace(" (Capital)", "")
-        : city;
+    // const slicedCity = city.includes("(Capital)")
+    //     ? city.replace(" (Capital)", "")
+    //     : city;
 
-    console.log(`Fetching... ${slicedCity}, ${barangay}`);
+    // console.log(`Fetching... ${slicedCity}, ${barangay}`);
+
+    console.log(`Fetching... ${city}, ${barangay}`);
 
     try {
         const response = await fetch(
-            `http://localhost:3000/api/v1/mechanics/${encodeURIComponent(slicedCity)}/${encodeURIComponent(barangay)}`
+            `http://localhost:3000/api/v1/mechanics/${encodeURIComponent(city)}/${encodeURIComponent(barangay)}`
         );
 
         const data = await response.json();
