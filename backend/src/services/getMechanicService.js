@@ -22,7 +22,15 @@ export const getMechanic = async (location) => {
 
         const query = `
                 SELECT
-                    *
+                    mau.email,
+                    mau.id,
+                    mp.first_name,
+                    mp.last_name,
+                    mp.phone_number,
+                    ma.region,
+                    ma.province,
+                    ma.city,
+                    ma.barangay
                 FROM mechanics_auth mau
                 JOIN mechanics_addresses ma
                 ON mau.id = ma.mechanic_id

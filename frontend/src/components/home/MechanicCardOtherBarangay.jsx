@@ -8,7 +8,7 @@ export function MechanicCardOtherBarangay({mechanics}) {
                     const fullName = firstName + " " + lastName;
 
                 return (
-                    <div key={mechanic.mechanic_id}>
+                    <div key={mechanic.id}>
                         <h3>{fullName}</h3>
                         <p>Phone number: {mechanic.phone_number}</p>
                         <p>Email: {mechanic.email}</p>

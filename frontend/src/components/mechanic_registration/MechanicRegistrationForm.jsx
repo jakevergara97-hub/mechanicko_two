@@ -19,7 +19,7 @@ export function MechanicRegistrationForm() {
     const [cities, setCities] = useState([]);
     const [barangays, setBarangays] = useState([]);
 
-    const [emailError, setEmailError] = useState('');
+    // const [emailError, setEmailError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
     const {mechanic, setMechanic} = useContext(AuthContext);
@@ -40,63 +40,63 @@ export function MechanicRegistrationForm() {
 
     const [formData, setFormData] = useState(initialFormState);
 
-    const handleChange = (event) => {
-        let {name, value} = event.target;
+    // const handleChange = (event) => {
+    //     let {name, value} = event.target;
 
-        if(name === 'email' && touched.email) {
-            validateEmail(value);
+    //     if(name === 'email' && touched.email) {
+    //         validateEmail(value);
 
-            if(!emailError) {
-                setFormData((prevData) => {
-                    return {
-                        ...prevData,
-                        [name]: value
-                    }
-                });
-            }
-        }
+    //         if(!emailError) {
+    //             setFormData((prevData) => {
+    //                 return {
+    //                     ...prevData,
+    //                     [name]: value
+    //                 }
+    //             });
+    //         }
+    //     }
 
-        if(name === 'confirmPassword' && touched.confirmPassword) {
-            validateConfirmPassword(value);
+    //     if(name === 'confirmPassword' && touched.confirmPassword) {
+    //         validateConfirmPassword(value);
 
-            if(!confirmPasswordError) {
-                setFormData((prevData) => {
-                    return {
-                        ...prevData,
-                        [name]: value,
-                    }
-                });
-            }
+    //         if(!confirmPasswordError) {
+    //             setFormData((prevData) => {
+    //                 return {
+    //                     ...prevData,
+    //                     [name]: value,
+    //                 }
+    //             });
+    //         }
 
-        }
+    //     }
 
-        setFormData((prevData) => {
-            return {
-                ...prevData,
-                [name]: value,
-            }
-        });
-    }
+    //     setFormData((prevData) => {
+    //         return {
+    //             ...prevData,
+    //             [name]: value,
+    //         }
+    //     });
+    // }
 
-    const validateEmail = (value) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // const validateEmail = (value) => {
+    //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if(!value) {
-            setEmailError('Email is empty');
-        } else if(!emailRegex.test(value)) {
-            setEmailError('Please enter a valid email address');
-        } else {
-            setEmailError('');
-        }
-    }
+    //     if(!value) {
+    //         setEmailError('Email is empty');
+    //     } else if(!emailRegex.test(value)) {
+    //         setEmailError('Please enter a valid email address');
+    //     } else {
+    //         setEmailError('');
+    //     }
+    // }
 
-    const validateConfirmPassword = (value) => {
-        if(value !== formData.password) {
-            setConfirmPasswordError('Passwords are not the same')
-        } else {
-            setConfirmPasswordError('');
-        }
-    }
+    // const validateConfirmPassword = (value) => {
+    //     if(value !== formData.password) {
+    //         setConfirmPasswordError('Passwords are not the same')
+    //     } else {
+    //         setConfirmPasswordError('');
+    //     }
+    // }
 
     useEffect(() => {
         async function loadPSGC() {
@@ -239,8 +239,6 @@ export function MechanicRegistrationForm() {
             }
         }
 
-        // let slicedCity = city.includes('(Capital)') ? city.replace(' (Capital)', '') : city;
-
         try {
             const data = await createMechanic({
                 firstName: firstName.trim(),
@@ -250,12 +248,9 @@ export function MechanicRegistrationForm() {
                 password,
                 region,
                 province,
-                // city: slicedCity,
                 city,
                 barangay,
             });
-
-            // console.log(data);
 
             if(data.success) {
                 console.log("success");
@@ -277,7 +272,7 @@ export function MechanicRegistrationForm() {
             <form onSubmit={handleSubmit} autoComplete="off">
                 <fieldset>
                     <legend>Personal Information</legend>
-                    <PersonalInformation
+                    {/* <PersonalInformation
                         handleChange={handleChange}
                         formData={formData}
                         setFormData={setFormData}
@@ -285,7 +280,14 @@ export function MechanicRegistrationForm() {
                         setTouched={setTouched}
                         emailError={emailError}
                         confirmPasswordError={confirmPasswordError}
-                    />
+                    /> */}
+
+                    <PersonalInformation
+                        formData={formData}
+                        setFormData={setFormData}
+                        confirmPasswordError={confirmPasswordError}
+                        setConfirmPasswordError={setConfirmPasswordError}
+                        />
                 </fieldset>
 
                 <br />

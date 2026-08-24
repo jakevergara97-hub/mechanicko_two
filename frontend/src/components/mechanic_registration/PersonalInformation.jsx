@@ -1,12 +1,71 @@
-export function PersonalInformation({
-                                    handleChange,
-                                    formData,
+import { useState } from "react";
+
+export function PersonalInformation({ formData,
                                     setFormData,
-                                    touched,
-                                    setTouched,
-                                    emailError,
-                                    confirmPasswordError
-                                    }) {
+                                    confirmPasswordError,
+                                    setConfirmPasswordError }) {
+
+    const [touched, setTouched] = useState({});
+    const [emailError, setEmailError] = useState('');
+    // const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+    const handleChange = (event) => {
+        let {name, value} = event.target;
+
+        if(name === 'email' && touched.email) {
+            validateEmail(value);
+
+            if(!emailError) {
+                setFormData((prevData) => {
+                    return {
+                        ...prevData,
+                        [name]: value
+                    }
+                });
+            }
+        }
+
+        if(name === 'confirmPassword' && touched.confirmPassword) {
+            validateConfirmPassword(value);
+
+            if(!confirmPasswordError) {
+                setFormData((prevData) => {
+                    return {
+                        ...prevData,
+                        [name]: value,
+                    }
+                });
+            }
+
+        }
+
+        setFormData((prevData) => {
+            return {
+                ...prevData,
+                [name]: value,
+            }
+        });
+    }
+
+    const validateEmail = (value) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if(!value) {
+            setEmailError('Email is empty');
+        } else if(!emailRegex.test(value)) {
+            setEmailError('Please enter a valid email address');
+        } else {
+            setEmailError('');
+        }
+    }
+
+    const validateConfirmPassword = (value) => {
+        if(value !== formData.password) {
+            setConfirmPasswordError('Passwords are not the same')
+        } else {
+            setConfirmPasswordError('');
+        }
+    }
 
     return (
         <div>

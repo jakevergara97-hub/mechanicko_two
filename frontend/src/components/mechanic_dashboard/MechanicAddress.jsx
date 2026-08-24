@@ -76,8 +76,6 @@ export function MechanicAddress({mechanic}) {
         }
 
         if(name === 'city') {
-            console.log('region');
-            console.log(value);
             setFormData((prevData) => {
                 return {
                     ...prevData,
