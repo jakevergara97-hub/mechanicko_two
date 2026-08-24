@@ -1,25 +1,72 @@
-export function AddressInformation({
-                                    regions,
-                                    provinces,
-                                    cities,
-                                    barangays,
+import { useState, useEffect } from "react";
 
-                                    formData,
-                                    setFormData,
-                                    touched,
-                                    setTouched,
+export function AddressInformation({ formData, setFormData }) {
+    const [locationHierarchy, setLocationHierarchy] = useState({});
+    const [touched, setTouched] = useState({});
 
-                                    handleRegionSelection,
-                                    handleProvinceSelection,
-                                    handleCitySelection,
-                                    handleBarangaySelection,
+    useEffect(() => {
+        async function loadPSGC() {
+            try{
+                const response = await fetch("./psgc.json");
 
-                                    selectedRegion,
+                if(!response.ok) {
+                    throw new Error("Locations can't be loaded.");
+                }
+                const data = await response.json();
+                setLocationHierarchy(data);
+            }
+            catch(error) {
+                alert(error.message);
+            }
 
-                                    }) {
+        }
+        loadPSGC();
+    }, []);
 
+    const regions = Object.keys(locationHierarchy);
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
 
+        setFormData((prevData) => {
+            return {
+                ...prevData,
+                [name]: value
+            }
+        });
+
+        if(name === 'region') {
+            setFormData((prevData) => {
+                return {
+                    ...prevData,
+                    province: '',
+                    city: '',
+                    barangay: '',
+                }
+            });
+        }
+
+        if(name === 'province') {
+            console.log('region');
+            console.log(value);
+            setFormData((prevData) => {
+                return {
+                    ...prevData,
+                    city: '',
+                    barangay: '',
+                }
+            });
+        }
+
+        if(name === 'city') {
+            setFormData((prevData) => {
+                return {
+                    ...prevData,
+                    barangay: '',
+                }
+            });
+        }
+    }
 
     return (
         <div>
@@ -27,7 +74,7 @@ export function AddressInformation({
                 id="region-select"
                 name="region"
                 value={formData.region}
-                onChange={(e) => handleRegionSelection(e)}
+                onChange={handleChange}
                 onBlur={(e) => setTouched({
                         ...touched,
                         region: true,
@@ -36,6 +83,8 @@ export function AddressInformation({
                 {regions.length === 0
                     && <option value="" disabled>Regions loading...</option>
                 }
+
+                {}
 
                 <option value="" disabled>Select region</option>
 
@@ -50,14 +99,14 @@ export function AddressInformation({
 
             <br />
 
-            {selectedRegion === 'NATIONAL CAPITAL REGION (NCR)' ?
+            {formData.region === 'NATIONAL CAPITAL REGION (NCR)' ?
                 (
                     <div>
                         <select
                             id="city-select"
                             name="city"
                             value={formData.city}
-                            onChange={(e) => handleCitySelection(e)}
+                            onChange={handleChange}
                             onBlur={(e) => setTouched(prev => ({
                                     ...prev,
                                     [e.target.name]: true,
@@ -65,15 +114,23 @@ export function AddressInformation({
                             }
                         >
 
-                            <option value="" disabled>Select city/town</option>
+                        {!formData.region ?
+                            <option value="" disabled>Select city</option>
+                            :
+                            <>
+                                <option value="" disabled>Select city</option>
+                                {Object.keys(locationHierarchy[formData.region])
+                                    .filter((city) => city !== 'population'
+                                                    && city !== 'notes')
+                                    .map((city) =>
+                                        <option key={city} value={city}>
+                                            {city}
+                                        </option>
+                                    )
+                                }
+                            </>
 
-                            {cities.length !== 0 &&
-                                cities.map((city) => (
-                                    <option key={city} value={city}>
-                                        {city}
-                                    </option>
-                                ))
-                            }
+                        }
                         </select>
 
                         {touched.city && !formData.city &&
@@ -85,22 +142,33 @@ export function AddressInformation({
                             id="barangay-select"
                             name="barangay"
                             value={formData.barangay}
-                            onChange={(e) => handleBarangaySelection(e)}
+                            onChange={handleChange}
                             onBlur={(e) => setTouched(prev => ({
                                     ...prev,
                                     [e.target.name]: true,
                                 }))
                             }
                         >
+                            {!formData.city ?
+                                <option value="" disabled>Select barangay</option>
+                                :
+                                <>
+                                    <option value="" disabled>Select barangay</option>
+                                    {Object.keys(locationHierarchy
+                                        [formData.region]
+                                        [formData.city])
+                                            .filter((barangay) => barangay !== 'population'
+                                                    && barangay !== 'class'
+                                                    && barangay !== 'cityClass'
+                                                    )
+                                            .map((barangay) =>
+                                                <option key={barangay} value={barangay}>
+                                                    {barangay}
+                                                </option>
+                                            )
+                                    }
+                                </>
 
-                            <option value="" disabled>Select barangay</option>
-
-                            {barangays.length !== 0 &&
-                                barangays.map((barangay) => (
-                                    <option key={barangay} value={barangay}>
-                                        {barangay}
-                                    </option>
-                                ))
                             }
                         </select>
 
@@ -117,21 +185,28 @@ export function AddressInformation({
                             id="province-select"
                             name="province"
                             value={formData.province}
-                            onChange={(e) => handleProvinceSelection(e)}
+                            onChange={handleChange}
                             onBlur={(e) => setTouched(prev => ({
                                     ...prev,
                                     [e.target.name]: true,
                                 }))
                             }
                         >
-                            <option value="" disabled>Select province</option>
+                            {!formData.region ?
+                                <option value="" disabled>Select province</option>
+                                :
+                                <>
+                                    <option value="" disabled>Select province</option>
+                                    {Object.keys(locationHierarchy[formData.region])
+                                        .filter((province) => province !== 'population')
+                                        .map((province) =>
+                                        <option key={province} value={province}>
+                                            {province}
+                                        </option>
+                                        )
+                                    }
+                                </>
 
-                            {provinces.length !== 0 &&
-                                provinces.map((province) => (
-                                    <option key={province} value={province}>
-                                        {province}
-                                    </option>
-                                ))
                             }
                         </select>
 
@@ -144,22 +219,27 @@ export function AddressInformation({
                             id="city-select"
                             name="city"
                             value={formData.city}
-                            onChange={(e) => handleCitySelection(e)}
+                            onChange={handleChange}
                             onBlur={(e) => setTouched(prev => ({
                                     ...prev,
                                     [e.target.name]: true,
                                 }))
                             }
                         >
-
-                            <option value="" disabled>Select city/town</option>
-
-                            {cities.length !== 0 &&
-                                cities.map((city) => (
-                                    <option key={city} value={city}>
-                                        {city}
-                                    </option>
-                                ))
+                            {!formData.province ?
+                                <option value="" disabled>Select city/town</option>
+                                :
+                                <>
+                                    <option value="" disabled>Select city/town</option>
+                                    {Object.keys(locationHierarchy[formData.region][formData.province])
+                                        .filter((city) => city !== 'population' && city !== 'notes')
+                                        .map((city) =>
+                                            <option key={city} value={city}>
+                                                {city}
+                                            </option>
+                                        )
+                                    }
+                                </>
                             }
                         </select>
 
@@ -172,7 +252,7 @@ export function AddressInformation({
                             id="barangay-select"
                             name="barangay"
                             value={formData.barangay}
-                            onChange={(e) => handleBarangaySelection(e)}
+                            onChange={handleChange}
                             onBlur={(e) => setTouched(prev => ({
                                     ...prev,
                                     [e.target.name]: true,
@@ -180,14 +260,26 @@ export function AddressInformation({
                             }
                         >
 
-                            <option value="" disabled>Select barangay</option>
+                            {!formData.city ?
+                                <option value="" disabled>Select barangay</option>
+                                :
+                                <>
+                                    <option value="" disabled>Select barangay</option>
+                                    {Object.keys(locationHierarchy
+                                                [formData.region]
+                                                [formData.province]
+                                                [formData.city])
+                                            .filter((barangay) => barangay !== 'population'
+                                                    && barangay !== 'class'
+                                                    && barangay !== 'cityClass')
+                                            .map((barangay) =>
+                                                <option key={barangay} value={barangay}>
+                                                    {barangay}
+                                                </option>
+                                            )
+                                    }
+                                </>
 
-                            {barangays.length !== 0 &&
-                                barangays.map((barangay) => (
-                                    <option key={barangay} value={barangay}>
-                                        {barangay}
-                                    </option>
-                                ))
                             }
                         </select>
 

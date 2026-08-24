@@ -12,7 +12,7 @@ export function PersonalInformation({ formData,
     const handleChange = (event) => {
         let {name, value} = event.target;
 
-        if(name === 'email' && touched.email) {
+        if(name === 'email') {
             validateEmail(value);
 
             if(!emailError) {
@@ -25,7 +25,7 @@ export function PersonalInformation({ formData,
             }
         }
 
-        if(name === 'confirmPassword' && touched.confirmPassword) {
+        if(name === 'confirmPassword') {
             validateConfirmPassword(value);
 
             if(!confirmPasswordError) {
@@ -61,7 +61,7 @@ export function PersonalInformation({ formData,
 
     const validateConfirmPassword = (value) => {
         if(value !== formData.password) {
-            setConfirmPasswordError('Passwords are not the same')
+            setConfirmPasswordError('Passwords are not the same');
         } else {
             setConfirmPasswordError('');
         }

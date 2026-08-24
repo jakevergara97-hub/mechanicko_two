@@ -7,21 +7,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 export function MechanicRegistrationForm() {
     const navigate = useNavigate();
-    const [locationHierarchy, setLocationHierarchy] = useState({});
-
-    const [selectedRegion, setSelectedRegion] = useState("");
-    const [selectedProvince, setSelectedProvince] = useState("");
-    const [selectedCity, setSelectedCity] = useState("");
-
-    const [touched, setTouched] = useState({});
-
-    const [provinces, setProvinces] = useState([]);
-    const [cities, setCities] = useState([]);
-    const [barangays, setBarangays] = useState([]);
-
-    // const [emailError, setEmailError] = useState('');
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
-
     const {mechanic, setMechanic} = useContext(AuthContext);
 
     const initialFormState = {
@@ -39,176 +25,6 @@ export function MechanicRegistrationForm() {
     }
 
     const [formData, setFormData] = useState(initialFormState);
-
-    // const handleChange = (event) => {
-    //     let {name, value} = event.target;
-
-    //     if(name === 'email' && touched.email) {
-    //         validateEmail(value);
-
-    //         if(!emailError) {
-    //             setFormData((prevData) => {
-    //                 return {
-    //                     ...prevData,
-    //                     [name]: value
-    //                 }
-    //             });
-    //         }
-    //     }
-
-    //     if(name === 'confirmPassword' && touched.confirmPassword) {
-    //         validateConfirmPassword(value);
-
-    //         if(!confirmPasswordError) {
-    //             setFormData((prevData) => {
-    //                 return {
-    //                     ...prevData,
-    //                     [name]: value,
-    //                 }
-    //             });
-    //         }
-
-    //     }
-
-    //     setFormData((prevData) => {
-    //         return {
-    //             ...prevData,
-    //             [name]: value,
-    //         }
-    //     });
-    // }
-
-    // const validateEmail = (value) => {
-    //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    //     if(!value) {
-    //         setEmailError('Email is empty');
-    //     } else if(!emailRegex.test(value)) {
-    //         setEmailError('Please enter a valid email address');
-    //     } else {
-    //         setEmailError('');
-    //     }
-    // }
-
-    // const validateConfirmPassword = (value) => {
-    //     if(value !== formData.password) {
-    //         setConfirmPasswordError('Passwords are not the same')
-    //     } else {
-    //         setConfirmPasswordError('');
-    //     }
-    // }
-
-    useEffect(() => {
-        async function loadPSGC() {
-            try{
-                const response = await fetch("./psgc.json");
-
-                if(!response.ok) {
-                    throw new Error("Locations can't be loaded.");
-                }
-                const data = await response.json();
-                setLocationHierarchy(data);
-            }
-            catch(error) {
-                alert(error.message);
-            }
-
-        }
-        loadPSGC();
-    }, []);
-
-    function handleRegionSelection(e) {
-        const region = e.target.value;
-        setSelectedRegion(region);
-
-        setFormData((prevData) => {
-            return {
-                ...prevData,
-                region,
-                province: '',
-                city: '',
-                barangay: '',
-            }
-        });
-
-        if(region === 'NATIONAL CAPITAL REGION (NCR)') {
-            setCities(
-                Object.keys(locationHierarchy[region])
-                    .filter(province => province !== "population")
-            );
-        } else {
-            setProvinces(
-                Object.keys(locationHierarchy[region])
-                    .filter(province => province !== "population")
-                );
-        }
-    }
-
-    function handleProvinceSelection(e) {
-        const province = e.target.value;
-        setSelectedProvince(province);
-
-        setFormData((prevData) => {
-            return {
-                ...prevData,
-                province,
-                city: '',
-                barangay: '',
-            }
-        });
-
-        setCities(
-            Object.keys(locationHierarchy[selectedRegion][province])
-                .filter(city =>
-                        city !== 'population'
-                        && city !== 'notes'
-                        && city !== 'class'
-                        && city !== 'cityClass')
-        );
-    }
-
-    function handleCitySelection(e) {
-        const city = e.target.value;
-
-        setSelectedCity(city);
-        setFormData((prevData) => {
-            return {
-                ...prevData,
-                city,
-                barangay: '',
-            }
-        });
-
-        if(selectedRegion === 'NATIONAL CAPITAL REGION (NCR)') {
-            setBarangays(
-                Object.keys(locationHierarchy[selectedRegion][city])
-                    .filter(barangay =>
-                            barangay !== "cityClass"
-                            && barangay !== "class"
-                            && barangay !== "population")
-            );
-        } else {
-            setBarangays(
-            Object.keys(locationHierarchy[selectedRegion][selectedProvince][city])
-                .filter(barangay =>
-                        barangay !== "cityClass"
-                        && barangay !== "class"
-                        && barangay !== "population")
-            );
-        }
-    }
-
-    function handleBarangaySelection(e) {
-        const barangay = e.target.value;
-
-        setFormData((prevData) => ({
-                ...prevData,
-                barangay,
-            })
-        );
-    }
-
-    const regions = Object.keys(locationHierarchy);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -262,7 +78,6 @@ export function MechanicRegistrationForm() {
             alert(error.message);
         }
         setFormData(initialFormState);
-        setTouched({})
         document.activeElement.blur();
     }
 
@@ -272,16 +87,6 @@ export function MechanicRegistrationForm() {
             <form onSubmit={handleSubmit} autoComplete="off">
                 <fieldset>
                     <legend>Personal Information</legend>
-                    {/* <PersonalInformation
-                        handleChange={handleChange}
-                        formData={formData}
-                        setFormData={setFormData}
-                        touched={touched}
-                        setTouched={setTouched}
-                        emailError={emailError}
-                        confirmPasswordError={confirmPasswordError}
-                    /> */}
-
                     <PersonalInformation
                         formData={formData}
                         setFormData={setFormData}
@@ -289,30 +94,11 @@ export function MechanicRegistrationForm() {
                         setConfirmPasswordError={setConfirmPasswordError}
                         />
                 </fieldset>
-
                 <br />
 
                 <fieldset>
                     <legend>Address</legend>
-                    <AddressInformation
-                            regions={regions}
-                            provinces={provinces}
-                            cities={cities}
-                            barangays={barangays}
-
-                            formData={formData}
-                            setFormData={setFormData}
-                            touched={touched}
-                            setTouched={setTouched}
-
-                            handleRegionSelection={handleRegionSelection}
-                            handleProvinceSelection={handleProvinceSelection}
-                            handleCitySelection={handleCitySelection}
-                            handleBarangaySelection={handleBarangaySelection}
-
-                            selectedRegion={selectedRegion}
-
-                        />
+                    <AddressInformation formData={formData} setFormData={setFormData} />
                 </fieldset>
                 <br />
                 <button type="Submit">Submit</button>

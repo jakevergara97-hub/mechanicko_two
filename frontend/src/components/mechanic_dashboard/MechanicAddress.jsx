@@ -26,7 +26,6 @@ export function MechanicAddress({mechanic}) {
             catch(error) {
                 alert(error.message);
             }
-
         }
         loadPSGC();
     }, []);
@@ -64,8 +63,6 @@ export function MechanicAddress({mechanic}) {
         }
 
         if(name === 'province') {
-            console.log('region');
-            console.log(value);
             setFormData((prevData) => {
                 return {
                     ...prevData,
@@ -155,6 +152,7 @@ export function MechanicAddress({mechanic}) {
                                             <option value="" disabled>Select city</option>
                                             :
                                             <>
+                                                <option value="" disabled>Select city</option>
                                                 {Object.keys(locationHierarchy[formData.region])
                                                     .filter((city) => city !== 'population'
                                                                     && city !== 'notes')
@@ -179,6 +177,7 @@ export function MechanicAddress({mechanic}) {
                                             <option value="" disabled>Select barangay</option>
                                             :
                                             <>
+                                                <option value="" disabled>Select barangay</option>
                                                 {Object.keys(locationHierarchy
                                                     [formData.region]
                                                     [formData.city])
@@ -206,17 +205,21 @@ export function MechanicAddress({mechanic}) {
                                         value={formData.province}
                                         onChange={handleChange}
                                     >
-
+                                    {!formData.region ?
                                         <option value="" disabled>Select province</option>
-
-                                        {Object.keys(locationHierarchy[formData.region])
-                                            .filter((province) => province !== 'population')
-                                            .map((province) =>
-                                            <option key={province} value={province}>
-                                                {province}
-                                            </option>
-                                            )
-                                        }
+                                        :
+                                        <>
+                                            <option value="" disabled>Select province</option>
+                                            {Object.keys(locationHierarchy[formData.region])
+                                                .filter((province) => province !== 'population')
+                                                .map((province) =>
+                                                <option key={province} value={province}>
+                                                    {province}
+                                                </option>
+                                                )
+                                            }
+                                        </>
+                                    }
                                     </select>
 
                                     <select
@@ -226,9 +229,10 @@ export function MechanicAddress({mechanic}) {
                                         onChange={handleChange}
                                     >
                                         {!formData.province ?
-                                            <option value="" disabled>Select city</option>
+                                            <option value="" disabled>Select city/town</option>
                                             :
                                             <>
+                                                <option value="" disabled>Select city/town</option>
                                                 {Object.keys(locationHierarchy[formData.region][formData.province])
                                                     .filter((city) => city !== 'population' && city !== 'notes')
                                                     .map((city) =>
@@ -252,6 +256,7 @@ export function MechanicAddress({mechanic}) {
                                             <option value="" disabled>Select barangay</option>
                                             :
                                             <>
+                                                <option value="" disabled>Select barangay</option>
                                                 {Object.keys(locationHierarchy
                                                             [formData.region]
                                                             [formData.province]
@@ -271,11 +276,8 @@ export function MechanicAddress({mechanic}) {
                                 </>
                             )
                         }
-
                         <button onClick={handleAddressSave}>Save</button>
                         <button onClick={handleCancel}>Cancel</button>
-
-
                     </>
                     :
                     <>
