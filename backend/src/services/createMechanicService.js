@@ -13,6 +13,7 @@ export const createMechanic = async (mechanicData) => {
         province,
         city,
         barangay,
+        services,
         }
     = mechanicData;
 
@@ -65,6 +66,18 @@ export const createMechanic = async (mechanicData) => {
             VALUES ($1, $2, $3, $4, $5)`,
             [mechanic.id, region, province, city, barangay]
         );
+
+        const valuesClause = services.map((service) => `(${mechanic.id}, '${service}')`)
+		.join(", ");
+
+        console.log(valueClause);
+
+        const serviceResult = await pool.query(
+            `
+                INSERT INTO mechanics_services(mechanic_id, services)
+                VALUES ${valuesClause}
+            `
+        )
 
         const token = jwt.sign(
             {

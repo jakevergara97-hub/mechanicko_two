@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 import { createMechanic } from "../../services/createMechanicService";
 import { PersonalInformation } from "./PersonalInformation";
 import { AddressInformation } from "./AddressInformation";
-import { AuthContext } from "../../context/AuthContext";
+import { MechanicServices } from "./MechanicServices";
 
 export function MechanicRegistrationForm() {
     const navigate = useNavigate();
@@ -22,6 +23,8 @@ export function MechanicRegistrationForm() {
         province: '',
         city: '',
         barangay: '',
+
+        services: [],
     }
 
     const [formData, setFormData] = useState(initialFormState);
@@ -39,6 +42,7 @@ export function MechanicRegistrationForm() {
                 province,
                 city,
                 barangay,
+                services
             } = formData;
 
         if(confirmPasswordError) {
@@ -55,6 +59,10 @@ export function MechanicRegistrationForm() {
             }
         }
 
+        if(services.length === 0) {
+            return;
+        }
+
         try {
             const data = await createMechanic({
                 firstName: firstName.trim(),
@@ -66,6 +74,7 @@ export function MechanicRegistrationForm() {
                 province,
                 city,
                 barangay,
+                services,
             });
 
             if(data.success) {
@@ -101,6 +110,13 @@ export function MechanicRegistrationForm() {
                     <AddressInformation formData={formData} setFormData={setFormData} />
                 </fieldset>
                 <br />
+
+                <fieldset>
+                    <legend>Services</legend>
+                    <MechanicServices formData={formData} setFormData={setFormData} />
+                </fieldset>
+                <br />
+
                 <button type="Submit">Submit</button>
             </form>
         </div>
