@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export function MechanicServices({formData, setFormData}) {
+export function MechanicServicesForm({formData, setFormData}) {
     const [serviceInput, setServiceInput] = useState('');
 
     const handleChange = (e) => {
@@ -34,6 +34,9 @@ export function MechanicServices({formData, setFormData}) {
 
     return (
         <>
+            <p>*Sample services</p>
+            <p>Oil Change, Brake Repair, Engine Repair, Tire Change / Tire Repair</p>
+            <p>Battery Replacement, Air Conditioning Repair, Preventive Maintenance, General Auto Repair</p>
             <input
                 id="mechanic-service"
                 type="text"

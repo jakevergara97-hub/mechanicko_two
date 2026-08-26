@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { createMechanic } from "../../services/createMechanicService";
 import { PersonalInformation } from "./PersonalInformation";
 import { AddressInformation } from "./AddressInformation";
-import { MechanicServices } from "./MechanicServices";
+import { MechanicServicesForm } from "./MechanicServicesForm";
 
 export function MechanicRegistrationForm() {
     const navigate = useNavigate();
@@ -113,7 +113,7 @@ export function MechanicRegistrationForm() {
 
                 <fieldset>
                     <legend>Services</legend>
-                    <MechanicServices formData={formData} setFormData={setFormData} />
+                    <MechanicServicesForm formData={formData} setFormData={setFormData} />
                 </fieldset>
                 <br />
 

@@ -70,7 +70,7 @@ export const createMechanic = async (mechanicData) => {
         const valuesClause = services.map((service) => `(${mechanic.id}, '${service}')`)
 		.join(", ");
 
-        console.log(valueClause);
+        console.log(valuesClause);
 
         const serviceResult = await pool.query(
             `

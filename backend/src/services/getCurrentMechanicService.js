@@ -11,7 +11,7 @@ export const getCurrentMechanic = async (mechanicId) => {
         // FUTURE CHANGE:
         // Create a query to fetch the mechanic ID from the database
         // then use it to fetch the mechanics data from the DB
-        const result = await pool.query(
+        const resultPersonalInfo = await pool.query(
             `SELECT
                 mau.id,
                 mau.email,
@@ -31,7 +31,17 @@ export const getCurrentMechanic = async (mechanicId) => {
             [mechanicId]
         );
 
-        const mechanic = result.rows[0];
+        const mechanic = resultPersonalInfo.rows[0];
+
+        const resultServices = await pool.query(
+            `SELECT
+                ms.services
+            FROM mechanics_services ms
+            WHERE ms.mechanic_id = $1`,
+            [mechanicId]
+        );
+
+        const services = resultServices.rows.map(row => row.services);
 
         const mechanicInfo = {
             id: mechanic.id,
@@ -42,7 +52,8 @@ export const getCurrentMechanic = async (mechanicId) => {
             region: mechanic.region,
             province: mechanic.province,
             city: mechanic.city,
-            barangay: mechanic.barangay
+            barangay: mechanic.barangay,
+            services: services
         }
 
         return {
