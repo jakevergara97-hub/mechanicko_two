@@ -6,6 +6,7 @@ import { MechanicName } from "../components/mechanic_dashboard/MechanicName";
 import { MechanicPhoneNumber } from "../components/mechanic_dashboard/MechanicPhoneNumber";
 import { MechanicEmail } from "../components/mechanic_dashboard/MechanicEmail";
 import { MechanicAddress } from "../components/mechanic_dashboard/MechanicAddress";
+import { MechanicServices } from "../components/mechanic_dashboard/MechanicServices";
 
 export function MechanicDashboard() {
     const {mechanic, loading} = useContext(AuthContext);
@@ -27,6 +28,7 @@ export function MechanicDashboard() {
                     <MechanicPhoneNumber mechanic={mechanic} />
                     <MechanicEmail mechanic={mechanic} />
                     <MechanicAddress mechanic={mechanic} />
+                    <MechanicServices mechanic={mechanic} />
                 </div>
             }
             <br />
