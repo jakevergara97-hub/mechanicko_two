@@ -23,11 +23,10 @@ export function MechanicServicesForm({formData, setFormData}) {
     }
 
     const handleRemoveInput = (index) => {
-        formData.services.splice(index, 1);
         setFormData((prevData) => {
             return {
                 ...prevData,
-                services: [...prevData.services]
+                services: prevData.services.filter((_, i) => i !== index)
             }
         });
     }
@@ -57,7 +56,7 @@ export function MechanicServicesForm({formData, setFormData}) {
                     {formData.services.map((service, index) => (
                         <li key={index}>
                             {service}
-                            <button onClick={() => handleRemoveInput(index)}>x</button>
+                            <button type="button" onClick={() => handleRemoveInput(index)}>x</button>
                         </li>
                     ))}
                 </ul>
