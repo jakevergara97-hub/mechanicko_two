@@ -9,7 +9,7 @@ export function MechanicPhoneNumber({mechanic}){
         if(mechanic?.mechanicInfo) {
             setPhoneNumber(mechanic.mechanicInfo.phone_number)
         }
-    },[mechanic]);
+    },[]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

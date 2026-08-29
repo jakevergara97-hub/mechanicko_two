@@ -10,7 +10,7 @@ export function MechanicEmail({mechanic}) {
         if(mechanic?.mechanicInfo) {
             setEmail(mechanic.mechanicInfo.email);
         }
-    },[mechanic]);
+    },[]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

@@ -17,7 +17,7 @@ export function MechanicName({mechanic}) {
                         + mechanic.mechanicInfo.last_name.slice(1)
             })
         }
-    },[mechanic]);
+    },[]);
 
     const firstName = mechanic.mechanicInfo.first_name[0].toUpperCase()
                         + mechanic.mechanicInfo.first_name.slice(1);

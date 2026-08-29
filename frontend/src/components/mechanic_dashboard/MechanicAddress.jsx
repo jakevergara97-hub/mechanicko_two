@@ -39,7 +39,7 @@ export function MechanicAddress({mechanic}) {
                 barangay: mechanic.mechanicInfo.barangay
             })
         }
-    },[mechanic]);
+    },[]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;

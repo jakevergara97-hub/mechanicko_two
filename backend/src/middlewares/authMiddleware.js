@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import "dotenv/config";
 
 export const authenticate = (req,res,next) => {
-    console.log("Auth Middlewre HIT!")
+    // console.log("Auth Middlewre HIT!");
     const authHeader = req.headers.authorization;
 
     if(!authHeader) {
@@ -19,7 +19,7 @@ export const authenticate = (req,res,next) => {
             process.env.JWT_SECRET
         );
         req.user = decoded;
-        console.log(req.user);
+        // console.log(req.user);
         next();
 
     } catch(error) {
