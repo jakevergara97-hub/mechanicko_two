@@ -6,71 +6,61 @@ export const updateMechanicServices = async (id, updates) => {
     // console.log(services);
     try{
 
-        // const setClause = services
-        //     .map((_, index) =>
-        //         `services = $${index + 1}`)
-        //     .join(", ");
-
-        // UPDATE table_name
-        // SET column1 = value1, column2 = value2
-        // WHERE condition;
-
-        //
-
-        // console.log(setClause);
-
-        // VALUES ($1, $2, ...)
-        // services.push(id);
-
-        const valueClause = services
-            .map((_, index) => `$${index + 1}`)
-            .join(", ");
-
-        // const query2 = `
-        //     INSERT INTO mechanics_services(services, mechanic_id)
-        //     VALUES ${valueClause}
-        //     RETURNING services
-        // `
-
-        console.log(`(${valueClause})`);
-        console.log(updates);
-        console.log(updates.length);
-        const servicessss = services.map((service, index) => `services`).join(", ");
-        console.log(servicessss);
-
-        const servicesNames = services
-            .map((service) => service)
-            .join(", ");
-
-        console.log(servicesNames);
-
         const result = await pool.query(
             `
-                INSERT INTO mechanics_services(${servicessss}, mechanic_id)
-                VALUES (${valueClause}, $${updates.length + 1})
-                RETURNING services
-            `,['Tire Change',  'General Auto Repair', 'Brake Repair', 'Engine Repair', 'Preventive Maintenance', 'Battery Replacement', 'Oil Change', 'PMS', id]
+                SELECT
+                    ms.services
+                FROM mechanics_services ms
+                WHERE ms.mechanic_id = $1
+            `,[id]
         );
 
-        console.log(result.rows);
+        const oldServices = result.rows.map((row) => row.services);
 
-        // const profileResult = await pool.query(
-        //     `INSERT INTO mechanics_profiles(mechanic_id, first_name, last_name, phone_number)
-        //     VALUES ($1, $2, $3, $4)`,
-        //     [mechanic.id, firstName, lastName, phoneNumber]
-        // );
+        const newServices = services.filter((service) => !oldServices.includes(service));
 
-        // const query = `
-        //     UPDATE mechanics_services ms
-        //     SET ${setClause}
-        //     WHERE ms.mechanic_id = $${updates.length + 1}
-        //     RETURNING ms.services
-        // `;
+        console.log(newServices);
 
-        // const result = await pool.query(query2, services);
+        if(newServices.length === 0) {
+            throw {
+                error: 404,
+                message: "Duplicate service detected."
+            }
+        }
 
-        // console.log(result.rows)
+        const valuesClause = newServices
+            .map((_,index) => `($${index * 2 + 1}, $${index * 2 + 2})`)
+            .join(", ");
 
+        console.log(valuesClause);
+
+        const queryToInsert = `
+            INSERT INTO mechanics_services(mechanic_id, services)
+            VALUES ${valuesClause}
+            RETURNING *
+        `;
+
+        const valuesToInsert = newServices.map((serv) => [id, serv]);
+
+        console.log(valuesToInsert);
+
+        const insertResult = await pool.query(queryToInsert, valuesToInsert.flat());
+
+        const finalServicesResult = await pool.query(
+            `
+                SELECT
+                    ms.services
+                FROM mechanics_services ms
+                WHERE ms.mechanic_id = $1
+            `,[id]
+        );
+
+        const updateServices = finalServicesResult.rows.map((row) => row.services);
+
+        return {
+            success: true,
+            updateServices
+        }
 
 
     } catch(error) {

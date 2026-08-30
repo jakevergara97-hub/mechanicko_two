@@ -14,7 +14,7 @@ export function MechanicServices({mechanic}){
                 services: mechanic.mechanicInfo.services
             });
         }
-    },[]);
+    },[mechanic]);
 
     const handleChange = (e) => {
         const { value } = e.target;
@@ -54,13 +54,17 @@ export function MechanicServices({mechanic}){
     const handleSaveServices = async () => {
         const { services } = formData;
         const id = mechanic.mechanicInfo.id;
-        console.log(services);
-        console.log(id);
+        // console.log(services);
+        // console.log(id);
         try{
             const data = await updateMechanicServices(id, services);
-            console.log(services);
+            // console.log(services);
             if(data.success) {
                 console.log('success');
+                console.log(data);
+                mechanic.mechanicInfo.services = data.updateServices;
+
+                setIsEditing(false);
             }
 
 
