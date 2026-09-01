@@ -15,7 +15,7 @@ export function MechanicServicesForm({formData, setFormData}) {
         setFormData((prevData) => {
             return {
                 ...prevData,
-                services: [...prevData.services, serviceInput]
+                services: [...prevData.services, serviceInput.trim()]
             }
         })
 

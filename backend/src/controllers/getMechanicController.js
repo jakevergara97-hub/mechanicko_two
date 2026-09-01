@@ -1,7 +1,6 @@
 import { getMechanic as getMechanicService } from "../services/getMechanicService.js";
 
 export const getMechanic = async (req, res) => {
-    console.log("Get Mechanic Controller reached.")
     try {
         const data = await getMechanicService(req.params);
 

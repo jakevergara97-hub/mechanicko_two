@@ -27,13 +27,11 @@ export function MechanicServices({mechanic}){
 
         setFormData((prevData) => ({
             ...prevData,
-            services: [...prevData.services, serviceInput]
+            services: [...prevData.services, serviceInput.trim()]
         }));
 
         setServiceInput('');
     }
-
-    // console.log(formData.services)
 
     const handleRemoveService = (index) => {
         setFormData((prevData) => {
@@ -54,24 +52,24 @@ export function MechanicServices({mechanic}){
     const handleSaveServices = async () => {
         const { services } = formData;
         const id = mechanic.mechanicInfo.id;
-        // console.log(services);
-        // console.log(id);
         try{
             const data = await updateMechanicServices(id, services);
-            // console.log(services);
+
+            if(!data) {
+                setIsEditing(false);
+                return;
+            }
+
             if(data.success) {
                 console.log('success');
                 console.log(data);
-                mechanic.mechanicInfo.services = data.updateServices;
-
+                mechanic.mechanicInfo.services = data.updatedServices;
                 setIsEditing(false);
             }
-
 
         } catch(error) {
             alert(error);
         }
-
     }
 
     return (

@@ -2,7 +2,6 @@ import { updateMechanic as updateMechanicService } from "../services/updateMecha
 
 export const updateMechanic = async (req, res) => {
     const { id } = req.params;
-    console.log("UPDATE MECHANIC CONTROLLER HIT");
     try{
         const data = await updateMechanicService(id, req.body);
 
