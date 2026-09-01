@@ -27,7 +27,13 @@ export function MechanicServices({mechanic}){
 
         setFormData((prevData) => ({
             ...prevData,
-            services: [...prevData.services, serviceInput.trim()]
+            services: [...prevData.services,
+                serviceInput
+                    .trim()
+                    .split(" ")
+                    .map((s) => s[0].toUpperCase() + s.slice(1))
+                    .join(" ")
+            ]
         }));
 
         setServiceInput('');
