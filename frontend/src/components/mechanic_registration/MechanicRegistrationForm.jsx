@@ -5,6 +5,7 @@ import { createMechanic } from "../../services/createMechanicService";
 import { PersonalInformation } from "./PersonalInformation";
 import { AddressInformation } from "./AddressInformation";
 import { MechanicServicesForm } from "./MechanicServicesForm";
+import { MechanicCarBrandForm } from "./MechanicCarBrandForm";
 
 export function MechanicRegistrationForm() {
     const navigate = useNavigate();
@@ -25,6 +26,7 @@ export function MechanicRegistrationForm() {
         barangay: '',
 
         services: [],
+        carBrands: [],
     }
 
     const [formData, setFormData] = useState(initialFormState);
@@ -114,6 +116,12 @@ export function MechanicRegistrationForm() {
                 <fieldset>
                     <legend>Services</legend>
                     <MechanicServicesForm formData={formData} setFormData={setFormData} />
+                </fieldset>
+                <br />
+
+                <fieldset>
+                    <legend>Car Brands Experienced With</legend>
+                    <MechanicCarBrandForm formData={formData} setFormData={setFormData} />
                 </fieldset>
                 <br />
 
