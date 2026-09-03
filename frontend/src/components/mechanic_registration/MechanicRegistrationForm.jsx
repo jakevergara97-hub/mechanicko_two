@@ -6,6 +6,7 @@ import { PersonalInformation } from "./PersonalInformation";
 import { AddressInformation } from "./AddressInformation";
 import { MechanicServicesForm } from "./MechanicServicesForm";
 import { MechanicCarBrandForm } from "./MechanicCarBrandForm";
+import { mergeArrays } from "../../utils/mergeArrays";
 
 export function MechanicRegistrationForm() {
     const navigate = useNavigate();
@@ -27,6 +28,7 @@ export function MechanicRegistrationForm() {
 
         services: [],
         carBrands: [],
+        otherCarBrands: [],
     }
 
     const [formData, setFormData] = useState(initialFormState);
@@ -44,7 +46,9 @@ export function MechanicRegistrationForm() {
                 province,
                 city,
                 barangay,
-                services
+                services,
+                carBrands,
+                otherCarBrands
             } = formData;
 
         if(confirmPasswordError) {
@@ -65,6 +69,17 @@ export function MechanicRegistrationForm() {
             return;
         }
 
+        const mechanicCarBrands = carBrands.length !== 0 || otherCarBrands.length !== 0 ?
+                    mergeArrays([carBrands, otherCarBrands])
+                    :
+                    [];
+
+        if(mechanicCarBrands.length === 0) {
+            return;
+        }
+
+        console.log(mechanicCarBrands);
+
         try {
             const data = await createMechanic({
                 firstName: firstName.trim(),
@@ -77,6 +92,7 @@ export function MechanicRegistrationForm() {
                 city,
                 barangay,
                 services,
+                mechanicCarBrands
             });
 
             if(data.success) {
@@ -91,6 +107,10 @@ export function MechanicRegistrationForm() {
         setFormData(initialFormState);
         document.activeElement.blur();
     }
+
+    // if(formData.carBrands.length !== 0 || formData.otherCarBrands.length !== 0) {
+    //     console.log(mergeArrays([formData.carBrands, formData.otherCarBrands]))
+    // }
 
     return (
         <div>

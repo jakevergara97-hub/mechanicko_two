@@ -43,6 +43,16 @@ export const getCurrentMechanic = async (mechanicId) => {
 
         const services = resultServices.rows.map(row => row.services);
 
+        const resultCarBrands = await pool.query(
+            `SELECT
+                mcb.brands
+            FROM mechanics_car_brands mcb
+            WHERE mcb.mechanic_id = $1`,
+            [mechanicId]
+        );
+
+        const carBrands = resultCarBrands.rows.map(row => row.brands);
+
         const mechanicInfo = {
             id: mechanic.id,
             first_name: mechanic.first_name,
@@ -53,7 +63,8 @@ export const getCurrentMechanic = async (mechanicId) => {
             province: mechanic.province,
             city: mechanic.city,
             barangay: mechanic.barangay,
-            services: services
+            services: services,
+            carBrands: carBrands
         }
 
         return {

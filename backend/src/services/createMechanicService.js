@@ -14,6 +14,7 @@ export const createMechanic = async (mechanicData) => {
         city,
         barangay,
         services,
+        mechanicCarBrands
         }
     = mechanicData;
 
@@ -67,17 +68,28 @@ export const createMechanic = async (mechanicData) => {
             [mechanic.id, region, province, city, barangay]
         );
 
+        // Change this
+        // Make this valuesClause parametized
         const valuesClause = services.map((service) => `(${mechanic.id}, '${service}')`)
 		.join(", ");
 
-        console.log(valuesClause);
-
         const serviceResult = await pool.query(
+            `INSERT INTO mechanics_services(mechanic_id, services)
+             VALUES ${valuesClause}
             `
-                INSERT INTO mechanics_services(mechanic_id, services)
-                VALUES ${valuesClause}
-            `
-        )
+        );
+
+        const valuesClauseCarBrands = mechanicCarBrands
+                                        .map((_, index) => `($${index * 2 + 1}, $${index * 2 + 2})`)
+                                        .join(", ");
+
+        const valuesCarBrands = mechanicCarBrands.map((brand) => [mechanic.id, brand]);
+
+        const carBrandsResult = await pool.query(
+            `INSERT INTO mechanics_car_brands(mechanic_id, brands)
+             VALUES ${valuesClauseCarBrands}
+            `,valuesCarBrands.flat()
+        );
 
         const token = jwt.sign(
             {
