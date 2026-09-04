@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateMechanic } from "../../services/updateMechanicService";
+import { toTitleCase } from "../../utils/toTitleCase";
 
 export function MechanicName({mechanic}) {
     const [formData, setFormData] = useState({
@@ -19,11 +20,7 @@ export function MechanicName({mechanic}) {
         }
     },[]);
 
-    const firstName = mechanic.mechanicInfo.first_name[0].toUpperCase()
-                        + mechanic.mechanicInfo.first_name.slice(1);
-    const lastName = mechanic.mechanicInfo.last_name[0].toUpperCase()
-                        + mechanic.mechanicInfo.last_name.slice(1);
-    const fullName = firstName + " " + lastName;
+    const fullName = toTitleCase(`${mechanic.mechanicInfo.first_name} ${mechanic.mechanicInfo.last_name}`);
 
     const handleChange = (e) => {
         let {name, value} = e.target;
@@ -48,8 +45,8 @@ export function MechanicName({mechanic}) {
                 mechanic.mechanicInfo.first_name = data.mechanic.first_name;
                 mechanic.mechanicInfo.last_name = data.mechanic.last_name;
                 setFormData({
-                    firstName: data.mechanic.first_name,
-                    lastName: data.mechanic.last_name
+                    firstName: toTitleCase(data.mechanic.first_name),
+                    lastName: toTitleCase(data.mechanic.last_name)
                 });
                 setIsEditing(false);
             }
@@ -60,8 +57,8 @@ export function MechanicName({mechanic}) {
     }
 
     const handleCancel = (e) => {
-        formData.firstName = mechanic.mechanicInfo.first_name;
-        formData.lastName = mechanic.mechanicInfo.last_name;
+        formData.firstName = toTitleCase(mechanic.mechanicInfo.first_name);
+        formData.lastName = toTitleCase(mechanic.mechanicInfo.last_name);
         setIsEditing(false);
     }
 

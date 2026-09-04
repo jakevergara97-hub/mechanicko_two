@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { updateMechanicServices } from "../../services/updateMechanicServicesService";
+import { toTitleCase } from "../../utils/toTitleCase";
 
 export function MechanicServices({mechanic}){
     const [isEditing, setIsEditing] = useState(false);
@@ -27,13 +28,7 @@ export function MechanicServices({mechanic}){
 
         setFormData((prevData) => ({
             ...prevData,
-            services: [...prevData.services,
-                serviceInput
-                    .trim()
-                    .split(" ")
-                    .map((s) => s[0].toUpperCase() + s.slice(1))
-                    .join(" ")
-            ]
+            services: [...prevData.services, toTitleCase(serviceInput)]
         }));
 
         setServiceInput('');
@@ -98,7 +93,8 @@ export function MechanicServices({mechanic}){
 
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                         {formData.services.map((service, index) =>
-                            <li key={index}>{service}
+                            <li key={index}>
+                                {service}
                             <button type="button" onClick={() => handleRemoveService(index)}>x</button>
                             </li>
                         )}

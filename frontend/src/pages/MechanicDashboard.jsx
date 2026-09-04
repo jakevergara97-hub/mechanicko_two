@@ -7,6 +7,7 @@ import { MechanicPhoneNumber } from "../components/mechanic_dashboard/MechanicPh
 import { MechanicEmail } from "../components/mechanic_dashboard/MechanicEmail";
 import { MechanicAddress } from "../components/mechanic_dashboard/MechanicAddress";
 import { MechanicServices } from "../components/mechanic_dashboard/MechanicServices";
+import { MechanicCarBrands } from "../components/mechanic_dashboard/MechanicCarBrands";
 
 export function MechanicDashboard() {
     const {mechanic, loading} = useContext(AuthContext);
@@ -19,6 +20,8 @@ export function MechanicDashboard() {
         return <p>Mechanic information unavailable.<br /><Link to={"/"}>Home</Link></p>;
     }
 
+    console.log(mechanic)
+
     return (
         <>
             <p>This is the mechanic dashboard page.</p>
@@ -29,6 +32,7 @@ export function MechanicDashboard() {
                     <MechanicEmail mechanic={mechanic} />
                     <MechanicAddress mechanic={mechanic} />
                     <MechanicServices mechanic={mechanic} />
+                    <MechanicCarBrands mechanic={mechanic} />
                 </div>
             }
             <br />
