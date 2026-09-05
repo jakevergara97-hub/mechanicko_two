@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { toTitleCase } from "../../utils/toTitleCase";
+import { updateMechanicCarBrands } from "../../services/updateMechanicCarBrands";
 
 export function MechanicCarBrands({mechanic}) {
     const [isEditing, setIsEditing] = useState(false);
@@ -14,7 +15,7 @@ export function MechanicCarBrands({mechanic}) {
                 carBrands: mechanic.mechanicInfo.carBrands
             });
         }
-    },[]);
+    },[mechanic]);
 
     const handleChange = (e) => {
         const { value } = e.target;
@@ -24,6 +25,11 @@ export function MechanicCarBrands({mechanic}) {
 
     const handleAddCarBrand = () => {
         if(!carInput.trim()) return;
+
+        if(formData.carBrands.includes(toTitleCase(carInput.trim()))) {
+            alert('Duplicate brand');
+            return;
+        }
 
         setFormData((prevData) => ({
             ...prevData,
@@ -40,14 +46,37 @@ export function MechanicCarBrands({mechanic}) {
         }));
     }
 
+    const handleSaveCarBrands = async () => {
+        const { carBrands } = formData;
+        const id = mechanic.mechanicInfo.id;
+        try{
+            const data = await updateMechanicCarBrands(id, carBrands);
+
+            if(!data) {
+                setIsEditing(false);
+                return;
+            }
+
+            if(data.success){
+                console.log('success');
+                console.log(data);
+                mechanic.mechanicInfo.carBrands = data.updatedCarBrands;
+                setIsEditing(false);
+            }
+        }catch(error){
+            alert(error);
+        }
+    }
+
     const handleCancel = () => {
         setFormData({
             carBrands: mechanic.mechanicInfo.carBrands
         });
+        setCarInput('');
         setIsEditing(false);
     }
 
-    console.log(formData.carBrands)
+    // console.log(formData.carBrands);
 
     return (
         <>
@@ -76,7 +105,7 @@ export function MechanicCarBrands({mechanic}) {
                         ))}
                     </ul>
                     <button type="button" onClick={handleCancel}>Cancel</button>
-                    <button type="button">Save</button>
+                    <button type="button" onClick={handleSaveCarBrands}>Save</button>
                 </>
                 :
                 <>

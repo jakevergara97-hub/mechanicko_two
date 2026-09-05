@@ -26,6 +26,11 @@ export function MechanicServices({mechanic}){
     const handleAddService = () => {
         if(!serviceInput.trim()) return;
 
+        if(formData.services.includes(toTitleCase(serviceInput.trim()))) {
+            alert('Duplicate service');
+            return;
+        }
+
         setFormData((prevData) => ({
             ...prevData,
             services: [...prevData.services, toTitleCase(serviceInput)]
@@ -47,6 +52,7 @@ export function MechanicServices({mechanic}){
         setFormData({
             services: mechanic.mechanicInfo.services
         });
+        setServiceInput('');
         setIsEditing(false);
     }
 

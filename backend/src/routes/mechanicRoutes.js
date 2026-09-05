@@ -10,6 +10,7 @@ import { updateMechanic } from "../controllers/updateMechanicController.js";
 import { updateMechanicAddress } from "../controllers/updateMechanicAddressController.js";
 import { updateMechanicServices } from "../controllers/updateMechanicServicesController.js";
 import { getCarBrands } from "../controllers/getCarBrandsController.js";
+import { updateMechanicCarBrands } from "../controllers/updateMechanicCarBrandsController.js";
 
 router.post("/", createMechanic);
 router.get("/:city/:barangay", getMechanic);
@@ -24,6 +25,7 @@ router.post("/login",
 router.patch("/:id", updateMechanic);
 router.patch("/:id/address", updateMechanicAddress);
 router.patch("/:id/services", updateMechanicServices);
+router.patch("/:id/cars", updateMechanicCarBrands);
 
 router.get("/cars", getCarBrands);
 

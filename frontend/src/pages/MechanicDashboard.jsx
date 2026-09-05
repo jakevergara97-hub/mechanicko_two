@@ -20,7 +20,7 @@ export function MechanicDashboard() {
         return <p>Mechanic information unavailable.<br /><Link to={"/"}>Home</Link></p>;
     }
 
-    console.log(mechanic)
+    // console.log(mechanic)
 
     return (
         <>
