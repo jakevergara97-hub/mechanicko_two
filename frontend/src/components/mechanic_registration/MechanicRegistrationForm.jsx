@@ -108,10 +108,6 @@ export function MechanicRegistrationForm() {
         document.activeElement.blur();
     }
 
-    // if(formData.carBrands.length !== 0 || formData.otherCarBrands.length !== 0) {
-    //     console.log(mergeArrays([formData.carBrands, formData.otherCarBrands]))
-    // }
-
     return (
         <div>
             <p>This is the mechanic registration form</p>

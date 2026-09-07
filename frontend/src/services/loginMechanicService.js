@@ -5,6 +5,7 @@ export async function loginMechanic(credentials) {
             headers: {
                 "Content-Type": "application/json"
             },
+            credentials: "include",
             body: JSON.stringify(credentials)
         });
 
@@ -14,12 +15,10 @@ export async function loginMechanic(credentials) {
             throw new Error(data.error);
         }
 
-        localStorage.setItem("token", data.token);
+        console.log(data);
 
         const profile = await fetch("http://localhost:3000/api/v1/mechanics/me", {
-            headers: {
-                Authorization: `Bearer ${data.token}`
-            }
+            credentials: "include",
         });
 
         const dataProfile = await profile.json();

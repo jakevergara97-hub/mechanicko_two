@@ -91,6 +91,7 @@ export const createMechanic = async (mechanicData) => {
             `,valuesCarBrands.flat()
         );
 
+        // Backend generates JWT/session
         const token = jwt.sign(
             {
                 userId:mechanic.id,
@@ -101,6 +102,18 @@ export const createMechanic = async (mechanicData) => {
                 expiresIn:"1h"
             }
         );
+
+        // Backend puts it in an HttpOnly cookie
+        // res.cookie("token", token, {
+        //     httpOnly: true,
+        //     secure: process.env.NODE_ENV === "production",
+        //     sameSite: "lax",
+        //     maxAge: 24 * 60 * 60 * 1000
+        // });
+
+        // res.status(200).json({
+        //     message: "Login successful"
+        // });
 
         return {
             success: true,

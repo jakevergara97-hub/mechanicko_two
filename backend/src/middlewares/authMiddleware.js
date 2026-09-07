@@ -2,16 +2,15 @@ import jwt from 'jsonwebtoken';
 import "dotenv/config";
 
 export const authenticate = (req,res,next) => {
-    // console.log("Auth Middlewre HIT!");
-    const authHeader = req.headers.authorization;
+    console.log("Auth Middlewre HIT!");
+    const token = req.cookies.token;
+    console.log(token);
 
-    if(!authHeader) {
+    if (!token) {
         return res.status(401).json({
-            message: "No token provided"
+            message: "Not authenticated"
         });
     }
-
-    const token = authHeader.split(" ")[1];
 
     try {
         const decoded = jwt.verify(
@@ -19,7 +18,7 @@ export const authenticate = (req,res,next) => {
             process.env.JWT_SECRET
         );
         req.user = decoded;
-        // console.log(req.user);
+        console.log(req.user);
         next();
 
     } catch(error) {

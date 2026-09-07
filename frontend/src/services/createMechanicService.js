@@ -1,30 +1,25 @@
 export async function createMechanic(mechanic) {
     try {
-        const responseWithToken = await fetch("http://localhost:3000/api/v1/mechanics/", {
+        const response = await fetch("http://localhost:3000/api/v1/mechanics/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
+            credentials: "include",
             body: JSON.stringify(mechanic),
         });
 
-        const data = await responseWithToken.json();
+        const data = await response.json();
 
-        if(!responseWithToken.ok) {
+        if(!response.ok) {
             throw new Error (data.error);
         }
         console.log(data);
 
-        localStorage.setItem(
-            "token",
-            data.token
-        );
-
         const profile = await fetch("http://localhost:3000/api/v1/mechanics/me", {
-                    headers: {
-                        Authorization: `Bearer ${data.token}`
-                    }
-                });
+                    credentials: "include"
+                }
+            );
 
         const dataProfile = await profile.json();
         console.log(dataProfile);

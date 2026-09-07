@@ -7,6 +7,7 @@ export async function updateMechanic(id, updates) {
             headers: {
                 "Content-Type": "application/json"
             },
+            credentials: "include",
             body: JSON.stringify(updates)
         });
 

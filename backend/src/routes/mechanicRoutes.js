@@ -11,6 +11,7 @@ import { updateMechanicAddress } from "../controllers/updateMechanicAddressContr
 import { updateMechanicServices } from "../controllers/updateMechanicServicesController.js";
 import { getCarBrands } from "../controllers/getCarBrandsController.js";
 import { updateMechanicCarBrands } from "../controllers/updateMechanicCarBrandsController.js";
+import { logoutMechanic } from "../controllers/logoutMechanicController.js";
 
 router.post("/", createMechanic);
 router.get("/:city/:barangay", getMechanic);
@@ -18,9 +19,8 @@ router.get("/me",
     authenticate,
     me
 );
-router.post("/login",
-    loginMechanic
-);
+router.post("/login", loginMechanic);
+router.post("/logout", logoutMechanic);
 
 router.patch("/:id", updateMechanic);
 router.patch("/:id/address", updateMechanicAddress);
@@ -28,5 +28,7 @@ router.patch("/:id/services", updateMechanicServices);
 router.patch("/:id/cars", updateMechanicCarBrands);
 
 router.get("/cars", getCarBrands);
+
+
 
 export default router;

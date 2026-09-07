@@ -11,20 +11,21 @@ export function AuthContextProvider({ children }) {
 
     useEffect(() => {
         const loadProfile = async () => {
-            const token = localStorage.getItem("token");
+            // const token = localStorage.getItem("token");
 
-            if(!token) {
-                console.log("No token");
-                setLoading(false);
-                // navigate("/");
-                return;
-            }
+            // if(!token) {
+            //     console.log("No token");
+            //     setLoading(false);
+            //     // navigate("/");
+            //     return;
+            // }
 
             try{
                 const response = await fetch("http://localhost:3000/api/v1/mechanics/me", {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                    // headers: {
+                    //     Authorization: `Bearer ${token}`
+                    // }
+                    credentials: "include"
                 });
 
                 if(!response.ok) {

@@ -49,6 +49,7 @@ export const loginMechanic = async (credentials) => {
 
         return {
             success: true,
+            message: "Login successful",
             token
         }
 

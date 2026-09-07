@@ -5,6 +5,7 @@ export async function updateMechanicCarBrands(id, updates) {
             headers: {
                 "Content-Type": "application/json"
             },
+            credentials: "include",
             body: JSON.stringify(updates)
         });
 
