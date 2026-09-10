@@ -1,6 +1,4 @@
 export async function updateMechanic(id, updates) {
-    console.log(id);
-    console.log(updates);
     try{
         const response = await fetch(`http://localhost:3000/api/v1/mechanics/${id}`, {
             method: "PATCH",

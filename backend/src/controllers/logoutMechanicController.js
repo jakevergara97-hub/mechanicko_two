@@ -1,4 +1,3 @@
-// import jwt from 'jsonwebtoken';
 import "dotenv/config";
 
 export const logoutMechanic = async (req, res) => {

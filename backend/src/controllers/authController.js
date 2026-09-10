@@ -1,7 +1,6 @@
 import { getCurrentMechanic } from "../services/getCurrentMechanicService.js";
 
 export const me = async (req,res) => {
-    console.log("Auth Controller HIT!");
     try {
         const data = await getCurrentMechanic(req.user.userId);
 

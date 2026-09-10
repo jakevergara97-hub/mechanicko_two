@@ -2,9 +2,9 @@ import jwt from 'jsonwebtoken';
 import "dotenv/config";
 
 export const authenticate = (req,res,next) => {
-    console.log("Auth Middlewre HIT!");
+    // console.log("Auth Middlewre HIT!");
     const token = req.cookies.token;
-    console.log(token);
+    // console.log(token);
 
     if (!token) {
         return res.status(401).json({
@@ -18,7 +18,7 @@ export const authenticate = (req,res,next) => {
             process.env.JWT_SECRET
         );
         req.user = decoded;
-        console.log(req.user);
+        // console.log(req.user);
         next();
 
     } catch(error) {

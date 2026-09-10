@@ -1,12 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { AddressPicker } from "../components/common/AddressPicker";
 import { FindMechanicButton } from "../components/home/FindMechanicButton";
 import { MechanicList } from "../components/home/MechanicsList";
+import { AuthContext } from "../context/AuthContext";
 import { Logout } from "../components/common/MechanicLogout";
 
 export function Home() {
-    const token = localStorage.getItem("token");
+    const { mechanic, loading } = useContext(AuthContext);
+
+    if(loading) {
+        return <p>Loading...</p>
+    }
 
     return (
         <>
@@ -14,7 +19,7 @@ export function Home() {
             <FindMechanicButton />
             <MechanicList />
             <br />
-            {token ?
+            {mechanic ?
                 <div>
                     <Link to="/mechanicdashboard">
                         My Mechanic Profile
@@ -33,8 +38,6 @@ export function Home() {
                     </Link>
                 </div>
             }
-
-
         </>
     );
 }

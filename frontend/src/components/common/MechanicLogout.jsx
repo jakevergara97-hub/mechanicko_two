@@ -8,18 +8,10 @@ export function Logout() {
     const { setMechanic } = useContext(AuthContext)
 
     const handleLogout = async () => {
-        // localStorage.removeItem("token");
-        // setMechanic([]);
-        // navigate("/");
-        // window.location.href = "/";
-
         const response = await mechanicLogout();
 
-        // const data = await response.json();
-        // console.log(response);
-
         if(response.success) {
-            setMechanic([]);
+            setMechanic(null);
             navigate("/");
         }
     }

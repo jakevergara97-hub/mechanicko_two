@@ -41,7 +41,6 @@ export function MechanicName({mechanic}) {
             const data = await updateMechanic(id, {firstName: firstName.trim(), lastName: lastName.trim()});
 
             if(data.success) {
-                console.log(data);
                 mechanic.mechanicInfo.first_name = data.mechanic.first_name;
                 mechanic.mechanicInfo.last_name = data.mechanic.last_name;
                 setFormData({

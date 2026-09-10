@@ -88,10 +88,8 @@ export function MechanicAddress({mechanic}) {
 
         try{
             const data = await updateMechanicAddress(id, {region, province, city, barangay});
-            console.log(data);
 
             if(data.success) {
-                console.log('success');
                 mechanic.mechanicInfo.region = data.mechanic.region;
                 mechanic.mechanicInfo.province = data.mechanic?.province;
                 mechanic.mechanicInfo.city = data.mechanic.city;

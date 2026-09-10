@@ -15,8 +15,6 @@ export async function loginMechanic(credentials) {
             throw new Error(data.error);
         }
 
-        console.log(data);
-
         const profile = await fetch("http://localhost:3000/api/v1/mechanics/me", {
             credentials: "include",
         });

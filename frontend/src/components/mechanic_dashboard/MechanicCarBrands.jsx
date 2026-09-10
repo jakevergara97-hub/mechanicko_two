@@ -58,8 +58,6 @@ export function MechanicCarBrands({mechanic}) {
             }
 
             if(data.success){
-                console.log('success');
-                console.log(data);
                 mechanic.mechanicInfo.carBrands = data.updatedCarBrands;
                 setIsEditing(false);
             }

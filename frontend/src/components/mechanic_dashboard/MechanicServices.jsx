@@ -68,8 +68,6 @@ export function MechanicServices({mechanic}){
             }
 
             if(data.success) {
-                console.log('success');
-                console.log(data);
                 mechanic.mechanicInfo.services = data.updatedServices;
                 setIsEditing(false);
             }
