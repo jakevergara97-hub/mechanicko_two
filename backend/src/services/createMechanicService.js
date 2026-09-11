@@ -103,18 +103,6 @@ export const createMechanic = async (mechanicData) => {
             }
         );
 
-        // Backend puts it in an HttpOnly cookie
-        // res.cookie("token", token, {
-        //     httpOnly: true,
-        //     secure: process.env.NODE_ENV === "production",
-        //     sameSite: "lax",
-        //     maxAge: 24 * 60 * 60 * 1000
-        // });
-
-        // res.status(200).json({
-        //     message: "Login successful"
-        // });
-
         return {
             success: true,
             message: "Mechanic added successfully",
