@@ -26,7 +26,6 @@ export const FindMechanicButton =  () => {
             barangay,
             });
 
-            console.log(data);
             setMechanics(data);
             setIsClicked(true);
 

@@ -7,6 +7,7 @@ export function MechanicLogin() {
     const { mechanic, setMechanic } = useContext(AuthContext);
     const navigate = useNavigate();
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const initialFormState = {
         email: '',
@@ -28,6 +29,7 @@ export function MechanicLogin() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         const { email, password } = formData;
 
         try{
@@ -39,9 +41,10 @@ export function MechanicLogin() {
             }
         }catch(error) {
             setError(error.message);
+        }finally{
+            setIsLoading(false);
         }
     }
-
     return (
         <div>
             <h3>Mechanic Login Page</h3>
@@ -66,7 +69,12 @@ export function MechanicLogin() {
                 />
             <br />
             {error && <p>{error}</p>}
-            <button>Login</button>
+
+            {!isLoading ?
+                <button>Login</button>
+                :
+                <button disabled={isLoading}>Logging in...</button>
+            }
             </form>
             <Link to={"/"}>
                 Home
