@@ -20,12 +20,13 @@ export const FindMechanicButton =  () => {
 
         try{
             const limit = 10;
+            let page = 1;
             const data = await getMechanic({
             // region,
             // province,
             city,
             barangay,
-            }, 1, limit);
+            }, page, limit);
 
             setMechanics(data);
             setIsClicked(true);

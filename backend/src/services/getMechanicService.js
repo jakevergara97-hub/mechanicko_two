@@ -23,12 +23,12 @@ export const getMechanic = async (location, pagination) => {
         const currentPage = Number(page) || 1;
         // console.log(currentPage)
         const currentLimit = Number(limit) || 10;
-        console.log(currentLimit);
+        // console.log(currentLimit);
 
         const offset = (page - 1) * currentLimit;
-        console.log(offset);
+        // console.log(offset);
 
-        const query = `
+        const mechanicsQuery = `
                 SELECT
                     mau.email,
                     mau.id,
@@ -49,10 +49,9 @@ export const getMechanic = async (location, pagination) => {
             `;
         const cityValue = [city];
 
+        const resultMechanics = await pool.query(mechanicsQuery, cityValue);
 
-        const result = await pool.query(query, cityValue);
-
-        const mechanics = result.rows;
+        const mechanics = resultMechanics.rows;
 
         if(mechanics.length === 0) {
             throw {
@@ -92,7 +91,7 @@ export const getMechanic = async (location, pagination) => {
         const totalCityMechanics = resultTotalMechanicsCity.rows[0].count;
         console.log(totalCityMechanics);
 
-        const query2witOffset = `
+        const paginatedMechanicsQuery  = `
             SELECT
                 mau.email,
                 mau.id,
@@ -114,38 +113,22 @@ export const getMechanic = async (location, pagination) => {
             OFFSET $3
         `;
 
-        const query2Values = [cityValue, limit, offset];
+        const paginatedMechanicsValues  = [cityValue, limit, offset];
 
-        const resultWithOffset = await pool.query(query2witOffset, query2Values);
-        // console.log(resultWithOffset);
+        const paginatedMechanicsResult  = await pool.query(
+            paginatedMechanicsQuery,
+            paginatedMechanicsValues.flat()
+        );
 
-        // How to compute the OFFSET?
+        const paginatedMechanics = paginatedMechanicsResult.rows;
+        // console.log(paginatedMechanicsResult.rows);
 
-        // How can I select the mechanics in the same barangay?
-
-        // RETURN DESIGN
-        // {
-        //     mechanics: [...], -> all the mechanics
-        //     totalMechanics: 35, -> totalCityMechanics
-        //     totalPages: 4, -> offset
-        //     currentPage: 2, -> page
-        //     totalSameBarangay: 15 -> totalSameBarangay
-        // }
-
-        // const totalPages = Math.ceil(totalCityMechanics / 10);
-        // Where 10 is the limit
         const totalPages = Math.ceil(totalCityMechanics / currentLimit);
-
-        // return {
-        //     success: true,
-        //     message: "Mechanics data",
-        //     mechanics
-        // }
 
         return {
             success: true,
             message: "Mechanics data",
-            mechanics,
+            mechanics: paginatedMechanics,
             totalCityMechanics,
             totalPages,
             currentPage,

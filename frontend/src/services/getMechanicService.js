@@ -1,9 +1,9 @@
 export async function getMechanic(location, page, limit) {
     const { city, barangay } = location;
-    console.log(city);
-    console.log(barangay);
-    console.log(page);
-    console.log(limit);
+    // console.log(city);
+    // console.log(barangay);
+    // console.log(page);
+    // console.log(limit);
 // export async function getMechanic(location) {
 //     const { city, barangay } = location;
     try {
