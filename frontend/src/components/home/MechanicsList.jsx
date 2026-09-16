@@ -3,6 +3,7 @@ import { MechanicsInfoContext } from "../../context/MechanicsInfoContext";
 import { CustomerLocationContext } from "../../context/CustomerLocationContext";
 import { MechanicCardBarangay } from "./MechanicCardBarangay";
 import { MechanicCardOtherBarangay } from "./MechanicCardOtherBarangay";
+import { MechanicsPaginationSameBarangay } from "../common/MechanicsPaginationSameBarangay";
 
 export const MechanicList = () => {
     const { mechanics, setMechanics, error, setError, isClicked } = useContext(MechanicsInfoContext);
@@ -32,6 +33,9 @@ export const MechanicList = () => {
                                         // mechanic.city === city
                                         );
 
+    console.log(mechanicsInTheBarangay.map((mechanic) => mechanic.barangay));
+    // console.log(mechanicsInTheBarangay[0].barangay)
+
     return (
         <div>
             {error && <p>{error}</p>}
@@ -44,6 +48,9 @@ export const MechanicList = () => {
                 <div>
                     <h2>Available mechanics in your barangay</h2>
                     <MechanicCardBarangay mechanics={mechanicsInTheBarangay} />
+                    {/* <MechanicsPaginationSameBarangay
+                        mechanicBarangay={mechanicsInTheBarangay[0].barangay}
+                    /> */}
                 </div>
             }
 
