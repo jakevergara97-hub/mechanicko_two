@@ -36,7 +36,7 @@ export const MechanicList = () => {
 
     return (
         <div>
-
+            {/* OPTIMIZE THIS PAGE */}
             {isClicked && mechanics.mechanics.length !== 0 &&
                 <div>
                     {/* <h2>All Mechanics</h2> */}
@@ -46,9 +46,6 @@ export const MechanicList = () => {
                     />
                 </div>
             }
-
-
-
 
 
             {/* {error && <p>{error}</p>}
