@@ -1,5 +1,5 @@
-export function toTitleCase(words){
-    return words
+export function toTitleCase(word){
+    return word
         .trim()
         .split(" ")
         .map((c) => c[0].toUpperCase() + c.slice(1))

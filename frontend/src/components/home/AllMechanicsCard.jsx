@@ -1,4 +1,5 @@
 import { MechanicsPagesNavigator } from "../common/MechanicsPagesNavigator";
+import { toTitleCase } from "../../utils/toTitleCase";
 
 export function AllMechanicsCard({mechanics, location, isClicked}) {
     console.log(location.barangay);
@@ -38,8 +39,8 @@ export function AllMechanicsCard({mechanics, location, isClicked}) {
                     <div>
                         <h2>Available mechanics in your barangay</h2>
                         {mechanicsInTheBarangay.map((mechanic) => {
-                            const firstName = mechanic.first_name[0].toUpperCase() + mechanic.first_name.slice(1);
-                            const lastName = mechanic.last_name[0].toUpperCase() + mechanic.last_name.slice(1);
+                            const firstName = toTitleCase(mechanic.first_name);
+                            const lastName = toTitleCase(mechanic.last_name);
                             const fullName = firstName + " " + lastName;
 
                             return (
@@ -65,8 +66,8 @@ export function AllMechanicsCard({mechanics, location, isClicked}) {
                     <div>
                         <h2>Available mechanics in other barangays</h2>
                         {mechanicsInOtherBarangay.map((mechanic) => {
-                            const firstName = mechanic.first_name[0].toUpperCase() + mechanic.first_name.slice(1);
-                            const lastName = mechanic.last_name[0].toUpperCase() + mechanic.last_name.slice(1);
+                            const firstName = toTitleCase(mechanic.first_name);
+                            const lastName = toTitleCase(mechanic.last_name);
                             const fullName = firstName + " " + lastName;
 
                             return (

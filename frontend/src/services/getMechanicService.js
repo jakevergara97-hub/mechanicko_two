@@ -1,4 +1,4 @@
-export async function getMechanic(location, page, limit) {
+export async function getMechanic(location, page = 1, limit = 10) {
     const { city, barangay } = location;
     // console.log(city);
     // console.log(barangay);

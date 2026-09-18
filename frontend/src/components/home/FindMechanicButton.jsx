@@ -26,7 +26,7 @@ export const FindMechanicButton =  () => {
             // province,
             city,
             barangay,
-            }, page, limit);
+            });
 
             setMechanics(data);
             setIsClicked(true);
