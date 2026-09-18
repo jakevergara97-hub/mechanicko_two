@@ -7,23 +7,7 @@ export function MechanicsPagesNavigator({pages}) {
     const { location } = useContext(CustomerLocationContext);
     const { setMechanics, setError, setIsClicked } = useContext(MechanicsInfoContext);
     const { city, barangay } = location;
-
     const [page, setPage] = useState(1);
-
-    const handlePrevious = async () => {
-        if(page === 1) {
-            return;
-        }
-
-        setPage((prevData) => prevData = prevData - 1);
-    }
-
-    const handleNext = async () => {
-        if(page === pages.length){
-            return;
-        }
-        setPage((prevData) => prevData = prevData + 1);
-    }
 
     useEffect(() => {
         const getMechanicsPerPage = async() => {
@@ -38,6 +22,20 @@ export function MechanicsPagesNavigator({pages}) {
         }
         getMechanicsPerPage();
     },[page]);
+
+    const handlePrevious = async () => {
+        if(page === 1) {
+            return;
+        }
+        setPage((prevData) => prevData = prevData - 1);
+    }
+
+    const handleNext = async () => {
+        if(page === pages.length){
+            return;
+        }
+        setPage((prevData) => prevData = prevData + 1);
+    }
 
     return (
         <>

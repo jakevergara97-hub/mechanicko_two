@@ -1,9 +1,39 @@
 import { MechanicsPagesNavigator } from "../common/MechanicsPagesNavigator";
 import { toTitleCase } from "../../utils/toTitleCase";
+import { useEffect, useState } from "react";
 
 export function AllMechanicsCard({mechanics, location, isClicked}) {
-    console.log(location.barangay);
+    const [barangayMechanics, setBarangayMechanics] = useState([]);
+    const [otherBarangayMechanics, setOtherBarangayMechanics] = useState([]);
     let pages = [];
+
+    useEffect(() => {
+        const loadBarangayMechanics = () => {
+            if(!mechanics.mechanics) {
+                return <p>Loading...</p>
+            }
+            setBarangayMechanics(
+                mechanics.mechanics
+                    .filter(mechanic =>
+                    mechanic.barangay === location.barangay &&
+                    location.city
+                )
+            )
+        }
+
+        const loadOtherBarangayMechanics = () => {
+            setOtherBarangayMechanics(
+                mechanics.mechanics
+                    .filter(mechanic =>
+                    mechanic.barangay !== location.barangay &&
+                    location.city
+                )
+            )
+        }
+
+        loadBarangayMechanics();
+        loadOtherBarangayMechanics();
+    },[]);
 
     const mechanicsInTheBarangay = !mechanics.mechanics
         ?
@@ -31,8 +61,10 @@ export function AllMechanicsCard({mechanics, location, isClicked}) {
     return (
         <div>
             <div>
-                {isClicked && mechanicsInTheBarangay.length === 0 &&
-                    <h2>No available mechanics in your barangay</h2>
+                {isClicked &&
+                    mechanics.currentPage === 1 &&
+                    barangayMechanics.length === 0 &&
+                        <h2>No available mechanics in your barangay</h2>
                 }
 
                 {isClicked && mechanicsInTheBarangay.length !== 0 &&
@@ -58,8 +90,10 @@ export function AllMechanicsCard({mechanics, location, isClicked}) {
             </div>
 
             <div>
-                {isClicked && mechanicsInOtherBarangay.length === 0 &&
-                    <h2>No available mechanics in other barangays</h2>
+                {isClicked &&
+                    mechanics.currentPage === 1 &&
+                    otherBarangayMechanics.length === 0 &&
+                        <h2>No available mechanics in other barangays</h2>
                 }
 
                 {isClicked && mechanicsInOtherBarangay.length !== 0 &&
@@ -83,6 +117,7 @@ export function AllMechanicsCard({mechanics, location, isClicked}) {
                     </div>
                 }
             </div>
+            <br />
             <MechanicsPagesNavigator pages={pages} />
         </div>
     );
