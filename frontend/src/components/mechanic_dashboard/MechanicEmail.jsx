@@ -28,7 +28,7 @@ export function MechanicEmail({mechanic}) {
                 return;
             }
 
-            const data = await updateMechanic(id, {email: email.trim()});
+            const data = await updateMechanic(id, {email: email.trim().toLowerCase()});
 
             if(data.success) {
                 mechanic.mechanicInfo.email = data.mechanic.email;

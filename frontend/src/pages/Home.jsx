@@ -15,9 +15,7 @@ export function Home() {
 
     return (
         <>
-            <AddressPicker />
-            <FindMechanicButton />
-            <MechanicList />
+
             <br />
             {mechanic ?
                 <div>
@@ -38,6 +36,9 @@ export function Home() {
                     </Link>
                 </div>
             }
+            <AddressPicker />
+            <FindMechanicButton />
+            <MechanicList />
         </>
     );
 }

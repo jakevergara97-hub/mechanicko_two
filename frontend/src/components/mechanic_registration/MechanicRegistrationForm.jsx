@@ -82,10 +82,10 @@ export function MechanicRegistrationForm() {
 
         try {
             const data = await createMechanic({
-                firstName: firstName.trim(),
-                lastName: lastName.trim(),
+                firstName: firstName.trim().toLowerCase(),
+                lastName: lastName.trim().toLowerCase(),
                 phoneNumber: phoneNumber.trim(),
-                email: email.trim(),
+                email: email.trim().toLowerCase(),
                 password,
                 region,
                 province,

@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { loginMechanic } from "../services/loginMechanicService";
 import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { toLowerCase } from "../utils/toLowerCase";
 
 export function MechanicLogin() {
     const { mechanic, setMechanic } = useContext(AuthContext);
@@ -33,7 +34,7 @@ export function MechanicLogin() {
         const { email, password } = formData;
 
         try{
-            const data = await loginMechanic({email, password});
+            const data = await loginMechanic({email: email.toLowerCase(), password});
 
             if(data.success) {
                 setMechanic(data);
