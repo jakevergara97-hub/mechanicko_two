@@ -3,11 +3,12 @@ import { useState } from "react";
 export function PersonalInformation({ formData,
                                     setFormData,
                                     confirmPasswordError,
-                                    setConfirmPasswordError }) {
+                                    setConfirmPasswordError,
+                                    errors, setErrors
+                                    }) {
 
     const [touched, setTouched] = useState({});
     const [emailError, setEmailError] = useState('');
-    // const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
     const handleChange = (event) => {
         let {name, value} = event.target;
@@ -36,7 +37,6 @@ export function PersonalInformation({ formData,
                     }
                 });
             }
-
         }
 
         setFormData((prevData) => {
@@ -61,7 +61,7 @@ export function PersonalInformation({ formData,
 
     const validateConfirmPassword = (value) => {
         if(value !== formData.password) {
-            setConfirmPasswordError('Passwords are not the same');
+            setConfirmPasswordError('Passwords are not the same!');
         } else {
             setConfirmPasswordError('');
         }

@@ -6,12 +6,20 @@ import { PersonalInformation } from "./PersonalInformation";
 import { AddressInformation } from "./AddressInformation";
 import { MechanicServicesForm } from "./MechanicServicesForm";
 import { MechanicCarBrandForm } from "./MechanicCarBrandForm";
+import { toTitleCase } from "../../utils/toTitleCase";
 import { mergeArrays } from "../../utils/mergeArrays";
 
 export function MechanicRegistrationForm() {
     const navigate = useNavigate();
     const [confirmPasswordError, setConfirmPasswordError] = useState('');
     const {mechanic, setMechanic} = useContext(AuthContext);
+    const [errors, setErrors] = useState({
+        confirmPasswordError: '',
+        addressError: '',
+        servicesError: '',
+        mechanicCarBrandsError: ''
+    });
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const initialFormState = {
         firstName: '',
@@ -51,22 +59,41 @@ export function MechanicRegistrationForm() {
                 otherCarBrands
             } = formData;
 
-        if(confirmPasswordError) {
-            return;
-        }
-
         for(const [key, value] of Object.entries(formData)) {
             if(key === 'province') {
                 continue;
             }
-
-            if(value === '') {
-                return;
+            if(value === '' || !value) {
+                setErrors((prevData) => {
+                    return {
+                        ...prevData,
+                        [`${key}Error`]: `${toTitleCase(key)} field is not complete`
+                    }
+                })
+            } else {
+                setErrors((prevData) => {
+                    return {
+                        ...prevData,
+                        [`${key}Error`]: ``
+                    }
+                })
             }
         }
 
         if(services.length === 0) {
-            return;
+            setErrors((prevData) => {
+                return {
+                    ...prevData,
+                    servicesError: `Services field is not complete`
+                }
+            })
+        }else {
+            setErrors((prevData) => {
+                return {
+                    ...prevData,
+                    servicesError: ``
+                }
+            })
         }
 
         const mechanicCarBrands = carBrands.length !== 0 || otherCarBrands.length !== 0 ?
@@ -75,12 +102,29 @@ export function MechanicRegistrationForm() {
                     [];
 
         if(mechanicCarBrands.length === 0) {
-            return;
+            setErrors((prevData) => {
+                return {
+                    ...prevData,
+                    mechanicCarBrandsError: `Car brands field is not complete`
+                }
+            })
+        }else {
+            setErrors((prevData) => {
+                return {
+                    ...prevData,
+                    mechanicCarBrandsError: ``
+                }
+            })
         }
 
-        console.log(mechanicCarBrands);
+        for(const [key, value] of Object.entries(errors)) {
+            if(value !== ''){
+                return;
+            }
+        }
 
         try {
+            setIsSubmitting(true);
             const data = await createMechanic({
                 firstName: firstName.trim().toLowerCase(),
                 lastName: lastName.trim().toLowerCase(),
@@ -97,14 +141,16 @@ export function MechanicRegistrationForm() {
 
             if(data.success) {
                 console.log("success");
+                setFormData(initialFormState);
                 setMechanic(data);
-                navigate("/mechanicdashboard")
+                navigate("/mechanicdashboard");
             }
 
         } catch(error) {
             alert(error.message);
+        } finally {
+            setIsSubmitting(false);
         }
-        setFormData(initialFormState);
         document.activeElement.blur();
     }
 
@@ -119,19 +165,24 @@ export function MechanicRegistrationForm() {
                         setFormData={setFormData}
                         confirmPasswordError={confirmPasswordError}
                         setConfirmPasswordError={setConfirmPasswordError}
+                        errors={errors}
+                        setErrors={setErrors}
                         />
                 </fieldset>
                 <br />
 
                 <fieldset>
                     <legend>Address</legend>
-                    <AddressInformation formData={formData} setFormData={setFormData} />
+                    <AddressInformation
+                        formData={formData}
+                        setFormData={setFormData} />
                 </fieldset>
                 <br />
 
                 <fieldset>
                     <legend>Services</legend>
                     <MechanicServicesForm formData={formData} setFormData={setFormData} />
+
                 </fieldset>
                 <br />
 
@@ -140,10 +191,21 @@ export function MechanicRegistrationForm() {
                     <MechanicCarBrandForm formData={formData} setFormData={setFormData} />
                 </fieldset>
                 <br />
-
-                <button type="Submit">Submit</button>
+                <div>
+                    {errors &&
+                        <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+                            {Object.values(errors).map((error, index) => (
+                                <li key={index} style={{ color: 'red' }}>{error}</li>
+                            ))}
+                        </ul>
+                    }
+                </div>
+                {!isSubmitting ?
+                    <button>Submit</button>
+                    :
+                    <button disabled={isSubmitting}>Submitting...</button>
+                }
             </form>
         </div>
-
     );
 }

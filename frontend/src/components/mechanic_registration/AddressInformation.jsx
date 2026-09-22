@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export function AddressInformation({ formData, setFormData }) {
+export function AddressInformation({ formData, setFormData}) {
     const [locationHierarchy, setLocationHierarchy] = useState({});
     const [touched, setTouched] = useState({});
 
