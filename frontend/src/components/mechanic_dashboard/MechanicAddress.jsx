@@ -10,6 +10,7 @@ export function MechanicAddress({mechanic}) {
         barangay: ''
     });
     const [isEditing, setIsEditing] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         async function loadPSGC() {
@@ -85,7 +86,7 @@ export function MechanicAddress({mechanic}) {
     const handleAddressSave = async () => {
         let { region, province, city, barangay } = formData;
         const id = mechanic.mechanicInfo.id;
-
+        setIsSaving(true);
         try{
             const data = await updateMechanicAddress(id, {region, province, city, barangay});
 
@@ -101,8 +102,8 @@ export function MechanicAddress({mechanic}) {
                     city: data.mechanic.city,
                     barangay: data.mechanic.barangay
                 });
-
                 setIsEditing(false);
+                setIsSaving(false);
             }
 
         } catch(error) {
@@ -274,8 +275,18 @@ export function MechanicAddress({mechanic}) {
                                 </>
                             )
                         }
-                        <button onClick={handleAddressSave}>Save</button>
-                        <button onClick={handleCancel}>Cancel</button>
+
+                        {!isSaving ?
+                            <>
+                                <button onClick={handleAddressSave}>Save</button>
+                                <button onClick={handleCancel}>Cancel</button>
+                            </>
+                            :
+                            <>
+                                <button disabled={isSaving}>Saving...</button>
+                                <button disabled={isSaving}>Cancel</button>
+                            </>
+                        }
                     </>
                     :
                     <>

@@ -3,11 +3,12 @@ import { toTitleCase } from "../../utils/toTitleCase";
 import { updateMechanicCarBrands } from "../../services/updateMechanicCarBrands";
 
 export function MechanicCarBrands({mechanic}) {
-    const [isEditing, setIsEditing] = useState(false);
     const [carInput, setCarInput] = useState('');
     const [formData, setFormData] = useState({
         carBrands: []
     });
+    const [isEditing, setIsEditing] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if(mechanic?.mechanicInfo){
@@ -49,6 +50,7 @@ export function MechanicCarBrands({mechanic}) {
     const handleSaveCarBrands = async () => {
         const { carBrands } = formData;
         const id = mechanic.mechanicInfo.id;
+        setIsSaving(true);
         try{
             const data = await updateMechanicCarBrands(id, carBrands);
 
@@ -60,6 +62,7 @@ export function MechanicCarBrands({mechanic}) {
             if(data.success){
                 mechanic.mechanicInfo.carBrands = data.updatedCarBrands;
                 setIsEditing(false);
+                setIsSaving(false);
             }
         }catch(error){
             alert(error);
@@ -73,8 +76,6 @@ export function MechanicCarBrands({mechanic}) {
         setCarInput('');
         setIsEditing(false);
     }
-
-    // console.log(formData.carBrands);
 
     return (
         <>
@@ -102,8 +103,18 @@ export function MechanicCarBrands({mechanic}) {
                             </li>
                         ))}
                     </ul>
-                    <button type="button" onClick={handleCancel}>Cancel</button>
-                    <button type="button" onClick={handleSaveCarBrands}>Save</button>
+
+                    {!isSaving ?
+                        <>
+                            <button onClick={handleSaveCarBrands}>Save</button>
+                            <button onClick={handleCancel}>Cancel</button>
+                        </>
+                        :
+                        <>
+                            <button disabled={isSaving}>Saving...</button>
+                            <button disabled={isSaving}>Cancel</button>
+                        </>
+                    }
                 </>
                 :
                 <>

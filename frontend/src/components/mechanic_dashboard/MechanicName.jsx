@@ -8,6 +8,7 @@ export function MechanicName({mechanic}) {
         lastName: ''
     });
     const [isEditing, setIsEditing] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if(mechanic?.mechanicInfo) {
@@ -37,6 +38,7 @@ export function MechanicName({mechanic}) {
         let {firstName, lastName} = formData;
 
         const id = mechanic.mechanicInfo.id;
+        setIsSaving(true);
         try{
             const data = await updateMechanic(id, {firstName: firstName.trim(), lastName: lastName.trim()});
 
@@ -48,6 +50,7 @@ export function MechanicName({mechanic}) {
                     lastName: toTitleCase(data.mechanic.last_name)
                 });
                 setIsEditing(false);
+                setIsSaving(false);
             }
 
         } catch(error) {
@@ -82,8 +85,17 @@ export function MechanicName({mechanic}) {
                             onChange={handleChange}
                         ></input>
 
-                        <button onClick={handleNameSave}>Save</button>
-                        <button onClick={handleCancel}>Cancel</button>
+                        {!isSaving ?
+                            <>
+                                <button onClick={handleNameSave}>Save</button>
+                                <button onClick={handleCancel}>Cancel</button>
+                            </>
+                            :
+                            <>
+                                <button disabled={isSaving}>Saving...</button>
+                                <button disabled={isSaving}>Cancel</button>
+                            </>
+                        }
                     </>
                     :
                     <>

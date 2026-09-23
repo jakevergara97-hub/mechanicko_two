@@ -3,11 +3,12 @@ import { updateMechanicServices } from "../../services/updateMechanicServicesSer
 import { toTitleCase } from "../../utils/toTitleCase";
 
 export function MechanicServices({mechanic}){
-    const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         services: []
     });
     const [serviceInput, setServiceInput] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if(mechanic?.mechanicInfo) {
@@ -59,6 +60,7 @@ export function MechanicServices({mechanic}){
     const handleSaveServices = async () => {
         const { services } = formData;
         const id = mechanic.mechanicInfo.id;
+        setIsSaving(true);
         try{
             const data = await updateMechanicServices(id, services);
 
@@ -70,6 +72,7 @@ export function MechanicServices({mechanic}){
             if(data.success) {
                 mechanic.mechanicInfo.services = data.updatedServices;
                 setIsEditing(false);
+                setIsSaving(false);
             }
 
         } catch(error) {
@@ -103,8 +106,18 @@ export function MechanicServices({mechanic}){
                             </li>
                         )}
                     </ul>
-                    <button type="button" onClick={handleCancel}>Cancel</button>
-                    <button type="button" onClick={handleSaveServices}>Save</button>
+
+                    {!isSaving ?
+                            <>
+                                <button onClick={handleSaveServices}>Save</button>
+                                <button onClick={handleCancel}>Cancel</button>
+                            </>
+                            :
+                            <>
+                                <button disabled={isSaving}>Saving...</button>
+                                <button disabled={isSaving}>Cancel</button>
+                            </>
+                        }
                 </>
                 :
                 <>

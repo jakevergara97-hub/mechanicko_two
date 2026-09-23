@@ -4,6 +4,7 @@ import { updateMechanic } from "../../services/updateMechanicService";
 export function MechanicPhoneNumber({mechanic}){
     const [phoneNumber, setPhoneNumber] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if(mechanic?.mechanicInfo) {
@@ -18,7 +19,7 @@ export function MechanicPhoneNumber({mechanic}){
 
     const handleNumberSave = async () => {
         const id = mechanic.mechanicInfo.id;
-
+        setIsSaving(true);
         try {
             const data = await updateMechanic(id, {phoneNumber: phoneNumber.trim()});
 
@@ -26,6 +27,7 @@ export function MechanicPhoneNumber({mechanic}){
                 mechanic.mechanicInfo.phone_number = data.mechanic.phone_number;
                 setPhoneNumber(data.mechanic.phone_number);
                 setIsEditing(false);
+                setIsSaving(false);
             }
 
         } catch(error) {
@@ -51,8 +53,17 @@ export function MechanicPhoneNumber({mechanic}){
                             onChange={handleChange}
                         ></input>
 
-                        <button onClick={handleNumberSave}>Save</button>
-                        <button onClick={handleCancel}>Cancel</button>
+                        {!isSaving ?
+                            <>
+                                <button onClick={handleNumberSave}>Save</button>
+                                <button onClick={handleCancel}>Cancel</button>
+                            </>
+                            :
+                            <>
+                                <button disabled={isSaving}>Saving...</button>
+                                <button disabled={isSaving}>Cancel</button>
+                            </>
+                        }
                     </>
                     :
                     <>

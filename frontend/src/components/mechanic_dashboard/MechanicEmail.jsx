@@ -5,6 +5,7 @@ export function MechanicEmail({mechanic}) {
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if(mechanic?.mechanicInfo) {
@@ -22,7 +23,7 @@ export function MechanicEmail({mechanic}) {
 
     const handleEmailSave = async () => {
         const id = mechanic.mechanicInfo.id;
-
+        setIsSaving(true);
         try{
             if(emailError.length > 0) {
                 return;
@@ -34,6 +35,7 @@ export function MechanicEmail({mechanic}) {
                 mechanic.mechanicInfo.email = data.mechanic.email;
                 setEmail(data.mechanic.email);
                 setIsEditing(false);
+                setIsSaving(false);
             }
 
         }catch(error) {
@@ -72,8 +74,17 @@ export function MechanicEmail({mechanic}) {
                             onChange={handleChange}
                         ></input>
 
-                        <button onClick={handleEmailSave}>Save</button>
-                        <button onClick={handleCancel}>Cancel</button>
+                        {!isSaving ?
+                            <>
+                                <button onClick={handleEmailSave}>Save</button>
+                                <button onClick={handleCancel}>Cancel</button>
+                            </>
+                            :
+                            <>
+                                <button disabled={isSaving}>Saving...</button>
+                                <button disabled={isSaving}>Cancel</button>
+                            </>
+                        }
                     </>
                     :
                     <>
